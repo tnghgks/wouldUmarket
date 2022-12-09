@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  width: 322px;
-  padding: 13px 0;
-  border-radius: 44px;
+  width: 90px;
+  padding: 7px 0;
+  border-radius: 32px;
   border: none;
   background-color: var(--accentColor);
   font-family: inherit;
@@ -12,12 +12,12 @@ const Button = styled.button`
   color: white;
 `;
 
-function LgargeDisabledButton() {
+function MediumSmallDisableButton() {
   return (
     <>
-      <Button>다음</Button>
+      <Button>저장</Button>
     </>
   );
 }
 
-export default LgargeDisabledButton;
+export default MediumSmallDisableButton;
