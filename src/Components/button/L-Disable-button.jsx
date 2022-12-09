@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  width: 120px;
-  padding: 8px 0;
-  border-radius: 30px;
+  width: 322px;
+  padding: 13px 0;
+  border-radius: 44px;
   border: none;
   background-color: var(--accentColor);
   font-family: inherit;
@@ -12,12 +12,12 @@ const Button = styled.button`
   color: white;
 `;
 
-function MediumDisabledButton() {
+function LargeDisableButton() {
   return (
     <>
-      <Button>팔로우</Button>
+      <Button>다음</Button>
     </>
   );
 }
 
-export default MediumDisabledButton;
+export default LargeDisableButton;
