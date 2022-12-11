@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const LargeDisableBtn = styled.button`
   width: 322px;
   padding: 13px 0;
   border-radius: 44px;
@@ -15,7 +15,7 @@ const Button = styled.button`
 function LargeDisableButton() {
   return (
     <>
-      <Button>다음</Button>
+      <LargeDisableBtn>다음</LargeDisableBtn>
     </>
   );
 }

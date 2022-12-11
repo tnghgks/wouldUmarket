@@ -1,23 +1,23 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const MediumDisableBtn = styled.button`
   width: 120px;
   padding: 8px 0;
   border-radius: 30px;
   border: none;
-  background-color: var(--mainColor);
+  background-color: var(--accentColor);
   font-family: inherit;
   font-weight: 500;
   font-size: 1.4rem;
   color: white;
 `;
 
-function MediumButton() {
+function MediumDisableButton() {
   return (
     <>
-      <Button>팔로우</Button>
+      <MediumDisableBtn>팔로우</MediumDisableBtn>
     </>
   );
 }
 
-export default MediumButton;
+export default MediumDisableButton;

@@ -1,23 +1,22 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const SmallActivBtn = styled.button`
   width: 56px;
   padding: 7px 0;
   border-radius: 26px;
-  border: none;
-  background-color: var(--mainColor);
+  border: 1px solid #dbdbdb;
+  background-color: white;
   font-family: inherit;
   font-weight: 400;
   font-size: 1.2rem;
-  color: white;
 `;
 
-function SmallButton() {
+function SmallActivButton() {
   return (
     <>
-      <Button>팔로우</Button>
+      <SmallActivBtn>취소</SmallActivBtn>
     </>
   );
 }
 
-export default SmallButton;
+export default SmallActivButton;
