@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Router from "./Router/Router";
 
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
@@ -40,7 +41,7 @@ function App() {
   return (
     <>
       <GlobalStyled />
-      <div>홈</div>
+      <Router />
     </>
   );
 }
