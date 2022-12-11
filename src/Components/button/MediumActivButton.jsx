@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const MediumActivBtn = styled.button`
   width: 120px;
   padding: 8px 0;
   border-radius: 30px;
@@ -14,7 +14,7 @@ const Button = styled.button`
 function MediumActivButton() {
   return (
     <>
-      <Button>언팔로우</Button>
+      <MediumActivBtn>언팔로우</MediumActivBtn>
     </>
   );
 }

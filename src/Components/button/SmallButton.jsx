@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const SmallBtn = styled.button`
   width: 56px;
   padding: 7px 0;
   border-radius: 26px;
@@ -12,12 +12,8 @@ const Button = styled.button`
   color: white;
 `;
 
-function SmallButton() {
-  return (
-    <>
-      <Button>팔로우</Button>
-    </>
-  );
+function SmallButton({ className }) {
+  return <SmallBtn className={className}>팔로우</SmallBtn>;
 }
 
 export default SmallButton;

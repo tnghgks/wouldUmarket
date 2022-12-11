@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const SmallActivBtn = styled.button`
   width: 56px;
   padding: 7px 0;
   border-radius: 26px;
@@ -14,7 +14,7 @@ const Button = styled.button`
 function SmallActivButton() {
   return (
     <>
-      <Button>취소</Button>
+      <SmallActivBtn>취소</SmallActivBtn>
     </>
   );
 }
