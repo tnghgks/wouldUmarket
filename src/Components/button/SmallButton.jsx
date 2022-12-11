@@ -12,12 +12,8 @@ const SmallBtn = styled.button`
   color: white;
 `;
 
-function SmallButton() {
-  return (
-    <>
-      <SmallBtn>팔로우</SmallBtn>
-    </>
-  );
+function SmallButton({ className }) {
+  return <SmallBtn className={className}>팔로우</SmallBtn>;
 }
 
 export default SmallButton;
