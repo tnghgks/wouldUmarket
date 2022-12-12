@@ -6,6 +6,9 @@ import TabMenu from "./Components/TabMenu";
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
 
+*{
+  box-sizing: border-box;
+}
 button {
   margin:0;
   padding:0;
