@@ -5,6 +5,10 @@ import Router from "./Router/Router";
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
 
+*{
+  box-sizing: border-box;
+}
+
 @font-face {
   font-family: 'Godo';
   font-style: normal;
