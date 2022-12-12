@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const DeletAlertArticle = styled.article`
+const DeletAlertContainer = styled.article`
   width: 252px;
   border-radius: 10px;
   display: flex;
@@ -36,18 +36,19 @@ const DeleteAlertBtn = styled.button`
   color: ${function (props) {
     if (props.props !== true) return "var(--accentColor)";
   }};
+  cursor: pointer;
 `;
 
-function DeleteAlert({ head, cancel, confirm }) {
+function CommonAlert({ head, cancel, confirm }) {
   return (
-    <DeletAlertArticle>
+    <DeletAlertContainer>
       <DeleteAlertHead>{head}</DeleteAlertHead>
       <DeleteAlertDiv>
         <DeleteAlertBtn props={true}>{cancel}</DeleteAlertBtn>
         <DeleteAlertBtn props={false}>{confirm}</DeleteAlertBtn>
       </DeleteAlertDiv>
-    </DeletAlertArticle>
+    </DeletAlertContainer>
   );
 }
 
-export default DeleteAlert;
+export default CommonAlert;
