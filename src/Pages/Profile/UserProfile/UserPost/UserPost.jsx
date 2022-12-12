@@ -20,6 +20,7 @@ const ViewModeContainer = styled.div`
   align-items: center;
   gap: 16px;
   padding-right: 16px;
+  border-bottom: 0.5px solid #dbdbdb;
 `;
 const PostContainer = styled.section`
   padding: 16px;

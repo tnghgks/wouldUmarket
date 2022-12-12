@@ -7,7 +7,7 @@ const Container = styled.section`
   background-color: #ffffff;
   overflow: hidden;
   margin-bottom: 6px;
-  border: 1px solid #e0e0e0;
+  border: 0.5px solid #dbdbdb;
 `;
 
 const Title = styled.h2`
