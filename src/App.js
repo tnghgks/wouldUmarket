@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import Router from "./Router/Router";
-import TabMenu from "./Components/TabMenu";
 
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
@@ -13,7 +12,6 @@ button {
   margin:0;
   padding:0;
 }
-
 @font-face {
   font-family: 'Godo';
   font-style: normal;
@@ -38,7 +36,7 @@ button {
   --fontColor:#ffffff;
 }
 html{
-  font-size:10px;
+  font-size: 62.5%;
 }
 
 body{
@@ -51,7 +49,6 @@ function App() {
     <>
       <GlobalStyled />
       <Router />
-      <TabMenu />
     </>
   );
 }
