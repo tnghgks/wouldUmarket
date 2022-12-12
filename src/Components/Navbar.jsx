@@ -18,6 +18,7 @@ const Container = styled.div`
 const Back = styled(Link)`
   width: 22px;
   height: 22px;
+  cursor: pointer;
 `;
 
 const More = styled.button`
@@ -26,6 +27,7 @@ const More = styled.button`
   padding: 0;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 const Title = styled.h2`
@@ -44,6 +46,7 @@ const SellerName = styled.h2`
 const Search = styled(Link)`
   width: 24px;
   height: 24px;
+  cursor: pointer;
 `;
 
 const Input = styled.input`
@@ -65,7 +68,6 @@ const Input = styled.input`
   }
 `;
 /**
- *
  * @param {{onBack?: import('react').MouseEventHandler<HTMLAnchorElement>}} param0
  * @returns
  */
@@ -83,8 +85,7 @@ function LeftComponent({ leftType, onBack }) {
 }
 
 /**
- * JSDoc
- * @param {{centerType?: 'title' | 'sellerName'; }} param0
+ * @param {{centerType?: 'title' | 'sellerName';}} param0
  * @returns
  */
 function CenterComponent({ centerType, centercontent }) {
@@ -122,7 +123,6 @@ function RightComponent({ rightType }) {
 }
 
 /**
- * JSDoc
  * @param {{leftType?: 'back' ; centerType?: 'title' | 'sellerName';centercontent?: string; rightType?: 'more' |'input'| 'search' | 'save'}} param0
  * @returns
  */
