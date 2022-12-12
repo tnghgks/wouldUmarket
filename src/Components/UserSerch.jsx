@@ -5,15 +5,16 @@ const Img = styled.img`
   width: 50px;
   height: 50px;
 `;
-const UserSerchContainer = styled.section`
-  width: 358px;
+
+const UserSerchContainer = styled.li`
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 1.4rem;
 `;
 
-const UserSerchText = styled.small`
+const UserFollowSmall = styled.small`
   display: inline-block;
   font-size: 1.2rem;
   margin-top: 6px;
@@ -25,7 +26,7 @@ function UserSerch() {
       <Img src={profileImg} />
       <div>
         <p>애월읍 위니브 감귤 농장</p>
-        <UserSerchText>@ weniv_Mandarin</UserSerchText>
+        <UserFollowSmall>@ weniv_Mandarin</UserFollowSmall>
       </div>
     </UserSerchContainer>
   );

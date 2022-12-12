@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const DeletAlertArticle = styled.article`
+const DeletAlertContainer = styled.article`
   width: 252px;
   border-radius: 10px;
   display: flex;
@@ -36,17 +36,18 @@ const DeleteAlertBtn = styled.button`
   color: ${function (props) {
     if (props.props !== true) return "var(--accentColor)";
   }};
+  cursor: pointer;
 `;
 
 function DeleteAlert() {
   return (
-    <DeletAlertArticle>
+    <DeletAlertContainer>
       <DeleteAlertHead>상품을 삭제할까요?</DeleteAlertHead>
       <DeleteAlertDiv>
         <DeleteAlertBtn props={true}>취소</DeleteAlertBtn>
         <DeleteAlertBtn props={false}>삭제</DeleteAlertBtn>
       </DeleteAlertDiv>
-    </DeletAlertArticle>
+    </DeletAlertContainer>
   );
 }
 
