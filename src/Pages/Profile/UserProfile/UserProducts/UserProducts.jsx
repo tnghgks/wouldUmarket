@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Product from "../../../../Components/Product";
 
 const Container = styled.section`
   width: 100%;
@@ -6,6 +7,7 @@ const Container = styled.section`
   background-color: #ffffff;
   overflow: hidden;
   margin-bottom: 6px;
+  border: 1px solid #e0e0e0;
 `;
 
 const Title = styled.h2`
@@ -25,7 +27,11 @@ function UserProducts() {
   return (
     <Container>
       <Title>판매 중인 상품</Title>
-      <ProductsList></ProductsList>
+      <ProductsList>
+        <Product />
+        <Product />
+        <Product />
+      </ProductsList>
     </Container>
   );
 }
