@@ -5,7 +5,7 @@ import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import PostDetail from "../Pages/Post/PostDetail/PostDetail";
 import PostUpload from "../Pages/Post/PostUpload/PostUpload";
-import Feed from "../Pages/Profile/Feed/Feed";
+import Profile from "../Pages/Profile/UserProfile/Profile";
 import Register from "../Pages/Register/Register";
 import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
@@ -20,7 +20,7 @@ function Router() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
-        <Route path="/profile/feed" element={<Feed />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/search" element={<Search />} />
 
