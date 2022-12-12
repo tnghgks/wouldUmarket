@@ -1,12 +1,14 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import Router from "./Router/Router";
+import TabMenu from "./Components/TabMenu";
 
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
 
-*{
-  box-sizing: border-box;
+button {
+  margin:0;
+  padding:0;
 }
 
 @font-face {
@@ -46,6 +48,7 @@ function App() {
     <>
       <GlobalStyled />
       <Router />
+      <TabMenu />
     </>
   );
 }
