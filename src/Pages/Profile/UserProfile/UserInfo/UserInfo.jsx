@@ -11,6 +11,7 @@ const Container = styled.section`
   align-items: center;
   background-color: #ffffff;
   margin-bottom: 6px;
+  border: 0.5px solid #dbdbdb;
 `;
 
 const FollowInfo = styled.div`
@@ -67,6 +68,7 @@ const BtnContainer = styled.div`
   align-items: center;
   gap: 10px;
   margin-top: 24px;
+  margin-bottom: 26px;
 `;
 const Btn = styled.button`
   width: 34px;
