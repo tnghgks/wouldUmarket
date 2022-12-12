@@ -8,7 +8,6 @@ const DeletAlertArticle = styled.article`
   align-items: center;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0 0 2px 0.1px rgba(0, 0, 0, 0.5);
 `;
 
 const DeleteAlertHead = styled.h1`
@@ -27,22 +26,25 @@ const DeleteAlertBtn = styled.button`
   height: 45px;
   border: 0.5px solid rgba(219, 219, 219, 0.5);
   border-left: ${function (props) {
-    if (props === true) return "none";
+    if (props.props === true) return "none";
   }};
   border-right: none;
   border-bottom: none;
   font-size: 1.4rem;
   font-family: inherit;
   background-color: #ffffff;
+  color: ${function (props) {
+    if (props.props !== true) return "var(--accentColor)";
+  }};
 `;
 
-function DeleteAlert({ head, left, right }) {
+function DeleteAlert({ head, cancel, confirm }) {
   return (
     <DeletAlertArticle>
       <DeleteAlertHead>{head}</DeleteAlertHead>
       <DeleteAlertDiv>
-        <DeleteAlertBtn props={true}>{left}</DeleteAlertBtn>
-        <DeleteAlertBtn>{right}</DeleteAlertBtn>
+        <DeleteAlertBtn props={true}>{cancel}</DeleteAlertBtn>
+        <DeleteAlertBtn props={false}>{confirm}</DeleteAlertBtn>
       </DeleteAlertDiv>
     </DeletAlertArticle>
   );
