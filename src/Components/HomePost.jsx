@@ -1,37 +1,45 @@
 import styled from "styled-components";
-import ellipse6Img from "../assets/Ellipse 6.png";
+import profileImg from "../assets/Ellipse 6.png";
 import moreIconImg from "../assets/icon/icon-more-vertical.png";
 import postImg from "../assets/post-img-example.png";
 import heartIconImg from "../assets/icon/icon-heart.png";
 import circleIconImg from "../assets/icon/icon-message-circle.png";
 
-const Container = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+const PostContainer = styled.section`
+  display: flex;
+  flex-direction: column;
   width: 358px;
   height: 434px;
   background-color: #ffffff;
 `;
-
-const Ellipse6Img = styled.img`
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+`;
+const ProfileImg = styled.img`
   width: 42px;
 `;
 
 const MoreIconImg = styled.img`
   width: 18px;
-  float: right;
+  margin-left: auto;
+  margin-bottom: auto;
+  margin-top: 3px;
+  cursor: pointer;
 `;
 
 const ContContainer = styled.div`
-  margin-top: 5px;
+  margin-left: 55px;
 `;
 
-const PostTitle = styled.h3`
+const UserName = styled.h3`
   font-size: 1.4rem;
   margin-bottom: 5px;
 `;
 
-const PostID = styled.span`
+const UserID = styled.span`
   font-size: 1.2rem;
   color: #767676;
 `;
@@ -62,6 +70,7 @@ const IconContainer = styled.span`
 const IconImg = styled.img`
   width: 20px;
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 const Date = styled.p`
@@ -69,12 +78,16 @@ const Date = styled.p`
 `;
 function HomePost() {
   return (
-    <Container>
-      <Ellipse6Img src={ellipse6Img} alt="" />
-      <ContContainer>
+    <PostContainer>
+      <TitleContainer>
+        <ProfileImg src={profileImg} />
+        <div>
+          <UserName>애월읍 위니브 감귤농장</UserName>
+          <UserID>@ weniv_Mandarin</UserID>
+        </div>
         <MoreIconImg src={moreIconImg} alt="" />
-        <PostTitle>애월읍 위니브 감귤농장</PostTitle>
-        <PostID>@ weniv_Mandarin</PostID>
+      </TitleContainer>
+      <ContContainer>
         <Cont>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et, tempore?
           Consequuntur, voluptates explicabo blanditiis nam, illo iure ea illum
@@ -94,7 +107,7 @@ function HomePost() {
         </ReactContainer>
         <Date>2020년 10월 21일</Date>
       </ContContainer>
-    </Container>
+    </PostContainer>
   );
 }
 
