@@ -35,6 +35,7 @@ const UploadfileImgBtn = styled.button`
   border: none;
   bottom: 0;
   right: 0;
+  cursor: pointer;
 `;
 
 const Uploadfile = styled(UploadFile)`
