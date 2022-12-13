@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 26px;
 `;
 
-function IconPostListOff() {
-  return <Img src={iconPostListOff} alt="포스트 리스트 끄기" />;
+function IconPostListOff({ className }) {
+  return <Img className={className} src={iconPostListOff} alt="포스트 리스트 끄기" />;
 }
 export default IconPostListOff;

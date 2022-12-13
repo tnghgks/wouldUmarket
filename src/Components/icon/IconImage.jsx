@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 22px;
 `;
 
-function IconImage() {
-  return <Img src={iconImage} alt="이미지 아이콘" />;
+function IconImage({ className }) {
+  return <Img className={className} src={iconImage} alt="이미지 아이콘" />;
 }
 export default IconImage;

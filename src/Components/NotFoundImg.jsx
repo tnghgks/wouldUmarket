@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 400px;
 `;
 
-function NotFoundImg() {
-  return <Img src={notFound404} alt="Not Found 아이콘" />;
+function NotFoundImg({ className }) {
+  return <Img className={className} src={notFound404} alt="Not Found 아이콘" />;
 }
 export default NotFoundImg;

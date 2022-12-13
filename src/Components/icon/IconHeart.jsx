@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 20px;
 `;
 
-function IconHeart() {
-  return <Img src={iconHeart} alt="하트 아이콘" />;
+function IconHeart({ className }) {
+  return <Img className={className} src={iconHeart} alt="하트 아이콘" />;
 }
 export default IconHeart;

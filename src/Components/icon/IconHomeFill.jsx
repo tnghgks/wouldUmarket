@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconHomeFill() {
-  return <Img src={iconHomeFill} alt="채워진 홈 아이콘" />;
+function IconHomeFill({ className }) {
+  return <Img className={className} src={iconHomeFill} alt="채워진 홈 아이콘" />;
 }
 export default IconHomeFill;

@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 22px;
 `;
 
-function IconArrowLeft() {
-  return <Img src={iconArrowLeft} alt="왼쪽 화살 아이콘" />;
+function IconArrowLeft({ className }) {
+  return <Img className={className} src={iconArrowLeft} alt="왼쪽 화살 아이콘" />;
 }
 export default IconArrowLeft;

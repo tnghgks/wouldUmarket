@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconHome() {
-  return <Img src={iconHome} alt="홈 아이콘" />;
+function IconHome({ className }) {
+  return <Img className={className} src={iconHome} alt="홈 아이콘" />;
 }
 export default IconHome;

@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 26px;
 `;
 
-function IconPostListOn() {
-  return <Img src={iconPostListOn} alt="포스트 리스트 켜기" />;
+function IconPostListOn({ className }) {
+  return <Img className={className} src={iconPostListOn} alt="포스트 리스트 켜기" />;
 }
 export default IconPostListOn;

@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconMoreVertical() {
-  return <Img src={iconMore} alt="더보기 세로 아이콘" />;
+function IconMoreVertical({ className }) {
+  return <Img className={className} src={iconMore} alt="더보기 세로 아이콘" />;
 }
 export default IconMoreVertical;

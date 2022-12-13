@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 50px;
 `;
 
-function UploadFile() {
-  return <Img src={uploadFile} alt="업로드 파일 아이콘" />;
+function UploadFile({ className }) {
+  return <Img className={className} src={uploadFile} alt="업로드 파일 아이콘" />;
 }
 export default UploadFile;

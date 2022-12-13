@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 200px;
 `;
 
-function FullLogo() {
-  return <Img src={fullLogo} alt="로고" />;
+function FullLogo({ className }) {
+  return <Img className={className} src={fullLogo} alt="로고" />;
 }
 export default FullLogo;

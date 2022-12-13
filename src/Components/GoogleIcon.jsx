@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 18px;
 `;
 
-function GoogleIcon() {
-  return <Img src={googleImg} alt="구글 아이콘" />;
+function GoogleIcon({ className }) {
+  return <Img className={className} src={googleImg} alt="구글 아이콘" />;
 }
 export default GoogleIcon;

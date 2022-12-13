@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 20px;
 `;
 
-function IconMessageCircleSmall() {
-  return <Img src={iconMessage} alt="작은 메세지 아이콘" />;
+function IconMessageCircleSmall({ className }) {
+  return <Img className={className} src={iconMessage} alt="작은 메세지 아이콘" />;
 }
 export default IconMessageCircleSmall;
