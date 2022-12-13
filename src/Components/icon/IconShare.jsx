@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 20px;
 `;
 
-function IconShare() {
-  return <Img src={iconShare} alt="공유 아이콘" />;
+function IconShare({ className }) {
+  return <Img className={className} src={iconShare} alt="공유 아이콘" />;
 }
 export default IconShare;

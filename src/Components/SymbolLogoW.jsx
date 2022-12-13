@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 144px;
 `;
 
-function SymbolLogo() {
-  return <Img src={symbolLogo} alt="심볼 로고 하얀색" />;
+function SymbolLogo({ className }) {
+  return <Img className={className} src={symbolLogo} alt="심볼 로고 하얀색" />;
 }
 export default SymbolLogo;

@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 20px;
 `;
 
-function FacebookIcon() {
-  return <Img src={facebookIcon} alt="페이스북 아이콘" />;
+function FacebookIcon({ className }) {
+  return <Img className={className} src={facebookIcon} alt="페이스북 아이콘" />;
 }
 export default FacebookIcon;

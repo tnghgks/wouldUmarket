@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 36px;
 `;
 
-function SmallProfileImg() {
-  return <Img src={basicProfile} alt="작은 베이직 프로필 이미지" />;
+function SmallProfileImg({ className }) {
+  return <Img className={className} src={basicProfile} alt="작은 베이직 프로필 이미지" />;
 }
 export default SmallProfileImg;

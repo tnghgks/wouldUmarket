@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconEdit() {
-  return <Img src={iconEdit} alt="수정 아이콘" />;
+function IconEdit({ className }) {
+  return <Img className={className} src={iconEdit} alt="수정 아이콘" />;
 }
 export default IconEdit;

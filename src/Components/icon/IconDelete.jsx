@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 22px;
 `;
 
-function IconDelete() {
-  return <Img src={iconDelete} alt="삭제 아이콘" />;
+function IconDelete({ className }) {
+  return <Img className={className} src={iconDelete} alt="삭제 아이콘" />;
 }
 export default IconDelete;

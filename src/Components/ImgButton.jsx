@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 36px;
 `;
 
-function ImgButton() {
-  return <Img src={imgButton} alt="이미지 버튼 아이콘" />;
+function ImgButton({ className }) {
+  return <Img className={className} src={imgButton} alt="이미지 버튼 아이콘" />;
 }
 export default ImgButton;

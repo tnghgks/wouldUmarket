@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconUserFill() {
-  return <Img src={iconUserFill} alt="채워진 유저 아이콘" />;
+function IconUserFill({ className }) {
+  return <Img className={className} src={iconUserFill} alt="채워진 유저 아이콘" />;
 }
 export default IconUserFill;

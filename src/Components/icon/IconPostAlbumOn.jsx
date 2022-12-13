@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 26px;
 `;
 
-function IconPostAlbumOn() {
-  return <Img src={iconPostAlbumOn} alt="앨범 켜기 아이콘" />;
+function IconPostAlbumOn({ className }) {
+  return <Img className={className} src={iconPostAlbumOn} alt="앨범 켜기 아이콘" />;
 }
 export default IconPostAlbumOn;

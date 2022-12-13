@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 24px;
 `;
 
-function IconSearch() {
-  return <Img src={iconSearch} alt="검색 아이콘" />;
+function IconSearch({ className }) {
+  return <Img className={className} src={iconSearch} alt="검색 아이콘" />;
 }
 export default IconSearch;

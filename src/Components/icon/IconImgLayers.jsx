@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 20px;
 `;
 
-function IconImgLayers() {
-  return <Img src={iconImgLayers} alt="이미지 레이어 아이콘" />;
+function IconImgLayers({ className }) {
+  return <Img className={className} src={iconImgLayers} alt="이미지 레이어 아이콘" />;
 }
 export default IconImgLayers;

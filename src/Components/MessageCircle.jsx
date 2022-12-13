@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 18px;
 `;
 
-function MessageCircle() {
-  return <Img src={messageCircle} alt="노란색 메세지 아이콘" />;
+function MessageCircle({ className }) {
+  return <Img className={className} src={messageCircle} alt="노란색 메세지 아이콘" />;
 }
 export default MessageCircle;
