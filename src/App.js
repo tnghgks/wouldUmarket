@@ -12,6 +12,21 @@ button {
   margin:0;
   padding:0;
 }
+.ir-hidden {
+   position: absolute;
+   clip: rect(0 0 0 0);
+   width: 1px;
+   height: 1px;
+   margin: -1px;
+   overflow: hidden;
+}
+@font-face {
+    font-family: 'LINESeedKR-Bd';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
 @font-face {
   font-family: 'Godo';
   font-style: normal;
@@ -19,12 +34,6 @@ button {
   src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoM.woff') format('woff');
 }
 
-@font-face {
-  font-family: 'Godo';
-  font-style: normal;
-  font-weight: 700;
-  src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff') format('woff');
-}
 
 //css변수를 만들어서 쓸려고 합니다.
 :root{
@@ -40,7 +49,7 @@ html{
 }
 
 body{
-  font-family: 'Godo', sans-serif;
+  font-family: 'LINESeedKR-Bd', sans-serif;
 }
 `;
 
