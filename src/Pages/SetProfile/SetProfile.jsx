@@ -48,15 +48,11 @@ const TextContainer = styled.div`
     :nth-child(2) {
       margin: 16px 0;
     }
-  }
-  & > div {
     :last-child {
       margin-bottom: 30px;
     }
   }
 `;
-
-const TextActivInputContainer = styled.div``;
 
 function SetProfile() {
   return (
@@ -70,27 +66,27 @@ function SetProfile() {
         </UploadfileImgBtn>
       </ProfileImgContainer>
       <TextContainer>
-        <TextActivInputContainer>
+        <div>
           <CommonInput
             name="사용자 이름"
             type="text"
             placeholder="2~10자 이내여야 합니다."
           />
-        </TextActivInputContainer>
-        <TextActivInputContainer>
+        </div>
+        <div>
           <CommonInput
             name="계정 ID"
             type="text"
             placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
           />
-        </TextActivInputContainer>
-        <TextActivInputContainer>
+        </div>
+        <div>
           <CommonInput
             name="소개"
             type="text"
             placeholder="자신과 쉐어할 상품에 대해 소개해주세요!"
           />
-        </TextActivInputContainer>
+        </div>
       </TextContainer>
       <CommonButton size="lg" bgColor="light" children="우주쉐어 시작하기" />
     </Container>
