@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../../Components/Navbar";
+import TabMenu from "../../Components/TabMenu";
 import UserSerch from "../../Components/UserSerch";
 
 const Container = styled.section`
@@ -17,10 +18,11 @@ function Search() {
     <>
       <Navbar leftType="back" centerType="title" centercontent={""} rightType={"input"}></Navbar>
       <Container>
-        <UserSerch></UserSerch>
-        <UserSerch></UserSerch>
-        <UserSerch></UserSerch>
+        <UserSerch />
+        <UserSerch />
+        <UserSerch />
       </Container>
+      <TabMenu />
     </>
   );
 }
