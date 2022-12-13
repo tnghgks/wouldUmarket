@@ -6,8 +6,8 @@ const Img = styled.img`
   width: 50px;
   height: 50px;
 `;
-const UserFollowContainer = styled.section`
-  width: 358px;
+const UserFollowContainer = styled.li`
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -15,14 +15,15 @@ const UserFollowContainer = styled.section`
   font-size: 1.4rem;
 `;
 
-const UserFollowText = styled.small`
+const UserFollowSmall = styled.small`
   display: inline-block;
   font-size: 1.2rem;
   margin-top: 6px;
 `;
 
-const Button = styled(FollowButton)`
+const FollowBtn = styled(FollowButton)`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 function UserFollow() {
@@ -31,9 +32,9 @@ function UserFollow() {
       <Img src={profileImg} />
       <div>
         <p>애월읍 위니브 감귤 농장</p>
-        <UserFollowText>@ weniv_Mandarin</UserFollowText>
+        <UserFollowSmall>@ weniv_Mandarin</UserFollowSmall>
       </div>
-      <Button />
+      <FollowBtn />
     </UserFollowContainer>
   );
 }

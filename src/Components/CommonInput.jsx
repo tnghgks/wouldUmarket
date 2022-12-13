@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-const TextActivInputForm = styled.form`
-  width: 322px;
+const TextActivInputContainer = styled.form`
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -15,7 +15,7 @@ const TextActivInputLabel = styled.label`
 const ActivTextInput = styled.input`
   border: none;
   border-bottom: 1px solid #dbdbdb;
-  padding: 6px 0px;
+  padding: 10px 0 8px;
   font-family: inherit;
   font-size: 1.4rem;
   font-weight: 400;
@@ -24,13 +24,13 @@ const ActivTextInput = styled.input`
   }
 `;
 
-function TextActivInput({ name, type, placeholder }) {
+function CommonInput({ name, type, placeholder }) {
   return (
-    <TextActivInputForm>
+    <TextActivInputContainer>
       <TextActivInputLabel htmlFor="">{name}</TextActivInputLabel>
       <ActivTextInput type={type} placeholder={placeholder} />
-    </TextActivInputForm>
+    </TextActivInputContainer>
   );
 }
 
-export default TextActivInput;
+export default CommonInput;
