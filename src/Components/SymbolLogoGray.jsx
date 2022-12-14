@@ -3,7 +3,7 @@ import symbolLogoGray from "../assets/symbol-logo-gray.png";
 
 const Img = styled.img`
   width: 100px;
-  height: 100px;
+  aspect-ratio: 169/105;
 `;
 
 function SymbolLogoGray({ className }) {

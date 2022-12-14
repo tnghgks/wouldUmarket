@@ -2,8 +2,8 @@ import styled from "styled-components";
 import fullLogo from "../assets/full-logo.png";
 
 const Img = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 169px;
+  aspect-ratio: 169/105;
 `;
 
 function FullLogo({ className }) {
