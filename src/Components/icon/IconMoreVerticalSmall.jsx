@@ -6,7 +6,7 @@ const Img = styled.img`
   height: 18px;
 `;
 
-function SIconMoreVertical({ className }) {
+function IconMoreVerticalSmall({ className }) {
   return <Img className={className} src={iconMore} alt="작은 더보기 수직 아이콘" />;
 }
-export default SIconMoreVertical;
+export default IconMoreVerticalSmall;
