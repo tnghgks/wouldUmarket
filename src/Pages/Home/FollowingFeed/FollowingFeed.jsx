@@ -3,8 +3,6 @@ import HomePost from "../../../Components/HomePost";
 import MainNav from "../../../Components/MainNav";
 import TabMenu from "../../../Components/TabMenu";
 
-const Container = styled.section``;
-
 const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,7 +12,7 @@ const PostContainer = styled.div`
 
 function FollowingFeed() {
   return (
-    <Container>
+    <>
       <MainNav titleContent="우주쉐어 피드" />
       <PostContainer>
         <HomePost />
@@ -22,7 +20,7 @@ function FollowingFeed() {
         <HomePost />
       </PostContainer>
       <TabMenu />
-    </Container>
+    </>
   );
 }
 
