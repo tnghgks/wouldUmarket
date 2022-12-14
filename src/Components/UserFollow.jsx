@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import profileImg from "../assets/Ellipse-1.png";
-import FollowButton from "./button/SmallButton";
+import FollowButton from "../Components/button/CommonButton";
 
 const Img = styled.img`
   width: 50px;
@@ -34,7 +34,12 @@ function UserFollow() {
         <p>애월읍 위니브 감귤 농장</p>
         <UserFollowSmall>@ weniv_Mandarin</UserFollowSmall>
       </div>
-      <FollowBtn />
+      <FollowBtn
+        size="sm"
+        fontColor="white"
+        bgColor="main"
+        children={"팔로우"}
+      />
     </UserFollowContainer>
   );
 }
