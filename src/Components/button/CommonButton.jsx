@@ -15,6 +15,20 @@ const ButtonContainer = styled.button`
         return "120px";
     }
   }};
+  height: ${(props) => {
+    switch (props.size) {
+      case "lg":
+        return "44px";
+      case "md":
+        return "34px";
+      case "ms":
+        return "32px";
+      case "sm":
+        return "28px";
+      default:
+        return "34px";
+    }
+  }};
   padding: ${(props) => {
     switch (props.size) {
       case "lg":
@@ -65,15 +79,22 @@ const ButtonContainer = styled.button`
         return "var(--mainColor)";
     }
   }};
+  cursor: pointer;
+  line-height: 20px;
 `;
 /**
  *
- * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white"; children: buttonText}} param0
+ * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white"; children: buttonText ; event: "eventprops"}} param0
  * @returns
  */
-function CommonButton({ size, fontColor, bgColor, children }) {
+function CommonButton({ size, fontColor, bgColor, children, evnet }) {
   return (
-    <ButtonContainer size={size} fontColor={fontColor} bgColor={bgColor}>
+    <ButtonContainer
+      size={size}
+      fontColor={fontColor}
+      bgColor={bgColor}
+      evnet={evnet}
+    >
       {children}
     </ButtonContainer>
   );
