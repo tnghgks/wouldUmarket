@@ -1,13 +1,13 @@
 import styled from "styled-components";
+import BasicNav from "../../../Components/BasicNav";
 import Comment from "../../../Components/Comment";
 import HomePost from "../../../Components/HomePost";
-import Navbar from "../../../Components/Navbar";
 import CommentItem from "./CommentItem/CommentItem";
 
 const MainContainer = styled.main`
   width: 100%;
-  height: 100vh;
-  padding: 48px 0px;
+  margin-top: 48px;
+  margin-bottom: 61px;
 `;
 const PostContainer = styled.section`
   border-top: 1px solid #dbdbdb;
@@ -29,7 +29,7 @@ const CommentContainer = styled.section`
 function PostDetail() {
   return (
     <>
-      <Navbar leftType="back" rightType="more" />
+      <BasicNav />
       <MainContainer>
         <PostContainer>
           <HomePost />
