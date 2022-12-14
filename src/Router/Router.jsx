@@ -10,6 +10,7 @@ import Register from "../Pages/Register/Register";
 import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
+import Followers from "../Pages/Profile/Follower/Followers";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
+        <Route path="/profile/followers" element={<Followers />} />
         <Route path="/profile" element={<Profile />} />
 
         <Route path="/search" element={<Search />} />
