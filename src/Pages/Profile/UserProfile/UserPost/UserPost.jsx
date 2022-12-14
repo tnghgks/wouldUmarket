@@ -24,6 +24,8 @@ const ViewModeContainer = styled.div`
 `;
 const PostContainer = styled.section`
   padding: 16px;
+  display: flex;
+  justify-content: center;
 `;
 
 function UserPost() {
