@@ -26,14 +26,18 @@ const BackBtnIcon = styled(IconArrowLeft)`
   width: 22px;
   height: 22px;
 `;
-
-function UploadNav() {
+/**
+ *
+ * @param {{children: '저장' | '업로드'}} param0
+ * @returns
+ */
+function UploadNav({ children }) {
   return (
     <Container>
       <Back>
         <BackBtnIcon />
       </Back>
-      <CommonButton size="ms" bgColor="accent" children="저장" />
+      <CommonButton size="ms" bgColor="accent" children={children} />
     </Container>
   );
 }
