@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import profileImg from "../assets/Ellipse 6.png";
-import moreIconImg from "../assets/icon/icon-more-vertical.png";
+import BasicProfileImg from "../Components/BasicProfileImg";
+import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import postImg from "../assets/post-img-example.png";
 import heartIconImg from "../assets/icon/icon-heart.png";
 import circleIconImg from "../assets/icon/icon-message-circle.png";
@@ -18,12 +18,12 @@ const TitleContainer = styled.div`
   align-items: center;
   gap: 12px;
 `;
-const ProfileImg = styled.img`
+const ProfileImg = styled(BasicProfileImg)`
   width: 42px;
+  height: 42px;
 `;
 
-const MoreIconImg = styled.img`
-  width: 18px;
+const MoreIconImg = styled(IconMoreVerticalSmall)`
   margin-left: auto;
   margin-bottom: auto;
   margin-top: 3px;
@@ -46,8 +46,7 @@ const UserID = styled.span`
 
 const Cont = styled.p`
   font-size: 1.4rem;
-  font-weight: 400;
-  margin: 15px 0;
+  margin: 16px 0;
 `;
 
 const PostImg = styled.img`
@@ -55,7 +54,7 @@ const PostImg = styled.img`
 `;
 
 const ReactContainer = styled.div`
-  margin: 10px 0;
+  margin: 12px 0 16px;
   display: flex;
 `;
 
@@ -80,12 +79,12 @@ function HomePost() {
   return (
     <PostContainer>
       <TitleContainer>
-        <ProfileImg src={profileImg} />
+        <ProfileImg />
         <div>
           <UserName>애월읍 위니브 감귤농장</UserName>
           <UserID>@ weniv_Mandarin</UserID>
         </div>
-        <MoreIconImg src={moreIconImg} alt="" />
+        <MoreIconImg />
       </TitleContainer>
       <ContContainer>
         <Cont>
@@ -94,14 +93,14 @@ function HomePost() {
           repudiandae ut in provident quasi hic quidem, obcaecati enim officia
           tenetur!
         </Cont>
-        <PostImg src={postImg} alt="" />
+        <PostImg src={postImg} alt="숲 속 마을 이미지" />
         <ReactContainer>
           <IconContainer>
-            <IconImg src={heartIconImg} alt="" />
+            <IconImg src={heartIconImg} alt="하트 아이콘" />
             58
           </IconContainer>
           <IconContainer>
-            <IconImg src={circleIconImg} alt="" />
+            <IconImg src={circleIconImg} alt="말풍선 아이콘" />
             12
           </IconContainer>
         </ReactContainer>
