@@ -1,17 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import IconArrowLeft from "./icon/IconArrowLeft";
-import IconMoreVertical from "./icon/IconMoreVertical";
+import CommonButton from "../button/CommonButton";
+import IconArrowLeft from "../icon/IconArrowLeft";
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
+  top: 0;
   width: 100vw;
   height: 48px;
-  padding: 0 12px 0 16px;
+  padding: 0 16px;
+  border-bottom: 0.5px solid #dbdbdb;
+  background-color: #ffffff;
 `;
 
 const Back = styled(Link)`
@@ -19,37 +22,20 @@ const Back = styled(Link)`
   height: 22px;
   cursor: pointer;
 `;
-
-const More = styled.button`
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`;
-
 const BackBtnIcon = styled(IconArrowLeft)`
   width: 22px;
   height: 22px;
 `;
 
-const MoreIcon = styled(IconMoreVertical)`
-  width: 24px;
-  height: 24px;
-`;
-
-function BasicNav() {
+function UploadNav() {
   return (
     <Container>
       <Back>
         <BackBtnIcon />
       </Back>
-      <More type="button">
-        <MoreIcon />
-      </More>
+      <CommonButton size="ms" bgColor="accent" children="저장" />
     </Container>
   );
 }
 
-export default BasicNav;
+export default UploadNav;
