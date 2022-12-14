@@ -1,13 +1,18 @@
 import styled from "styled-components";
 import Product from "../../../../Components/Product";
 
-const Container = styled.section`
+const Container = styled.article`
   width: 100%;
   padding: 20px 0px 20px 16px;
   background-color: #ffffff;
-  overflow: hidden;
   margin-bottom: 6px;
   border: 0.5px solid #dbdbdb;
+  display: flex;
+  justify-content: center;
+`;
+const ProductContainer = styled.div`
+  width: 390px;
+  overflow: scroll hidden;
 `;
 
 const Title = styled.h2`
@@ -26,12 +31,14 @@ const ProductsList = styled.ul`
 function UserProducts() {
   return (
     <Container>
-      <Title>판매 중인 상품</Title>
-      <ProductsList>
-        <Product />
-        <Product />
-        <Product />
-      </ProductsList>
+      <ProductContainer>
+        <Title>판매 중인 상품</Title>
+        <ProductsList>
+          <Product />
+          <Product />
+          <Product />
+        </ProductsList>
+      </ProductContainer>
     </Container>
   );
 }
