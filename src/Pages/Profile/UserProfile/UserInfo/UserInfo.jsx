@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import BasicProfileImg from "../../../../Components/BasicProfileImg";
-import MediumButton from "../../../../Components/button/MediumButton";
-import iconMessageCircle from "../../../../assets/icon/icon-message-circle.svg";
-import iconShare from "../../../../assets/icon/icon-share.png";
+import CommonButton from "../../../../Components/button/CommonButton";
+import IconMessageCircle from "../../../../Components/icon/IconMessageCircle";
+import { Link } from "react-router-dom";
+import IconShare from "../../../../Components/icon/IconShare";
+import { useEffect, useState } from "react";
 
 const Container = styled.section`
-  width: 390px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +16,7 @@ const Container = styled.section`
   border: 0.5px solid #dbdbdb;
 `;
 
-const FollowInfo = styled.div`
+const FollowerInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,7 +35,9 @@ const FollowInfo = styled.div`
     color: #767676;
   }
 `;
-
+const FollowingInfo = styled(FollowerInfo)`
+  color: #767676;
+`;
 const RowContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -70,7 +74,7 @@ const BtnContainer = styled.div`
   margin-top: 24px;
   margin-bottom: 26px;
 `;
-const Btn = styled.button`
+const LinkBtn = styled(Link)`
   width: 34px;
   height: 34px;
   border: 1px solid #dbdbdb;
@@ -79,36 +83,79 @@ const Btn = styled.button`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
+  cursor: pointer;
   img {
     width: 20px;
     height: 20px;
   }
 `;
-function UserInfo() {
+function UserInfo({ user }) {
+  const [data, setData] = useState({
+    _id: "62e4333917ae66658100b69a",
+    username: "김마타",
+    accountname: "mataa",
+    intro: "하쿠나마타타",
+    image: "https://mandarin.api.weniv.co.kr/1659122486661.jpeg",
+    isfollow: false,
+    following: ["62d9f51017ae66658184fb47", "62e3407717ae666581dd9d78", "62e4ac1117ae6665810b6057"],
+    follower: ["62e435d317ae666581010a2f", "62b0237a5361aaea569aa879", "62e4ac1117ae6665810b6057", "63801e2617ae666581be782d"],
+    followerCount: 4,
+    followingCount: 3,
+  });
+
+  // useEffect(() => {
+  //   (async function () {
+  //     try {
+  //       const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/mataa`, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-type": "application/json",
+  //         },
+  //       });
+  //       const { profile } = await res.json();
+  //       setData(profile);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
+
   return (
     <Container>
       <RowContainer>
-        <FollowInfo>
-          <span>2950</span>
-          <span>followers</span>
-        </FollowInfo>
-        <BasicProfileImg />
-        <FollowInfo>
-          <span>128</span>
-          <span>followings</span>
-        </FollowInfo>
+        <Link>
+          <FollowerInfo>
+            <span>{data.followerCount}</span>
+            <span>followers</span>
+          </FollowerInfo>
+        </Link>
+        <BasicProfileImg src={data.image} />
+        <Link>
+          <FollowingInfo>
+            <span>{data.followingCount}</span>
+            <span>followings</span>
+          </FollowingInfo>
+        </Link>
       </RowContainer>
-      <UserNicname>애월읍 위니브 감귤농장</UserNicname>
-      <UserId>@ weniv_Mandarin</UserId>
-      <UserDiscription>애월읍 감귤 전국 배송, 귤따기 체험, 감귤 농장</UserDiscription>
+      <UserNicname>{data.username}</UserNicname>
+      <UserId>@ {data.accountname}</UserId>
+      <UserDiscription>{data.intro}</UserDiscription>
       <BtnContainer>
-        <Btn>
-          <img src={iconMessageCircle} alt="메세지 버튼" />
-        </Btn>
-        <MediumButton></MediumButton>
-        <Btn>
-          <img src={iconShare} alt="공유 버튼" />
-        </Btn>
+        <LinkBtn to="/chat/id">
+          <IconMessageCircle />
+        </LinkBtn>
+        {data.isfollow ? (
+          <CommonButton size="md" fontColor="#767676" bgColor="white">
+            언팔로우
+          </CommonButton>
+        ) : (
+          <CommonButton size="md">팔로우</CommonButton>
+        )}
+
+        <LinkBtn>
+          <IconShare />
+        </LinkBtn>
       </BtnContainer>
     </Container>
   );
