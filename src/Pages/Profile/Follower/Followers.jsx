@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MainNav from "../../../Components/MainNav";
+import MainNav from "../../../Components/Navbar/MainNav";
 import TabMenu from "../../../Components/TabMenu";
 import UserFollow from "../../../Components/UserFollow";
 

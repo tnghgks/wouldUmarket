@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BasicNav from "../../../Components/BasicNav";
+import BasicNav from "../../../Components/Navbar/BasicNav";
 import Comment from "../../../Components/Comment";
 import HomePost from "../../../Components/HomePost";
 import CommentItem from "./CommentItem/CommentItem";

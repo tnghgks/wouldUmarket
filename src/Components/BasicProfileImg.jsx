@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import basicProfile from "../assets/basic-profile-img.png";
 
-const Img = styled.img`
+const Img = styled.div`
   width: 110px;
   height: 110px;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  border-radius: 50%;
+  background-position: center;
 `;
 
-function BasicProfileImg({ className }) {
-  return <Img className={className} src={basicProfile} alt="베이직 프로필 이미지" />;
+function BasicProfileImg({ className, src = basicProfile }) {
+  return <Img className={className} src={src} />;
 }
 export default BasicProfileImg;

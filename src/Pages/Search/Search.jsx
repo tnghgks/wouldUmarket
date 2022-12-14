@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SearchNav from "../../Components/SearchNav";
+import SearchNav from "../../Components/Navbar/SearchNav";
 import TabMenu from "../../Components/TabMenu";
 import UserSerch from "../../Components/UserSerch";
 
