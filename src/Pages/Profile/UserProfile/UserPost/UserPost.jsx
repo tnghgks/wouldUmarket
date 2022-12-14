@@ -158,7 +158,7 @@ function UserPost() {
       </ViewModeContainer>
       <PostContainer>
         {post.length && toggle ? (
-          post.map((postItem) => <HomePost />)
+          post.map((postItem, index) => <HomePost key={index} />)
         ) : (
           <AlbumContainer>
             {post.map((postItem) => (
