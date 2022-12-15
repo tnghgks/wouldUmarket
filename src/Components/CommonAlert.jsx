@@ -8,6 +8,7 @@ const DeletAlertContainer = styled.article`
   align-items: center;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: #ffffff;
 `;
 
 const DeleteAlertHead = styled.h1`

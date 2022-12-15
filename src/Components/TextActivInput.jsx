@@ -4,6 +4,7 @@ const TextActivInputContainer = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
 `;
 
 const TextActivInputLabel = styled.label`
