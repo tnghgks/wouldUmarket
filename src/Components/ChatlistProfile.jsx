@@ -27,6 +27,7 @@ const UserSerchContainer = styled.li`
   gap: 12px;
   font-size: 1.4rem;
   font-family: "godo", sans-serif;
+  margin-bottom: 20px;
 `;
 
 const UserFollowSmall = styled.small`
@@ -67,7 +68,7 @@ function ChatListProfile({ newchat, children, chat, listchatdate }) {
         </ChatProfileimg>
         <div>
           <p>{children}</p>
-          <UserFollowSmall>{chat}이번에 정정 언제하맨 마씸?</UserFollowSmall>
+          <UserFollowSmall>{chat}</UserFollowSmall>
         </div>
         <ChatDateSpan>{listchatdate}</ChatDateSpan>
       </UserSerchContainer>
