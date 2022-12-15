@@ -11,13 +11,14 @@ import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
 import Followers from "../Pages/Profile/Follower/Followers";
+import LoginEmail from "../Pages/Login/LoginEmail";
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginEmail />} />
         <Route path="/register" element={<Register />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
