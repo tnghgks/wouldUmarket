@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import SmallProfileImg from "./SmallBasicProfile";
+import SmallProfileImg from "../assets/Ellipse 6.png";
+import ImgButton from "../assets/img-button.png";
 
 const CommentContainer = styled.footer`
   width: 100%;
@@ -13,12 +14,16 @@ const CommentContainer = styled.footer`
   gap: 18px;
   position: fixed;
   bottom: 0%;
+  background-color: #ffffff;
 `;
 
 const CommentInput = styled.input`
   border: none;
   font-family: inherit;
   outline: none;
+  ::placeholder {
+    color: #c4c4c4;
+  }
 `;
 
 const CommentBtn = styled.button`
@@ -33,13 +38,28 @@ const CommentBtn = styled.button`
   cursor: pointer;
 `;
 
-function Comment() {
+const UploadImg = styled.div`
+  width: 36px;
+  height: 36px;
+  background-image: url(${({img}) => (img ? ImgButton : SmallProfileImg)});
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: ${({img}) => img ? "none" : "pointer"}
+
+`;
+
+/**
+ *
+ * @param {{img: null|"any" ; placeholder: "inputText" ; btn: "buttonText"}} param0
+ * @returns
+ */
+function Comment({ img, placeholder, btn }) {
   return (
     <>
       <CommentContainer>
-        <SmallProfileImg />
-        <CommentInput tpye="" placeholder="댓글 입력하기..." />
-        <CommentBtn>게시</CommentBtn>
+        <UploadImg img={img} />
+        <CommentInput tpye="" placeholder={placeholder} />
+        <CommentBtn>{btn}</CommentBtn>
       </CommentContainer>
     </>
   );
