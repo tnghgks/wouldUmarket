@@ -1,8 +1,10 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CommonButton from "../../Components/button/CommonButton";
 import CommonInput from "../../Components/CommonInput";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_TOKEN } from "../../store/Auth";
 
 const Container = styled.div`
   display: flex;
@@ -58,6 +60,29 @@ const Container = styled.div`
 `;
 
 function LoginEmail() {
+  const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.auth);
+  console.log(accessToken);
+
+  const test = {
+    user: {
+      email: "tnghgks@naver.com",
+      password: "tnghgks123",
+    },
+  };
+
+  useEffect(() => {
+    (async function () {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(test),
+      });
+      const { user } = await response.json();
+      dispatch(SET_TOKEN(user.token));
+    })();
+  }, []);
+
   return (
     <Container>
       <h1 className="title">로그인</h1>
