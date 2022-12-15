@@ -12,11 +12,14 @@ const UserSerchContainer = styled.li`
   align-items: center;
   gap: 12px;
   font-size: 1.4rem;
+  font-family: "Godo", sans-serif;
+  background-color: #ffffff;
 `;
 
 const UserFollowSmall = styled.small`
-  display: inline-block;
   font-size: 1.2rem;
+  font-family: "LINESeedKR", sans-serif;
+  display: inline-block;
   margin-top: 6px;
 `;
 

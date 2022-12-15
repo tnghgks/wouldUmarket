@@ -13,11 +13,14 @@ const UserFollowContainer = styled.li`
   align-items: center;
   gap: 12px;
   font-size: 1.4rem;
+  font-family: "Godo";
+  background-color: #ffffff;
 `;
 
 const UserFollowSmall = styled.small`
   display: inline-block;
   font-size: 1.2rem;
+  font-family: "LINESeedKR";
   margin-top: 6px;
 `;
 
