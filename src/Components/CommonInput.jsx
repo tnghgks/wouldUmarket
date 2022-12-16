@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const TextActivInputContainer = styled.form`
+const TextActivInputContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
