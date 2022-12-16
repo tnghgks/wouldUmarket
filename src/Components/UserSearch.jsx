@@ -1,9 +1,12 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import profileImg from "../assets/Ellipse-1.png";
 
 const Img = styled.img`
   width: 50px;
   height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const UserSerchContainer = styled.li`
@@ -23,15 +26,17 @@ const UserFollowSmall = styled.small`
   margin-top: 6px;
 `;
 
-function UserSerch() {
+function UserSerch({ userData }) {
   return (
-    <UserSerchContainer>
-      <Img src={profileImg} />
-      <div>
-        <p>애월읍 위니브 감귤 농장</p>
-        <UserFollowSmall>@ weniv_Mandarin</UserFollowSmall>
-      </div>
-    </UserSerchContainer>
+    <Link to={`/profile/${userData._id}`}>
+      <UserSerchContainer>
+        <Img src={userData.image ? userData.image : profileImg} />
+        <div>
+          <p>{userData.username}</p>
+          <UserFollowSmall>@ {userData.accountname}</UserFollowSmall>
+        </div>
+      </UserSerchContainer>
+    </Link>
   );
 }
 

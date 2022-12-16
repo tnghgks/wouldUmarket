@@ -44,13 +44,19 @@ const BackBtnIcon = styled(IconArrowLeft)`
   height: 22px;
 `;
 
-export default function SearchNav() {
+function SearchNav({ setValue }) {
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+
   return (
     <Container>
       <Back>
         <BackBtnIcon />
       </Back>
-      <Input placeholder="계정 검색" />
+      <Input placeholder="계정 검색" onChange={handleChange} />
     </Container>
   );
 }
+
+export default SearchNav;
