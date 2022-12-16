@@ -4,10 +4,6 @@ import IconHome from "./icon/IconHome";
 import IconMessageCircle from "./icon/IconMessageCircle";
 import IconEdit from "./icon/IconEdit";
 import IconUser from "./icon/IconUser";
-import Home from "../Pages/Home/Home";
-import ChatList from "../Pages/Chat/ChatList/ChatList";
-import PostUpload from "../Pages/Post/PostUpload/PostUpload";
-import Profile from "../Pages/Profile/UserProfile/Profile";
 
 const MenuContainer = styled.footer`
   width: 100%;
@@ -41,25 +37,25 @@ function TabMenu() {
     <MenuContainer>
       <nav>
         <ListContainer>
-          <Link to={"/"} element={<Home />}>
+          <Link to={"/feed"}>
             <ItemContainer>
               <IconHome pathname={pathname} />
               <p>홈</p>
             </ItemContainer>
           </Link>
-          <Link to={"/chat/chatList"} element={<ChatList />}>
+          <Link to={"/chat/chatList"}>
             <ItemContainer>
               <IconMessageCircle pathname={pathname} />
               <p>채팅</p>
             </ItemContainer>
           </Link>
-          <Link to={"/post/postUpload"} element={<PostUpload />}>
+          <Link to={"/post/postUpload"}>
             <ItemContainer>
               <IconEdit />
               <p>게시물 작성</p>
             </ItemContainer>
           </Link>
-          <Link to={"/profile/myProfile"} element={<Profile />}>
+          <Link to={"/profile/myProfile"}>
             <ItemContainer>
               <IconUser pathname={pathname} />
               <p>프로필</p>
