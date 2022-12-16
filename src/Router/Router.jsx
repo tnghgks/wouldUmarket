@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ChatList from "../Pages/Chat/ChatList/ChatList";
 import ChatRoom from "../Pages/Chat/ChatRoom/ChatRoom";
-import Home from "../Pages/Home/Home";
-import Login from "../Pages/Login/Login";
 import PostDetail from "../Pages/Post/PostDetail/PostDetail";
 import PostUpload from "../Pages/Post/PostUpload/PostUpload";
 import Profile from "../Pages/Profile/UserProfile/Profile";
@@ -12,14 +10,18 @@ import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
 import Followers from "../Pages/Profile/Follower/Followers";
 import LoginEmail from "../Pages/Login/LoginEmail";
+import SplashScreen from "../Pages/SplashScreen/SplashScreen";
+import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<SplashScreen />} />
         <Route path="/login" element={<LoginEmail />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/feed" element={<EmptyFeed />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
         <Route path="/profile/followers" element={<Followers />} />
