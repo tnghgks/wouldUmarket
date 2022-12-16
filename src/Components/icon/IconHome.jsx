@@ -12,7 +12,7 @@ const Icon = styled.div`
 
 function IconHome({ className, pathname }) {
   let isOn = false;
-  if (pathname === "/") {
+  if (pathname === "/feed") {
     isOn = true;
   }
   return <Icon className={className} isOn={isOn} />;
