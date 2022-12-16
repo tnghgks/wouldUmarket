@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SymbolLogoGray from "../../../Components/SymbolLogoGray";
 import CommonButton from "../../../Components/button/CommonButton";
-import MainNav from "../../../Components/MainNav";
+import MainNav from "../../../Components/Navbar/MainNav";
 import TabMenu from "../../../Components/TabMenu";
 
 const FeedContainer = styled.div`
