@@ -17,7 +17,6 @@ const UserChatItem = styled.li`
 `;
 
 const ChatContainer = styled.div`
-  max-width: 240px;
   padding: 14px 12px 12px 12px;
   word-break: break-all;
   border: 1px solid #c4c4c4;
@@ -28,6 +27,7 @@ const ChatContainer = styled.div`
   letter-spacing: 0.1px;
   display: inline;
   align-self: end;
+  color: ${(props) => (props.user === "my" ? "white" : "black")};
 `;
 
 const ChatTimerightText = styled.span`
@@ -48,8 +48,6 @@ const ChatTimeleftText = styled.span`
 `;
 
 const ChattingText = styled.p`
-  display: inline;
-  vertical-align: bottom;
   font-weight: 400;
   font-size: 1.4rem;
 `;
