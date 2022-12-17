@@ -65,7 +65,7 @@ const ChatImg = styled.img`
  * @param {{chattext: "ChattingText" ; chattime: "ChatTime" ; user: "my"|"friend" ; imges: "ImgSrc"}} param0
  * @returns
  */
-function FriendChat({ chattext, chattime, user, imges }) {
+function ChatRoomChat({ chattext, chattime, user, imges }) {
   return (
     <UserChatItem user={user}>
       <Img src={profileImg} user={user} />
@@ -84,4 +84,4 @@ function FriendChat({ chattext, chattime, user, imges }) {
   );
 }
 
-export default FriendChat;
+export default ChatRoomChat;
