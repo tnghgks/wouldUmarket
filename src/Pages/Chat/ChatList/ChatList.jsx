@@ -4,10 +4,13 @@ import TabMenu from "../../../Components/TabMenu";
 import ChatlistProfile from "../../../Components/ChatlistProfile";
 
 const ChatListContainer = styled.main`
-  width: 390px;
+  min-width: 390px;
   height: 712px;
-  padding: 72px 16px 0 16px;
   margin: 0 auto;
+  padding: 24px 16px 0 16px;
+  margin-top: 48px;
+  position: relative;
+  z-index: -1;
 `;
 
 function ChatList() {
