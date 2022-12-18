@@ -29,11 +29,11 @@ const ActivTextInput = styled.input`
   }
 `;
 
-function CommonInput({ name, type, placeholder }) {
+function CommonInput({ label, name, type, placeholder }) {
   return (
     <TextActivInputContainer>
-      <TextActivInputLabel htmlFor="">{name}</TextActivInputLabel>
-      <ActivTextInput type={type} placeholder={placeholder} />
+      <TextActivInputLabel htmlFor={name}>{label}</TextActivInputLabel>
+      <ActivTextInput type={type} placeholder={placeholder} name={name} />
     </TextActivInputContainer>
   );
 }
