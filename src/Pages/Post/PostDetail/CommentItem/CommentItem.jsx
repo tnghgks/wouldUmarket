@@ -61,18 +61,46 @@ const Comment = styled.div`
   line-height: 1.8rem;
 `;
 
-function CommentItem() {
+function elapsedTime(date) {
+  const start = new Date(date);
+  const end = new Date();
+
+  const diff = (end - start) / 1000;
+
+  const formatter = new Intl.RelativeTimeFormat("ko", {
+    numeric: "auto",
+  });
+
+  const times = [
+    { name: "year", milliSeconds: 60 * 60 * 24 * 365 },
+    { name: "month", milliSeconds: 60 * 60 * 24 * 30 },
+    { name: "day", milliSeconds: 60 * 60 * 24 },
+    { name: "hour", milliSeconds: 60 * 60 },
+    { name: "minute", milliSeconds: 60 },
+  ];
+
+  for (const value of times) {
+    const betweenTime = Math.floor(diff / value.milliSeconds);
+
+    if (betweenTime > 0) {
+      return formatter.format(betweenTime * -1, value.name);
+    }
+  }
+  return "방금 전";
+}
+
+function CommentItem({ comment, onClick }) {
   return (
     <Container>
       <InfoContainer>
-        <ProfileImg />
+        <ProfileImg src={comment.author.image} />
         <CommentInfo>
-          <UserName>서귀포시 무슨 농장</UserName>
-          <CommentTime>5분전</CommentTime>
+          <UserName>{comment.author.username}</UserName>
+          <CommentTime>{elapsedTime(comment.createdAt)}</CommentTime>
         </CommentInfo>
-        <IconMoreVerticalSmall />
+        <IconMoreVerticalSmall onClick={() => onClick(comment.id)} />
       </InfoContainer>
-      <Comment>당근당근</Comment>
+      <Comment>{comment.content}</Comment>
     </Container>
   );
 }

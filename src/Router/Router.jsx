@@ -30,7 +30,7 @@ function Router() {
 
         <Route path="/search" element={<Search />} />
 
-        <Route path="/post/postDetail" element={<PostDetail />} />
+        <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/post/postUpload" element={<PostUpload />} />
 
         <Route path="/chat/chatList" element={<ChatList />} />
