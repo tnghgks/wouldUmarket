@@ -1,7 +1,21 @@
 import React from "react";
-import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
 import FullLogo from "../../Components/FullLogo";
 import TextLogo from "../../Components/TextLogo";
+import SplashLoader from "./SplashLoader/SplashLoader";
+
+const splash = keyframes`
+0% {
+  transform: translate(0%,0%);
+}
+50% {
+  transform: translate(0%,0%);
+}
+100% {
+  transform: translate(0%,-100%);
+  display: none;
+}`;
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +29,7 @@ const Container = styled.div`
   padding-top: 35vh;
   background-color: var(--mainColor);
   overflow: hidden;
+  animation: ${splash} 3s ease-in;
 `;
 
 const Logo = styled(FullLogo)`
@@ -23,10 +38,16 @@ const Logo = styled(FullLogo)`
 `;
 
 function SplashScreen() {
+  const navigate = useNavigate();
+  setTimeout(() => {
+    navigate("/login");
+  }, 3000);
+
   return (
     <Container>
       <Logo />
       <TextLogo />
+      <SplashLoader />
     </Container>
   );
 }
