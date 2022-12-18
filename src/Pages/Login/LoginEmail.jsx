@@ -10,68 +10,65 @@ import { SET_USERINFO } from "../../store/UserInfo";
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: auto;
   width: auto;
   padding: 30px 34px;
-  & > h1.title {
-    margin-bottom: 40px;
-    font-family: "Godo";
-    font-size: 24px;
-    font-weight: 500;
-  }
+`;
 
-  & > .inputContainer {
-    position: relative;
-    width: 100%;
-    margin-bottom: 30px;
-    & > form {
-      margin-bottom: 16px;
-      & > input {
-        cursor: pointer;
-      }
-      & > input:focus {
-        border-bottom-color: #f26e22;
-        transition: border-bottom-color 200ms;
-      }
-    }
-    & > .warning {
-      position: absolute;
-      top: 120px;
-      color: #eb5757;
-    }
-  }
+const Title = styled.h1`
+  margin-bottom: 40px;
+  font-family: "Godo";
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+`;
 
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 322px;
+  margin-bottom: 20px;
+`;
+const ButtonContainer = styled.section`
+  margin-bottom: 20px;
   & > button {
-    margin-bottom: 20px;
-    cursor: pointer;
     &:hover {
       background-color: var(--mainColor);
       transition: background-color 200ms;
-    }
-  }
-
-  & > a {
-    text-decoration: none;
-    &:visited {
-      color: #767676;
     }
   }
 `;
 
-const Fieldset = styled.fieldset`
+const InputContainer = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  & > button {
-    margin-bottom: 20px;
-    cursor: pointer;
-    &:hover {
-      background-color: var(--mainColor);
-      transition: background-color 200ms;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 50px;
+  & > div > input {
+    &:focus {
+      border-bottom-color: #f26e22;
+      transition: border-bottom-color 200ms;
     }
+  }
+`;
+
+const Warning = styled.p`
+  position: absolute;
+  top: 120px;
+  left: 0;
+  color: #eb5757;
+`;
+
+const SignInLink = styled(Link)`
+  text-decoration: none;
+  cursor: pointer;
+  & > .linkText {
+    color: #767676;
   }
 `;
 
@@ -80,11 +77,14 @@ function LoginEmail() {
   const { auth, userInfo } = useSelector((state) => state);
 
   async function getLoginData(inputData) {
-    const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inputData),
-    });
+    const response = await fetch(
+      `https://mandarin.api.weniv.co.kr/user/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputData),
+      }
+    );
     const { user } = await response.json();
 
     getUserData(user.accountname, user.token);
@@ -93,13 +93,16 @@ function LoginEmail() {
 
   async function getUserData(accountname, token) {
     try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `https://mandarin.api.weniv.co.kr/profile/${accountname}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json",
+          },
+        }
+      );
       const { profile } = await res.json();
       dispatch(SET_USERINFO(profile));
     } catch (error) {
@@ -122,17 +125,20 @@ function LoginEmail() {
 
   return (
     <Container>
-      <h1 className="title">로그인</h1>
-      <form className="inputContainer" onSubmit={handleSubmit}>
-        <Fieldset>
-          <legend className="ir-hidden">로그인</legend>
-          <CommonInput label="이메일" name="email" type="email" />
-          <CommonInput label="비밀번호" name="password" type="password" />
-          <p className="warning ">*이메일 또는 비밀번호가 일치하지 않습니다.</p>
+      <Title>로그인</Title>
+      <LoginForm onSubmit={handleSubmit}>
+        <InputContainer>
+          <CommonInput label="이메일" type="email" />
+          <CommonInput label="비밀번호" type="password" />
+        </InputContainer>
+        <Warning>*이메일 또는 비밀번호가 일치하지 않습니다.</Warning>
+        <ButtonContainer>
           <CommonButton size="lg" bgColor="light" children="다음" />
-        </Fieldset>
-      </form>
-      <Link>이메일로 회원가입</Link>
+        </ButtonContainer>
+      </LoginForm>
+      <SignInLink>
+        <p className="linkText">이메일로 회원가입</p>
+      </SignInLink>
     </Container>
   );
 }

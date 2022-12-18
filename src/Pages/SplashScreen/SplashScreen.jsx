@@ -15,16 +15,17 @@ const Container = styled.div`
   padding-top: 35vh;
   background-color: var(--mainColor);
   overflow: hidden;
-  & > img.fullLogo {
-    display: block;
-    margin-bottom: 41px;
-  }
+`;
+
+const Logo = styled(FullLogo)`
+  display: block;
+  margin-bottom: 41px;
 `;
 
 function SplashScreen() {
   return (
     <Container>
-      <FullLogo className={"fullLogo"} />
+      <Logo />
       <TextLogo />
     </Container>
   );
