@@ -5,6 +5,7 @@ import CommonButton from "../../Components/button/CommonButton";
 import CommonInput from "../../Components/CommonInput";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TOKEN } from "../../store/Auth";
+import { SET_USERINFO } from "../../store/UserInfo";
 
 const Container = styled.main`
   display: flex;
@@ -76,33 +77,44 @@ const Fieldset = styled.fieldset`
 
 function LoginEmail() {
   const dispatch = useDispatch();
-  const { accessToken } = useSelector((state) => state.auth);
-  console.log(accessToken);
+  const { auth, userInfo } = useSelector((state) => state);
 
   async function getLoginData(inputData) {
-    const response = await fetch(
-      `https://mandarin.api.weniv.co.kr/user/login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputData),
-      }
-    );
+    const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inputData),
+    });
     const { user } = await response.json();
+
+    getUserData(user.accountname, user.token);
     dispatch(SET_TOKEN(user.token));
+  }
+
+  async function getUserData(accountname, token) {
+    try {
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+      const { profile } = await res.json();
+      dispatch(SET_USERINFO(profile));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const data = Array.from(e.target.querySelectorAll("input")).map(
-      (item) => item.value
-    );
-    console.log(data);
+    const { email, passowrd } = e.target;
 
     const inputData = {
       user: {
-        email: data[0],
-        password: data[1],
+        email: email.value,
+        password: passowrd.value,
       },
     };
     getLoginData(inputData);
@@ -114,8 +126,8 @@ function LoginEmail() {
       <form className="inputContainer" onSubmit={handleSubmit}>
         <Fieldset>
           <legend className="ir-hidden">로그인</legend>
-          <CommonInput name="이메일" type="email" />
-          <CommonInput name="비밀번호" type="password" />
+          <CommonInput label="이메일" name="email" type="email" />
+          <CommonInput label="비밀번호" name="password" type="password" />
           <p className="warning ">*이메일 또는 비밀번호가 일치하지 않습니다.</p>
           <CommonButton size="lg" bgColor="light" children="다음" />
         </Fieldset>
