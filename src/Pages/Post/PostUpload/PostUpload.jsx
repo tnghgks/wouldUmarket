@@ -2,19 +2,12 @@ import styled from "styled-components";
 import UploadNav from "../../../Components/Navbar/UploadNav";
 import imgBtn from "../../../assets/upload-file.png";
 import profileImg from "../../../assets/basic-profile-img.png";
+import FileUploadBtn from "../../../Components/button/FileUploadBtn";
 
 const Container = styled.div`
   padding-top: 48px;
 `;
 
-const ImgBtn = styled.button`
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  border: none;
-  background-color: initial;
-  cursor: pointer;
-`;
 const UploadContainer = styled.section`
   display: flex;
   height: auto;
@@ -51,9 +44,7 @@ export default function PostUpload() {
         <ProfileImg src={profileImg} />
         <Textarea placeholder="게시글 입력하기..."></Textarea>
       </UploadContainer>
-      <ImgBtn>
-        <img className="addBtnImg" src={imgBtn} alt="사진추가버튼이미지" />
-      </ImgBtn>
+      <FileUploadBtn />
     </Container>
   );
 }
