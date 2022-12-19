@@ -84,16 +84,16 @@ const ButtonContainer = styled.button`
 `;
 /**
  *
- * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white"; children: buttonText ; event: "eventprops"}} param0
+ * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white"; children: buttonText ; onClick: "eventprops"}} param0
  * @returns
  */
-function CommonButton({ size, fontColor, bgColor, children, evnet }) {
+function CommonButton({ size, fontColor, bgColor, children, event }) {
   return (
     <ButtonContainer
       size={size}
       fontColor={fontColor}
       bgColor={bgColor}
-      evnet={evnet}
+      onClick={event}
     >
       {children}
     </ButtonContainer>
