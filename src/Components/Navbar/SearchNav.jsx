@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { deflate } from "zlib";
 import IconArrowLeft from "../icon/IconArrowLeft";
 
 const Container = styled.div`
@@ -47,14 +46,10 @@ const BackBtnIcon = styled(IconArrowLeft)`
 `;
 
 function SearchNav({ setValue }) {
-<<<<<<< Updated upstream
   function handleChange(e) {
     setValue(e.target.value);
   }
-
-=======
   const navigate = useNavigate();
->>>>>>> Stashed changes
   return (
     <Container>
       <Back
@@ -68,8 +63,4 @@ function SearchNav({ setValue }) {
     </Container>
   );
 }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 export default SearchNav;
