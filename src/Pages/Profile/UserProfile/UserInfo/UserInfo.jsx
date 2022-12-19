@@ -1,21 +1,19 @@
 import styled from "styled-components";
 import BasicProfileImg from "../../../../Components/BasicProfileImg";
-import CommonButton from "../../../../Components/button/CommonButton";
-import IconMessageCircle from "../../../../Components/icon/IconMessageCircle";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import IconShare from "../../../../Components/icon/IconShare";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCookie } from "../../../../cookie";
 import { FOLLOW, UN_FOLLOW } from "../../../../store/Profile";
+import FollowBtns from "../FollowBtns/FollowBtns";
+import EditBtns from "../EditBtns/EditBtns";
 
 function UserInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { accountname } = useParams();
-  const { profile } = useSelector((state) => state);
+  const { userInfo, profile } = useSelector((state) => state);
   const token = getCookie("accessToken");
-
+  const ownUser = userInfo.userId === profile.userId;
   async function handleFollowBtn() {
     try {
       const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/follow`, {
@@ -42,6 +40,7 @@ function UserInfo() {
         },
       });
       const { profile, message } = await res.json();
+
       if (!profile) return alert(message);
     } catch (error) {
       console.log(error);
@@ -69,24 +68,7 @@ function UserInfo() {
         <UserNicname>{profile.username}</UserNicname>
         <UserId>@ {profile.accountname}</UserId>
         <UserDiscription>{profile.intro}</UserDiscription>
-        <BtnContainer>
-          <LinkBtn to="/chat/id">
-            <IconMessageCircle />
-          </LinkBtn>
-          {profile.isfollow ? (
-            <CommonButton size="md" fontColor="#767676" bgColor="white" event={handleUnFollowBtn}>
-              언팔로우
-            </CommonButton>
-          ) : (
-            <CommonButton size="md" event={handleFollowBtn}>
-              팔로우
-            </CommonButton>
-          )}
-
-          <LinkBtn>
-            <IconShare />
-          </LinkBtn>
-        </BtnContainer>
+        {ownUser ? <EditBtns /> : <FollowBtns isFollow={profile.isfollow} handleFollow={handleFollowBtn} handleUnFollow={handleUnFollowBtn} />}
       </Container>
     )
   );
@@ -152,27 +134,4 @@ const UserDiscription = styled.p`
   line-height: 1.84rem;
   color: #767676;
   margin-top: 16px;
-`;
-const BtnContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 24px;
-  margin-bottom: 26px;
-`;
-const LinkBtn = styled(Link)`
-  width: 34px;
-  height: 34px;
-  border: 1px solid #dbdbdb;
-  border-radius: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  cursor: pointer;
-  img {
-    width: 20px;
-    height: 20px;
-  }
 `;
