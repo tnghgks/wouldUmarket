@@ -28,7 +28,7 @@ const UserFollowSmall = styled.small`
 
 function UserSerch({ userData }) {
   return (
-    <Link to={`/profile/${userData._id}`}>
+    <Link to={`/profile/${userData.accountname}`}>
       <UserSerchContainer>
         <Img src={userData.image ? userData.image : profileImg} />
         <div>

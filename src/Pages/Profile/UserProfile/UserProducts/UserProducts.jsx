@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Product from "../../../../Components/Product";
+import { getCookie } from "../../../../cookie";
 
 const Container = styled.article`
   width: 100%;
@@ -33,8 +35,7 @@ const ProductsList = styled.ul`
 function UserProducts() {
   const [product, setProduct] = useState([]);
   const { accountname } = useParams();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTZlODNmMTdhZTY2NjU4MWMzNTJkZCIsImV4cCI6MTY3NjU0NTI4NSwiaWF0IjoxNjcxMzYxMjg1fQ.SQif90hSbfq7Rvl6Ge5dXG6Y_h9CF7M1lTwda8V4aT8";
+  const token = getCookie("accessToken");
 
   async function getUserData() {
     try {
@@ -58,11 +59,11 @@ function UserProducts() {
   }, []);
 
   return (
-    product && (
+    !!product.length && (
       <Container>
         <ProductContainer>
           <Title>판매 중인 상품</Title>
-          <ProductsList>{product && product.map((productData, index) => <Product key={index} productData={productData} />)}</ProductsList>
+          <ProductsList>{!!product.length && product.map((productData, index) => <Product key={index} productData={productData} />)}</ProductsList>
         </ProductContainer>
       </Container>
     )

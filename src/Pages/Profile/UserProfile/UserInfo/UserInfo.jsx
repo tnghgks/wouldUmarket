@@ -5,30 +5,16 @@ import IconMessageCircle from "../../../../Components/icon/IconMessageCircle";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import IconShare from "../../../../Components/icon/IconShare";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCookie } from "../../../../cookie";
+import { FOLLOW, UN_FOLLOW } from "../../../../store/Profile";
 
-function UserInfo({ user }) {
+function UserInfo() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { accountname } = useParams();
-  const [data, setData] = useState({});
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTZlODNmMTdhZTY2NjU4MWMzNTJkZCIsImV4cCI6MTY3NjU0NTI4NSwiaWF0IjoxNjcxMzYxMjg1fQ.SQif90hSbfq7Rvl6Ge5dXG6Y_h9CF7M1lTwda8V4aT8";
-
-  async function getUserData() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile } = await res.json();
-      if (!profile) return navigate("/feed");
-      setData(profile);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const { profile } = useSelector((state) => state);
+  const token = getCookie("accessToken");
 
   async function handleFollowBtn() {
     try {
@@ -41,7 +27,7 @@ function UserInfo({ user }) {
       });
       const { profile, message } = await res.json();
       if (!profile) return alert(message);
-      getUserData();
+      dispatch(FOLLOW());
     } catch (error) {
       console.log(error);
     }
@@ -57,42 +43,37 @@ function UserInfo({ user }) {
       });
       const { profile, message } = await res.json();
       if (!profile) return alert(message);
-      getUserData();
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    getUserData();
-  }, []);
-
   return (
-    data && (
+    !!profile && (
       <Container>
         <RowContainer>
           <Link>
             <FollowerInfo>
-              <span>{data.followerCount}</span>
+              <span>{profile.followerCount}</span>
               <span>followers</span>
             </FollowerInfo>
           </Link>
-          <BasicProfileImg src={data.image} />
+          <BasicProfileImg src={profile.image} />
           <Link>
             <FollowingInfo>
-              <span>{data.followingCount}</span>
+              <span>{profile.followingCount}</span>
               <span>followings</span>
             </FollowingInfo>
           </Link>
         </RowContainer>
-        <UserNicname>{data.username}</UserNicname>
-        <UserId>@ {data.accountname}</UserId>
-        <UserDiscription>{data.intro}</UserDiscription>
+        <UserNicname>{profile.username}</UserNicname>
+        <UserId>@ {profile.accountname}</UserId>
+        <UserDiscription>{profile.intro}</UserDiscription>
         <BtnContainer>
           <LinkBtn to="/chat/id">
             <IconMessageCircle />
           </LinkBtn>
-          {data.isfollow ? (
+          {profile.isfollow ? (
             <CommonButton size="md" fontColor="#767676" bgColor="white" event={handleUnFollowBtn}>
               언팔로우
             </CommonButton>

@@ -49,7 +49,7 @@ function Search() {
   return (
     <>
       <SearchNav setValue={setValue} />
-      <Container>{SearchData && SearchData.map((userData) => <UserSearch userData={userData} />)}</Container>
+      <Container>{SearchData && SearchData.map((userData, index) => <UserSearch key={index} userData={userData} />)}</Container>
       <TabMenu />
     </>
   );
