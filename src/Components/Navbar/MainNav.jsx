@@ -14,6 +14,7 @@ const Container = styled.div`
   padding: 0 16px;
   border-bottom: 0.5px solid #dbdbdb;
   background-color: #ffffff;
+  z-index: 10;
 `;
 
 const Title = styled.h2`
