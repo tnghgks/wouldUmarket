@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CommonButton from "../button/CommonButton";
 import IconArrowLeft from "../icon/IconArrowLeft";
@@ -33,12 +33,19 @@ const BackBtnIcon = styled(IconArrowLeft)`
  * @returns
  */
 function UploadNav({ children }) {
+  const navigate = useNavigate();
   return (
     <Container>
-      <Back>
+      <Back
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         <BackBtnIcon />
       </Back>
-      <CommonButton size="ms" bgColor="accent" children={children} />
+      <Link to="/profile/myProfile">
+        <CommonButton size="ms" bgColor="accent" children={children} />
+      </Link>
     </Container>
   );
 }

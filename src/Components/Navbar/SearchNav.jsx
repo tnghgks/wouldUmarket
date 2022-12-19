@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { deflate } from "zlib";
 import IconArrowLeft from "../icon/IconArrowLeft";
 
 const Container = styled.div`
@@ -46,18 +47,29 @@ const BackBtnIcon = styled(IconArrowLeft)`
 `;
 
 function SearchNav({ setValue }) {
+<<<<<<< Updated upstream
   function handleChange(e) {
     setValue(e.target.value);
   }
 
+=======
+  const navigate = useNavigate();
+>>>>>>> Stashed changes
   return (
     <Container>
-      <Back>
+      <Back
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         <BackBtnIcon />
       </Back>
       <Input placeholder="계정 검색" onChange={handleChange} />
     </Container>
   );
 }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 export default SearchNav;
