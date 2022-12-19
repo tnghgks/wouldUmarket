@@ -12,6 +12,8 @@ import Followers from "../Pages/Profile/Follower/Followers";
 import LoginEmail from "../Pages/Login/LoginEmail";
 import SplashScreen from "../Pages/SplashScreen/SplashScreen";
 import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
+import EditUserProfile from "../Pages/Profile/EditProfile/EditUserProfile/EditUserProfile";
+import EditProduct from "../Pages/Profile/EditProfile/EditProduct/Editproduct";
 
 function Router() {
   return (
@@ -24,12 +26,16 @@ function Router() {
         <Route path="/feed" element={<EmptyFeed />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
-        <Route path="/profile/followers" element={<Followers />} />
         <Route path="/profile/myProfile" element={<Profile />} />
+
+        <Route path="/profile/editProduct" element={<EditProduct />} />
+        <Route path="/profile/editProfile" element={<EditUserProfile />} />
+
         <Route path="/profile/:accountname" element={<Profile />} />
 
-        <Route path="/search" element={<Search />} />
+        <Route path="/profile/followers" element={<Followers />} />
 
+        <Route path="/search" element={<Search />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/post/postUpload" element={<PostUpload />} />
 
