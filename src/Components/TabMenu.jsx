@@ -4,6 +4,7 @@ import IconHome from "./icon/IconHome";
 import IconMessageCircle from "./icon/IconMessageCircle";
 import IconEdit from "./icon/IconEdit";
 import IconUser from "./icon/IconUser";
+import { useSelector } from "react-redux";
 
 const MenuContainer = styled.footer`
   width: 100%;
@@ -32,7 +33,7 @@ const ItemContainer = styled.li`
 
 function TabMenu() {
   const { pathname } = useLocation();
-
+  const userInfo = useSelector((state) => state.userInfo);
   return (
     <MenuContainer>
       <nav>
@@ -55,7 +56,7 @@ function TabMenu() {
               <p>게시물 작성</p>
             </ItemContainer>
           </Link>
-          <Link to={"/profile/myProfile"}>
+          <Link to={`/profile/${userInfo.accountname}`}>
             <ItemContainer>
               <IconUser pathname={pathname} />
               <p>프로필</p>
