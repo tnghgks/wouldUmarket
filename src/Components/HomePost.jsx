@@ -93,9 +93,11 @@ function HomePost({ postItem }) {
       </TitleContainer>
       <ContContainer>
         <Cont>{postItem.content}</Cont>
-        <Link to={`/post/${postItem.id}`}>
-          <PostImg src={postItem.image} />
-        </Link>
+        {postItem.image ? (
+          <Link to={`/post/${postItem.id}`}>
+            <PostImg src={postItem.image} />
+          </Link>
+        ) : null}
         <ReactContainer>
           <IconContainer>
             <IconImg src={heartIconImg} alt="하트 아이콘" />
