@@ -26,7 +26,7 @@ function Router() {
         <Route path="/profile/setProfile" element={<SetProfile />} />
         <Route path="/profile/followers" element={<Followers />} />
         <Route path="/profile/myProfile" element={<Profile />} />
-        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/profile/:accountname" element={<Profile />} />
 
         <Route path="/search" element={<Search />} />
 
