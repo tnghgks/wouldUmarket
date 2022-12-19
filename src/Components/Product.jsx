@@ -7,6 +7,8 @@ const Container = styled.section`
 
 const ProductImg = styled.img`
   width: 140px;
+  height: 90px;
+  object-fit: cover;
   border-radius: 10%;
 `;
 
@@ -21,13 +23,13 @@ const ProductPrice = styled.figcaption`
   color: var(--accentColor);
 `;
 
-function Product() {
+function Product({ productData }) {
   return (
     <Container>
       <figure>
-        <ProductImg src={productImg} alt="" />
-        <ProductName>애월읍 노지 감귤</ProductName>
-        <ProductPrice>35,000원</ProductPrice>
+        <ProductImg src={productData.itemImage || productImg} alt="" />
+        <ProductName>{productData.itemName}</ProductName>
+        <ProductPrice>{productData.price.toLocaleString()}원</ProductPrice>
       </figure>
     </Container>
   );
