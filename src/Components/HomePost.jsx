@@ -76,6 +76,11 @@ const Date = styled.p`
   color: #767676;
 `;
 function HomePost({ postItem }) {
+  const createdAt = postItem.createdAt
+    .slice(0, 11)
+    .replace("-", "년 ")
+    .replace("-", "월 ")
+    .replace("T", "일");
   return (
     <PostContainer>
       <TitleContainer>
@@ -101,7 +106,7 @@ function HomePost({ postItem }) {
             12
           </IconContainer>
         </ReactContainer>
-        <Date>2020년 10월 21일</Date>
+        <Date>{createdAt}</Date>
       </ContContainer>
     </PostContainer>
   );
