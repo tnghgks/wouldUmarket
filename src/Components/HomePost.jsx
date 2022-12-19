@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
-import postImg from "../assets/post-img-example.png";
-import heartIconImg from "../assets/icon/icon-heart.png";
-import circleIconImg from "../assets/icon/icon-message-circle.png";
+import IconHeart from "./icon/IconHeart";
+import IconComment from "./icon/IconMessageCircleSmall";
+import IconEmptyHeart from "../assets/icon/icon-heart-active.png";
 
 const PostContainer = styled.section`
   display: flex;
@@ -23,7 +25,7 @@ const ProfileImg = styled(BasicProfileImg)`
   height: 42px;
 `;
 
-const MoreIconImg = styled(IconMoreVerticalSmall)`
+const MoreIcon = styled(IconMoreVerticalSmall)`
   margin-left: auto;
   margin-bottom: auto;
   margin-top: 3px;
@@ -51,6 +53,9 @@ const Cont = styled.p`
 
 const PostImg = styled.img`
   width: 304px;
+  height: 208px;
+  object-fit: cover;
+  border-radius: 10px;
 `;
 
 const ReactContainer = styled.div`
@@ -66,7 +71,13 @@ const IconContainer = styled.span`
   color: #767676;
 `;
 
-const IconImg = styled.img`
+const HeartIcon = styled(IconHeart)`
+  width: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const CommentIcon = styled(IconComment)`
   width: 20px;
   margin-right: 10px;
   cursor: pointer;
@@ -75,36 +86,43 @@ const IconImg = styled.img`
 const Date = styled.p`
   color: #767676;
 `;
-function HomePost() {
+function HomePost({ postItem }) {
+  const [isLike, setIsLike] = useState(postItem.hearted);
+  const createdAt = postItem.createdAt
+    .slice(0, 11)
+    .replace("-", "년 ")
+    .replace("-", "월 ")
+    .replace("T", "일");
   return (
     <PostContainer>
       <TitleContainer>
         <ProfileImg />
-        <div>
-          <UserName>애월읍 위니브 감귤농장</UserName>
-          <UserID>@ weniv_Mandarin</UserID>
-        </div>
-        <MoreIconImg />
+        <Link to={`/profile/${postItem.author.accountname}`}>
+          <UserName>{postItem.author.username}</UserName>
+          <UserID>@ {postItem.author.accountname}</UserID>
+        </Link>
+        <MoreIcon />
       </TitleContainer>
       <ContContainer>
-        <Cont>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et, tempore?
-          Consequuntur, voluptates explicabo blanditiis nam, illo iure ea illum
-          repudiandae ut in provident quasi hic quidem, obcaecati enim officia
-          tenetur!
-        </Cont>
-        <PostImg src={postImg} alt="숲 속 마을 이미지" />
+        <Cont>{postItem.content}</Cont>
+        {postItem.image ? (
+          <Link to={`/post/${postItem.id}`}>
+            <PostImg src={postItem.image} />
+          </Link>
+        ) : null}
         <ReactContainer>
           <IconContainer>
-            <IconImg src={heartIconImg} alt="하트 아이콘" />
+            <HeartIcon />
             58
           </IconContainer>
-          <IconContainer>
-            <IconImg src={circleIconImg} alt="말풍선 아이콘" />
-            12
-          </IconContainer>
+          <Link to={`/post/${postItem.id}`}>
+            <IconContainer>
+              <CommentIcon />
+              12
+            </IconContainer>
+          </Link>
         </ReactContainer>
-        <Date>2020년 10월 21일</Date>
+        <Date>{createdAt}</Date>
       </ContContainer>
     </PostContainer>
   );
