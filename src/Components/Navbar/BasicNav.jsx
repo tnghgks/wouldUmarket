@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
@@ -44,9 +44,15 @@ const MoreIcon = styled(IconMoreVertical)`
 `;
 
 function BasicNav() {
+  const navigate = useNavigate();
+
   return (
     <Container>
-      <Back>
+      <Back
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         <BackBtnIcon />
       </Back>
       <More type="button">
