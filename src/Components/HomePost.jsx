@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
-import postImg from "../assets/post-img-example.png";
 import heartIconImg from "../assets/icon/icon-heart.png";
 import circleIconImg from "../assets/icon/icon-message-circle.png";
 
@@ -75,25 +75,22 @@ const IconImg = styled.img`
 const Date = styled.p`
   color: #767676;
 `;
-function HomePost() {
+function HomePost({ postItem }) {
   return (
     <PostContainer>
       <TitleContainer>
         <ProfileImg />
-        <div>
-          <UserName>애월읍 위니브 감귤농장</UserName>
-          <UserID>@ weniv_Mandarin</UserID>
-        </div>
+        <Link to={`/profile/${postItem.author.accountname}`}>
+          <UserName>{postItem.author.username}</UserName>
+          <UserID>@ {postItem.author.accountname}</UserID>
+        </Link>
         <MoreIconImg />
       </TitleContainer>
       <ContContainer>
-        <Cont>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et, tempore?
-          Consequuntur, voluptates explicabo blanditiis nam, illo iure ea illum
-          repudiandae ut in provident quasi hic quidem, obcaecati enim officia
-          tenetur!
-        </Cont>
-        <PostImg src={postImg} alt="숲 속 마을 이미지" />
+        <Cont>{postItem.content}</Cont>
+        <Link to={`/post/${postItem.id}`}>
+          <PostImg src={postItem.image} />
+        </Link>
         <ReactContainer>
           <IconContainer>
             <IconImg src={heartIconImg} alt="하트 아이콘" />
