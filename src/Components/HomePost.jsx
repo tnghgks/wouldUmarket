@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
-import heartIconImg from "../assets/icon/icon-heart.png";
-import circleIconImg from "../assets/icon/icon-message-circle.png";
+import IconHeart from "./icon/IconHeart";
+import IconComment from "./icon/IconMessageCircleSmall";
+import IconEmptyHeart from "../assets/icon/icon-heart-active.png";
 
 const PostContainer = styled.section`
   display: flex;
@@ -23,7 +25,7 @@ const ProfileImg = styled(BasicProfileImg)`
   height: 42px;
 `;
 
-const MoreIconImg = styled(IconMoreVerticalSmall)`
+const MoreIcon = styled(IconMoreVerticalSmall)`
   margin-left: auto;
   margin-bottom: auto;
   margin-top: 3px;
@@ -69,7 +71,13 @@ const IconContainer = styled.span`
   color: #767676;
 `;
 
-const IconImg = styled.img`
+const HeartIcon = styled(IconHeart)`
+  width: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const CommentIcon = styled(IconComment)`
   width: 20px;
   margin-right: 10px;
   cursor: pointer;
@@ -79,6 +87,7 @@ const Date = styled.p`
   color: #767676;
 `;
 function HomePost({ postItem }) {
+  const [isLike, setIsLike] = useState(postItem.hearted);
   const createdAt = postItem.createdAt
     .slice(0, 11)
     .replace("-", "년 ")
@@ -92,7 +101,7 @@ function HomePost({ postItem }) {
           <UserName>{postItem.author.username}</UserName>
           <UserID>@ {postItem.author.accountname}</UserID>
         </Link>
-        <MoreIconImg />
+        <MoreIcon />
       </TitleContainer>
       <ContContainer>
         <Cont>{postItem.content}</Cont>
@@ -103,13 +112,15 @@ function HomePost({ postItem }) {
         ) : null}
         <ReactContainer>
           <IconContainer>
-            <IconImg src={heartIconImg} alt="하트 아이콘" />
+            <HeartIcon />
             58
           </IconContainer>
-          <IconContainer>
-            <IconImg src={circleIconImg} alt="말풍선 아이콘" />
-            12
-          </IconContainer>
+          <Link to={`/post/${postItem.id}`}>
+            <IconContainer>
+              <CommentIcon />
+              12
+            </IconContainer>
+          </Link>
         </ReactContainer>
         <Date>{createdAt}</Date>
       </ContContainer>
