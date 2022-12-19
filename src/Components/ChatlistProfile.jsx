@@ -7,7 +7,7 @@ const Img = styled.img`
 `;
 
 const CheckOnline = styled.div`
-  display: ${({ newchat }) => (newchat ? "block" : "none")};
+  display: ${({ newChat }) => (newChat ? "block" : "none")};
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -16,7 +16,7 @@ const CheckOnline = styled.div`
   top: 0;
 `;
 
-const UserSerchContainer = styled.li`
+const UserSearchContainer = styled.li`
   padding: 2px 0 3px 0;
   background-color: #ffffff;
   width: 100%;
@@ -55,24 +55,22 @@ const ChatProfileimg = styled.div`
 `;
 /**
  *
- * @param {{newchat: "new" ? children: "채팅방이름" ? chat: "마지막채팅내역"}} param0
+ * @param {{newChat: "new" ? chilDren: "채팅방이름" ? chat: "마지막채팅내역" ? listChatDate: "마지막채팅시간"}} param0
  * @returns
  */
-function ChatListProfile({ newchat, children, chat, listchatdate }) {
+function ChatListProfile({ newChat, chilDren, chat, listChatDate }) {
   return (
-    <ul>
-      <UserSerchContainer>
-        <ChatProfileimg>
-          <Img src={profileImg} />
-          <CheckOnline newchat={newchat} />
-        </ChatProfileimg>
-        <div>
-          <p>{children}</p>
-          <UserFollowSmall>{chat}</UserFollowSmall>
-        </div>
-        <ChatDateSpan>{listchatdate}</ChatDateSpan>
-      </UserSerchContainer>
-    </ul>
+    <UserSearchContainer>
+      <ChatProfileimg>
+        <Img src={profileImg} />
+        <CheckOnline newChat={newChat} />
+      </ChatProfileimg>
+      <div>
+        <p>{chilDren}</p>
+        <UserFollowSmall>{chat}</UserFollowSmall>
+      </div>
+      <ChatDateSpan>{listChatDate}</ChatDateSpan>
+    </UserSearchContainer>
   );
 }
 
