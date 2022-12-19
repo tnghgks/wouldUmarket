@@ -51,6 +51,9 @@ const Cont = styled.p`
 
 const PostImg = styled.img`
   width: 304px;
+  height: 208px;
+  object-fit: cover;
+  border-radius: 10px;
 `;
 
 const ReactContainer = styled.div`
