@@ -5,7 +5,6 @@ import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
-import IconEmptyHeart from "../assets/icon/icon-heart-active.png";
 
 const PostContainer = styled.section`
   display: flex;
@@ -88,11 +87,7 @@ const Date = styled.p`
 `;
 function HomePost({ postItem }) {
   const [isLike, setIsLike] = useState(postItem.hearted);
-  const createdAt = postItem.createdAt
-    .slice(0, 11)
-    .replace("-", "년 ")
-    .replace("-", "월 ")
-    .replace("T", "일");
+  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
   return (
     <PostContainer>
       <TitleContainer>
