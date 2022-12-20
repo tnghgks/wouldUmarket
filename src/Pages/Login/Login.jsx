@@ -28,8 +28,8 @@ function Login() {
           </BtnFacebook>
         </BtnContainer>
         <LinkContainer>
-          <LoginLink>이메일로 로그인</LoginLink>
-          <Link>회원가입</Link>
+          <LoginLink to="/login/loginEmail">이메일로 로그인</LoginLink>
+          <Link to="/register">회원가입</Link>
         </LinkContainer>
       </LoginContainer>
     </Container>
