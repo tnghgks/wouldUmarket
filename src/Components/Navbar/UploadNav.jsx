@@ -43,9 +43,7 @@ function UploadNav({ children }) {
       >
         <BackBtnIcon />
       </Back>
-      <Link to="/profile/myProfile">
-        <CommonButton size="ms" bgColor="accent" children={children} />
-      </Link>
+      <CommonButton size="ms" bgColor="accent" children={children} />
     </Container>
   );
 }

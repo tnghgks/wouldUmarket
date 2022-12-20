@@ -43,7 +43,7 @@ function MainNav({ titleContent }) {
   return (
     <Container>
       <Title>{titleContent}</Title>
-      <Search>
+      <Search to="/search">
         <SearchIcon />
       </Search>
     </Container>
