@@ -59,13 +59,13 @@ const InputContainer = styled.section`
 `;
 
 const Warning = styled.p`
-  position: absolute;
-  top: 120px;
-  left: 0;
+  /* position: absolute; */
+  /* top: 120px; */
+  /* left: 0; */
   color: #eb5757;
 `;
 
-const SignInLink = styled(Link)`
+const SignUpLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   & > .linkText {
@@ -74,24 +74,65 @@ const SignInLink = styled(Link)`
 `;
 
 function LoginEmail() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formError, setFormError] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      return { ...prev, [name]: value };
+    });
+    validate(formData);
+  }
+
+  function validate(formData) {
+    const regex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (!regex.test(formData.email)) {
+      setFormError((prev) => {
+        return { ...prev, email: "올바른 이메일 형식 아닙니다." };
+      });
+    } else {
+      setFormError("");
+    }
+  }
+
   async function getLoginData(inputData) {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputData),
+      const response = await fetch(
+        `https://mandarin.api.weniv.co.kr/user/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(inputData),
+        }
+      );
+
+      const { user, message } = await response.json();
+      setFormError((prev) => {
+        return { ...prev, form: message };
       });
 
-      const { user } = await response.json();
       if (!user) return;
 
-      dispatch(SET_USERINFO({ userId: user._id, username: user.username, email: user.email, accountname: user.accountname, image: user.image }));
+      dispatch(
+        SET_USERINFO({
+          userId: user._id,
+          username: user.username,
+          email: user.email,
+          accountname: user.accountname,
+          image: user.image,
+        })
+      );
       getUserData(user.accountname, user.token);
       if (user.token) {
-        setCookie("accessToken", user.token, { path: "/", secure: true, sameSite: "strict" });
+        setCookie("accessToken", user.token, {
+          path: "/",
+          secure: true,
+          sameSite: "strict",
+        });
       }
       navigate("/feed");
     } catch (error) {
@@ -101,13 +142,16 @@ function LoginEmail() {
 
   async function getUserData(accountname, token) {
     try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `https://mandarin.api.weniv.co.kr/profile/${accountname}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json",
+          },
+        }
+      );
       const { profile } = await res.json();
       dispatch(SET_USERINFO(profile));
     } catch (error) {
@@ -133,17 +177,28 @@ function LoginEmail() {
       <Title>로그인</Title>
       <LoginForm onSubmit={handleSubmit}>
         <InputContainer>
-          <CommonInput label="이메일" type="email" name="email" />
-          <CommonInput label="비밀번호" type="password" name="password" />
+          <CommonInput
+            label="이메일"
+            type="email"
+            name="email"
+            onChange={handleChange}
+          />
+          {formError.email && <Warning>*{formError.email}</Warning>}
+          <CommonInput
+            label="비밀번호"
+            type="password"
+            name="password"
+            onChange={handleChange}
+          />
         </InputContainer>
-        <Warning>*이메일 또는 비밀번호가 일치하지 않습니다.</Warning>
+        {formError.form && <Warning>*{formError.form}</Warning>}
         <ButtonContainer>
           <CommonButton size="lg" bgColor="light" children="다음" />
         </ButtonContainer>
       </LoginForm>
-      <SignInLink>
+      <SignUpLink to="/register">
         <p className="linkText">이메일로 회원가입</p>
-      </SignInLink>
+      </SignUpLink>
     </Container>
   );
 }
