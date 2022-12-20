@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import SymbolLogoGray from "../../../Components/SymbolLogoGray";
 import CommonButton from "../../../Components/button/CommonButton";
 import MainNav from "../../../Components/Navbar/MainNav";
@@ -25,7 +26,9 @@ function EmptyFeed() {
       <FeedContainer>
         <SymbolLogoGray />
         <Desc>유저를 검색해 팔로우 해보세요!</Desc>
-        <CommonButton size="md" bgColor="main" children="검색하기" />
+        <Link to={`/search`}>
+          <CommonButton size="md" bgColor="main" children="검색하기" />
+        </Link>
       </FeedContainer>
       <TabMenu />
     </>
