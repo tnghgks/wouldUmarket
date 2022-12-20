@@ -5,6 +5,7 @@ import IconPostList from "../../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../../Components/icon/IconPostAlbum.jsx";
 import { useSelector } from "react-redux";
 import { getCookie } from "../../../../cookie";
+import { useParams } from "react-router-dom";
 
 const Container = styled.section`
   width: 100%;
@@ -45,20 +46,21 @@ function UserPost() {
   const [post, setPost] = useState([]);
   const [toggle, setToggle] = useState(true);
   const token = getCookie("accessToken");
-
+  const { accountname } = useParams();
   const { profile } = useSelector((state) => state);
 
   async function getData() {
     try {
-      const res = await fetch("https://mandarin.api.weniv.co.kr/post/feed", {
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/post/${accountname}/userpost`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-type": "application/json",
         },
       });
-      const { posts } = await res.json();
-      setPost(posts);
+      const { post } = await res.json();
+
+      setPost(post);
     } catch (error) {
       console.log(error);
     }
