@@ -9,6 +9,7 @@ import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
 import Followers from "../Pages/Profile/Follower/Followers";
+import Login from "../Pages/Login/Login";
 import LoginEmail from "../Pages/Login/LoginEmail";
 import SplashScreen from "../Pages/SplashScreen/SplashScreen";
 import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
@@ -20,7 +21,8 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SplashScreen />} />
-        <Route path="/login" element={<LoginEmail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/login/loginEmail" element={<LoginEmail />} />
         <Route path="/register" element={<Register />} />
 
         <Route path="/feed" element={<EmptyFeed />} />
