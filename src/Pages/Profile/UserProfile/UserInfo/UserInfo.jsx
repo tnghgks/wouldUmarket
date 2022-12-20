@@ -24,8 +24,10 @@ function UserInfo() {
         },
       });
       const { profile, message } = await res.json();
+
       if (!profile) return alert(message);
-      dispatch(FOLLOW());
+
+      dispatch(FOLLOW(profile));
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +44,8 @@ function UserInfo() {
       const { profile, message } = await res.json();
 
       if (!profile) return alert(message);
+
+      dispatch(UN_FOLLOW(profile));
     } catch (error) {
       console.log(error);
     }
