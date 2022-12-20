@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Authentication from "./Components/Auth/Authentication";
 import Router from "./Router/Router";
 
 const GlobalStyled = createGlobalStyle`
@@ -65,6 +66,7 @@ function App() {
   return (
     <>
       <GlobalStyled />
+      <Authentication />
       <Router />
     </>
   );
