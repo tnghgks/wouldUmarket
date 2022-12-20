@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import iconUser from "../../assets/icon/icon-user.svg";
 import iconUserFill from "../../assets/icon/icon-user-fill.png";
+import { useSelector } from "react-redux";
 
 const Icon = styled.div`
   width: 24px;
@@ -11,8 +12,11 @@ const Icon = styled.div`
 `;
 
 function IconUser({ className, pathname }) {
+  const { userInfo } = useSelector((state) => state);
+  const encoded = encodeURI(userInfo.accountname);
+
   let isOn = false;
-  if (pathname === "/profile/myProfile") {
+  if (pathname === `/profile/${encoded}`) {
     isOn = true;
   }
   return <Icon className={className} isOn={isOn} />;
