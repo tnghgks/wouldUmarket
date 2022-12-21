@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import SearchNav from "../../Components/Navbar/SearchNav";
 import TabMenu from "../../Components/TabMenu";
 import UserSearch from "../../Components/UserSearch";
+import { getCookie } from "../../cookie";
+import { asyncSearchFetch } from "../../store/SearchData";
 
-const Container = styled.section`
+const Container = styled.main`
   width: 100%;
   height: 100vh;
   margin-top: 48px;
@@ -17,39 +19,29 @@ const Container = styled.section`
 `;
 
 function Search() {
-  const [value, setValue] = useState("");
+  const dispatch = useDispatch();
+  const token = getCookie("accessToken");
+  const { searchData } = useSelector((state) => state);
+  const [searchInput, setSearchInput] = useState("");
   const [timer, setTimer] = useState(null);
-  const [SearchData, setSearchData] = useState([]);
-
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTZlODNmMTdhZTY2NjU4MWMzNTJkZCIsImV4cCI6MTY3NjM4MjY0MywiaWF0IjoxNjcxMTk4NjQzfQ.GodR9l7MkLe9xeBl9Rl98Yn8vmbAJgkPC-p-xSCzYdA";
-
-  async function getSearchData() {
-    const response = await fetch(`https://mandarin.api.weniv.co.kr/user/searchuser/?keyword=${value}&limit=100`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const data = await response.json();
-    setSearchData(data);
-  }
 
   useEffect(() => {
-    if (value === "") return;
+    if (searchInput === "") return;
     clearTimeout(timer);
     setTimer(
       setTimeout(function () {
-        getSearchData();
+        dispatch(asyncSearchFetch({ searchInput, token }));
       }, 500)
     );
-  }, [value]);
+  }, [searchInput]);
 
   return (
     <>
-      <SearchNav setValue={setValue} />
-      <Container>{SearchData && SearchData.map((userData, index) => <UserSearch key={index} userData={userData} />)}</Container>
+      <SearchNav setValue={setSearchInput} />
+      <Container>
+        {searchData.status === "rejected" && <div>ERROR</div>}
+        {searchData.data && searchData.data.map((userData, index) => <UserSearch key={index} userData={userData} />)}
+      </Container>
       <TabMenu />
     </>
   );

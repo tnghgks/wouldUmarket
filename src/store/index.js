@@ -4,6 +4,7 @@ import UserInfoReducer from "./UserInfo";
 import ProfileReducer from "./Profile";
 import RegisteredReducer from "./Register";
 import PostDetailReducer from "./PostDetail";
+import SearchDataReducer from "./SearchData";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     profile: ProfileReducer,
     signUp: RegisteredReducer,
     postDetail: PostDetailReducer,
+    searchData: SearchDataReducer,
   },
 });
