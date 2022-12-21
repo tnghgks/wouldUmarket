@@ -84,13 +84,17 @@ function LoginEmail() {
     setFormData((prev) => {
       return { ...prev, [name]: value };
     });
-    validate(formData);
   }
 
+  useEffect(() => {
+    validate(formData);
+  }, [formData]);
+
   function validate(formData) {
-    const regex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (!regex.test(formData.email)) {
+    const regex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (formData.email === "") {
+      return setFormError("");
+    } else if (!regex.test(formData.email)) {
       setFormError((prev) => {
         return { ...prev, email: "올바른 이메일 형식 아닙니다." };
       });
@@ -101,14 +105,11 @@ function LoginEmail() {
 
   async function getLoginData(inputData) {
     try {
-      const response = await fetch(
-        `https://mandarin.api.weniv.co.kr/user/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(inputData),
-        }
-      );
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputData),
+      });
 
       const { user, message } = await response.json();
       setFormError((prev) => {
@@ -142,16 +143,13 @@ function LoginEmail() {
 
   async function getUserData(accountname, token) {
     try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/profile/${accountname}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
       const { profile } = await res.json();
       dispatch(SET_USERINFO(profile));
     } catch (error) {
@@ -169,7 +167,12 @@ function LoginEmail() {
         password: password.value,
       },
     };
-    getLoginData(inputData);
+
+    if (!formError) {
+      getLoginData(inputData);
+    } else {
+      setFormError({ email: "Email을 작성해주십시오." });
+    }
   }
 
   return (
@@ -177,19 +180,9 @@ function LoginEmail() {
       <Title>로그인</Title>
       <LoginForm onSubmit={handleSubmit}>
         <InputContainer>
-          <CommonInput
-            label="이메일"
-            type="email"
-            name="email"
-            onChange={handleChange}
-          />
+          <CommonInput label="이메일" type="email" name="email" onChange={handleChange} required />
           {formError.email && <Warning>*{formError.email}</Warning>}
-          <CommonInput
-            label="비밀번호"
-            type="password"
-            name="password"
-            onChange={handleChange}
-          />
+          <CommonInput label="비밀번호" type="password" name="password" onChange={handleChange} required />
         </InputContainer>
         {formError.form && <Warning>*{formError.form}</Warning>}
         <ButtonContainer>
