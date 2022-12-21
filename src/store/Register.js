@@ -16,9 +16,14 @@ const registeredSlice = createSlice({
       state.email = action.payload.email;
       state.password = action.payload.password;
     },
+    SET_PROFILE_DATA: (state, action) => {
+      state.username = action.payload.username;
+      state.accountname = action.payload.accountname;
+      state.intro = action.payload.intro;
+    },
   },
 });
 
-export const { SET_EMAIL_PASSWORD } = registeredSlice.actions;
+export const { SET_EMAIL_PASSWORD, SET_PROFILE_DATA } = registeredSlice.actions;
 
 export default registeredSlice.reducer;
