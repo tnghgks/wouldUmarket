@@ -220,7 +220,12 @@ function SetProfile() {
           </div>
         </TextContainer>
         {validationError && <Warning>*{validationError}</Warning>}
-        <CommonButton size="lg" bgColor="light" children="우주쉐어 시작하기" />
+        <CommonButton
+          size="lg"
+          bgColor={!(username && accountname && intro) ? "light" : "accent"}
+          children="우주쉐어 시작하기"
+          disabled={!(username && accountname && intro)}
+        />
       </form>
     </Container>
   );
