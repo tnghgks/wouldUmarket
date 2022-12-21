@@ -80,7 +80,7 @@ function LoginEmail() {
       return { ...prev, [name]: value };
     });
   }
-  // 버튼 비활성화
+
   useEffect(() => {
     validate(formData);
   }, [formData]);
