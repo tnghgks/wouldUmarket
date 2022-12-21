@@ -4,8 +4,11 @@ import Comment from "../../../Components/Comment";
 import HomePost from "../../../Components/HomePost";
 import CommentItem from "./CommentItem/CommentItem";
 import Modal from "../../../Components/Modal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getCookie } from "../../../cookie";
+import { FETCH_COMMENT_DATA, FETCH_POST_DATA } from "../../../store/PostDetail";
+import { useDispatch, useSelector } from "react-redux";
 
 const MainContainer = styled.main`
   width: 100%;
@@ -30,55 +33,21 @@ const CommentContainer = styled.section`
 `;
 
 function PostDetail() {
-  const [post, setPost] = useState({});
-  const [comments, setComments] = useState([]);
+  const dispatch = useDispatch();
+  const { postDetail } = useSelector((state) => state);
   const [selectComment, setSelectComment] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTZlODNmMTdhZTY2NjU4MWMzNTJkZCIsImV4cCI6MTY3NjU0NTI4NSwiaWF0IjoxNjcxMzYxMjg1fQ.SQif90hSbfq7Rvl6Ge5dXG6Y_h9CF7M1lTwda8V4aT8";
-
-  async function getPostDetail() {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const { post } = await response.json();
-      setPost(post);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getCommentData() {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const { comments } = await response.json();
-
-      setComments(comments);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const token = getCookie("accessToken");
 
   function handleMoreIcon(commentId) {
     setIsOpen(true);
     setSelectComment(commentId);
   }
 
-  async function handleDeleteComment(commnetId) {
+  async function handleDeleteComment(commentId) {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${commnetId}`, {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -96,20 +65,18 @@ function PostDetail() {
   }
 
   useEffect(() => {
-    getPostDetail();
-    getCommentData();
+    dispatch(FETCH_POST_DATA({ id, token }));
+    dispatch(FETCH_COMMENT_DATA({ id, token }));
   }, []);
 
   return (
     <>
       <BasicNav />
       <MainContainer>
-        <PostContainer>
-          <HomePost post={post} />
-        </PostContainer>
+        <PostContainer>{Object.keys(postDetail.post).length !== 0 && <HomePost postItem={postDetail.post} />}</PostContainer>
         <CommentContainer>
           <h2 className="ir-hidden">댓글창</h2>
-          {comments && comments.map((comment) => <CommentItem key={comment.id} comment={comment} onClick={handleMoreIcon} />)}
+          {postDetail.comments && postDetail.comments.map((comment) => <CommentItem key={comment.id} comment={comment} onClick={handleMoreIcon} />)}
         </CommentContainer>
       </MainContainer>
       <Comment />
