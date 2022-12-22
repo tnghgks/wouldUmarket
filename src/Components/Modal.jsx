@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { CLOSE_MODAL } from "../store/Modal";
 
 const Container = styled.section`
   width: 100%;
@@ -34,7 +36,7 @@ const BackBlur = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 `;
@@ -45,12 +47,18 @@ const BackBlur = styled.div`
  * @returns
  */
 
-function Modal({ modalInfo = [], isOpen, setIsOpen }) {
+function Modal({ modalInfo = [] }) {
   const backBlur = useRef();
+  const {
+    modalData: { isOpen },
+  } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const modalCloseHandler = ({ target }) => {
-    if (isOpen && backBlur.current.contains(target)) setIsOpen(false);
-  };
+  function modalCloseHandler({ target }) {
+    if (isOpen && backBlur.current.contains(target)) {
+      dispatch(CLOSE_MODAL());
+    }
+  }
 
   useEffect(() => {
     window.addEventListener("click", modalCloseHandler);
