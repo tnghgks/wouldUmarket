@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../../store/Modal";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
 
@@ -43,8 +45,27 @@ const MoreIcon = styled(IconMoreVertical)`
   height: 24px;
 `;
 
-function BasicNav() {
+function BasicNav({ setModalInfo }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  function handleModalClick() {
+    dispatch(SET_MAIN_MODAL());
+    setModalInfo([
+      {
+        text: "설정 및 개인정보",
+        handleFunc: function () {
+          console.log("hi");
+        },
+      },
+      {
+        text: "로그아웃",
+        handleFunc: () => {
+          dispatch(SET_SUB_MODAL());
+        },
+      },
+    ]);
+  }
 
   return (
     <Container>
@@ -56,7 +77,7 @@ function BasicNav() {
         <BackBtnIcon />
       </Back>
       <More type="button">
-        <MoreIcon />
+        <MoreIcon onClick={handleModalClick} />
       </More>
     </Container>
   );
