@@ -18,7 +18,6 @@ const UploadContainer = styled.section`
 
 const InputContainer = styled.section`
   width: 100%;
-  /* padding: 16px; */
 `;
 
 const ProfileImg = styled.img`
