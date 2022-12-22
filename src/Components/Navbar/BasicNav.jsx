@@ -1,8 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../../store/Modal";
+import { removeCookie } from "../../cookie";
+import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../store/Modal";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
 
@@ -45,11 +46,14 @@ const MoreIcon = styled(IconMoreVertical)`
   height: 24px;
 `;
 
-function BasicNav({ setModalInfo }) {
+function BasicNav({ setModalInfo, setSubModalData }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleModalClick() {
+    setSubModalData((state) => {
+      return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
+    });
     dispatch(SET_MAIN_MODAL());
     setModalInfo([
       {
@@ -61,10 +65,19 @@ function BasicNav({ setModalInfo }) {
       {
         text: "로그아웃",
         handleFunc: () => {
+          setSubModalData((state) => {
+            return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
+          });
           dispatch(SET_SUB_MODAL());
         },
       },
     ]);
+  }
+
+  function handleLogout() {
+    dispatch(CLOSE_MODAL());
+    removeCookie("accessToken");
+    navigate("/login");
   }
 
   return (
