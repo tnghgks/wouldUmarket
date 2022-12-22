@@ -176,7 +176,12 @@ function Register() {
           </div>
         </TextContainer>
         <p>{validationError}</p>
-        <CommonButton size="lg" bgColor="light" children="다음" />
+        <CommonButton
+          size="lg"
+          bgColor={!(email || password) ? "light" : "accent"}
+          children="다음"
+          disabled={!(email || password)}
+        />
       </form>
     </Container>
   );
