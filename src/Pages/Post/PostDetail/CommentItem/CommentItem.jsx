@@ -1,5 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../../Components/icon/IconMoreVerticalSmall";
+import { getCookie } from "../../../../cookie";
+import { MODAL_TARGET, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../../../store/Modal";
 
 const Container = styled.div`
   width: 358px;
@@ -89,7 +92,22 @@ function elapsedTime(date) {
   return "방금 전";
 }
 
-function CommentItem({ comment, onClick }) {
+function CommentItem({ comment, setModalInfo }) {
+  const dispatch = useDispatch();
+
+  function handleModalOpen() {
+    dispatch(SET_MAIN_MODAL());
+    setModalInfo([
+      {
+        text: "삭제",
+        handleFunc: () => {
+          dispatch(SET_SUB_MODAL());
+          dispatch(MODAL_TARGET(comment.id));
+        },
+      },
+    ]);
+  }
+
   return (
     <Container>
       <InfoContainer>
@@ -98,7 +116,7 @@ function CommentItem({ comment, onClick }) {
           <UserName>{comment.author.username}</UserName>
           <CommentTime>{elapsedTime(comment.createdAt)}</CommentTime>
         </CommentInfo>
-        <IconMoreVerticalSmall onClick={() => onClick(comment.id)} />
+        <IconMoreVerticalSmall onClick={handleModalOpen} />
       </InfoContainer>
       <Comment>{comment.content}</Comment>
     </Container>
