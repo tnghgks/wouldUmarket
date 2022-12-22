@@ -29,6 +29,11 @@ const TextContainer = styled.div`
   }
 `;
 
+const Warning = styled.p`
+  font-size: 1.2rem;
+  color: #eb5757;
+`;
+
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -162,7 +167,7 @@ function Register() {
               onChange={handleEmailChange}
               required={true}
             />
-            <p>{emailError}</p>
+            {emailError && <Warning>*{emailError}</Warning>}
           </div>
           <div>
             <CommonInput
@@ -172,11 +177,16 @@ function Register() {
               onChange={handlePasswordChange}
               required={true}
             />
-            <p>{passwordError}</p>
+            {passwordError && <Warning>*{passwordError}</Warning>}
           </div>
         </TextContainer>
         <p>{validationError}</p>
-        <CommonButton size="lg" bgColor="light" children="다음" />
+        <CommonButton
+          size="lg"
+          bgColor={!(email || password) ? "light" : "accent"}
+          children="다음"
+          disabled={!(email || password)}
+        />
       </form>
     </Container>
   );
