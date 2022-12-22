@@ -5,6 +5,88 @@ import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
+import { getCookie } from "../cookie";
+import { useDispatch } from "react-redux";
+import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
+
+function HomePost({ postItem, setModalInfo, setSubModalData }) {
+  const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
+  const dispatch = useDispatch();
+  const [isLike, setIsLike] = useState(postItem.hearted);
+  const token = getCookie("accessToken");
+
+  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
+
+  async function handleDeletePost() {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleModalOpen() {
+    dispatch(SET_MAIN_MODAL());
+
+    setModalInfo([
+      {
+        text: "삭제",
+        handleFunc: () => {
+          setSubModalData((state) => {
+            return { ...state, text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeletePost };
+          });
+          dispatch(SET_SUB_MODAL());
+        },
+      },
+    ]);
+  }
+
+  return (
+    <>
+      <PostContainer>
+        <TitleContainer>
+          <ProfileImg src={author.image} />
+          <Link to={`/profile/${author.accountname}`}>
+            <UserName>{author.username}</UserName>
+            <UserID>@ {author.accountname}</UserID>
+          </Link>
+          <MoreIcon onClick={handleModalOpen} />
+        </TitleContainer>
+        <ContContainer>
+          <Cont>{content}</Cont>
+          {image ? (
+            <Link to={`/post/${postId}`}>
+              <PostImg src={image} />
+            </Link>
+          ) : null}
+          <ReactContainer>
+            <IconContainer>
+              <HeartIcon toggle={hearted} />
+              {heartCount}
+            </IconContainer>
+            <Link to={`/post/${postId}`}>
+              <IconContainer>
+                <CommentIcon />
+                {commentCount}
+              </IconContainer>
+            </Link>
+          </ReactContainer>
+          <Date>{createdAt}</Date>
+        </ContContainer>
+      </PostContainer>
+    </>
+  );
+}
+
+export default HomePost;
 
 const PostContainer = styled.section`
   display: flex;
@@ -85,42 +167,3 @@ const CommentIcon = styled(IconComment)`
 const Date = styled.p`
   color: #767676;
 `;
-function HomePost({ postItem }) {
-  const [isLike, setIsLike] = useState(postItem.hearted);
-  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
-  return (
-    <PostContainer>
-      <TitleContainer>
-        <ProfileImg />
-        <Link to={`/profile/${postItem.author.accountname}`}>
-          <UserName>{postItem.author.username}</UserName>
-          <UserID>@ {postItem.author.accountname}</UserID>
-        </Link>
-        <MoreIcon />
-      </TitleContainer>
-      <ContContainer>
-        <Cont>{postItem.content}</Cont>
-        {postItem.image ? (
-          <Link to={`/post/${postItem.id}`}>
-            <PostImg src={postItem.image} />
-          </Link>
-        ) : null}
-        <ReactContainer>
-          <IconContainer>
-            <HeartIcon />
-            58
-          </IconContainer>
-          <Link to={`/post/${postItem.id}`}>
-            <IconContainer>
-              <CommentIcon />
-              12
-            </IconContainer>
-          </Link>
-        </ReactContainer>
-        <Date>{createdAt}</Date>
-      </ContContainer>
-    </PostContainer>
-  );
-}
-
-export default HomePost;
