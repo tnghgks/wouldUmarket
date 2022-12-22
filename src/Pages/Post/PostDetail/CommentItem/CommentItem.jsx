@@ -1,5 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../../Components/icon/IconMoreVerticalSmall";
+import { getCookie } from "../../../../cookie";
+import { MODAL_TARGET, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../../../store/Modal";
 
 const Container = styled.div`
   width: 358px;
@@ -89,7 +92,46 @@ function elapsedTime(date) {
   return "방금 전";
 }
 
-function CommentItem({ comment, onClick }) {
+function CommentItem({ comment, setModalInfo, setSubModalData }) {
+  const dispatch = useDispatch();
+  const token = getCookie("accessToken");
+  const {
+    postDetail: {
+      post: { id },
+    },
+  } = useSelector((state) => state);
+
+  async function handleDeleteComment() {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${comment.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function handleModalOpen() {
+    dispatch(SET_MAIN_MODAL());
+    setModalInfo([
+      {
+        text: "삭제",
+        handleFunc: () => {
+          dispatch(SET_SUB_MODAL());
+          setSubModalData((state) => {
+            return { ...state, text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeleteComment };
+          });
+          dispatch(MODAL_TARGET(comment.id));
+        },
+      },
+    ]);
+  }
+
   return (
     <Container>
       <InfoContainer>
@@ -98,7 +140,7 @@ function CommentItem({ comment, onClick }) {
           <UserName>{comment.author.username}</UserName>
           <CommentTime>{elapsedTime(comment.createdAt)}</CommentTime>
         </CommentInfo>
-        <IconMoreVerticalSmall onClick={() => onClick(comment.id)} />
+        <IconMoreVerticalSmall onClick={handleModalOpen} />
       </InfoContainer>
       <Comment>{comment.content}</Comment>
     </Container>

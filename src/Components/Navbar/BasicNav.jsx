@@ -1,6 +1,9 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { removeCookie } from "../../cookie";
+import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../store/Modal";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
 
@@ -43,8 +46,39 @@ const MoreIcon = styled(IconMoreVertical)`
   height: 24px;
 `;
 
-function BasicNav() {
+function BasicNav({ setModalInfo, setSubModalData }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  function handleModalClick() {
+    setSubModalData((state) => {
+      return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
+    });
+    dispatch(SET_MAIN_MODAL());
+    setModalInfo([
+      {
+        text: "설정 및 개인정보",
+        handleFunc: function () {
+          console.log("hi");
+        },
+      },
+      {
+        text: "로그아웃",
+        handleFunc: () => {
+          setSubModalData((state) => {
+            return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
+          });
+          dispatch(SET_SUB_MODAL());
+        },
+      },
+    ]);
+  }
+
+  function handleLogout() {
+    dispatch(CLOSE_MODAL());
+    removeCookie("accessToken");
+    navigate("/login");
+  }
 
   return (
     <Container>
@@ -56,7 +90,7 @@ function BasicNav() {
         <BackBtnIcon />
       </Back>
       <More type="button">
-        <MoreIcon />
+        <MoreIcon onClick={handleModalClick} />
       </More>
     </Container>
   );

@@ -9,6 +9,43 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../../../cookie";
 import { FETCH_COMMENT_DATA, FETCH_POST_DATA } from "../../../store/PostDetail";
 import { useDispatch, useSelector } from "react-redux";
+import DeleteAlert from "../../../Components/DeleteAlert";
+
+function PostDetail() {
+  const [subModalData, setSubModalData] = useState({});
+  const dispatch = useDispatch();
+  const {
+    postDetail: { post, comments },
+    modalData: { targetId, isOpen, subModal },
+  } = useSelector((state) => state);
+  const [modalInfo, setModalInfo] = useState([]);
+  const { id } = useParams();
+  const token = getCookie("accessToken");
+  const { modalData } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(FETCH_POST_DATA({ id, token }));
+    dispatch(FETCH_COMMENT_DATA({ id, token }));
+  }, []);
+
+  return (
+    <>
+      <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+      <MainContainer>
+        <PostContainer>{Object.keys(post).length !== 0 && <HomePost postItem={post} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />}</PostContainer>
+        <CommentContainer>
+          <h2 className="ir-hidden">댓글창</h2>
+          {comments && comments.map((comment) => <CommentItem key={comment.id} comment={comment} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />)}
+        </CommentContainer>
+      </MainContainer>
+      <Comment />
+      {isOpen && <Modal modalInfo={modalInfo} />}
+      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
+    </>
+  );
+}
+
+export default PostDetail;
 
 const MainContainer = styled.main`
   width: 100%;
@@ -31,71 +68,3 @@ const CommentContainer = styled.section`
   align-items: center;
   padding: 4px 0px;
 `;
-
-function PostDetail() {
-  const dispatch = useDispatch();
-  const { postDetail } = useSelector((state) => state);
-  const [selectComment, setSelectComment] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
-  const { id } = useParams();
-  const token = getCookie("accessToken");
-
-  function handleMoreIcon(commentId) {
-    setIsOpen(true);
-    setSelectComment(commentId);
-  }
-
-  async function handleDeleteComment(commentId) {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${commentId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-
-      if (data.status === "403") {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    dispatch(FETCH_POST_DATA({ id, token }));
-    dispatch(FETCH_COMMENT_DATA({ id, token }));
-  }, []);
-
-  return (
-    <>
-      <BasicNav />
-      <MainContainer>
-        <PostContainer>{Object.keys(postDetail.post).length !== 0 && <HomePost postItem={postDetail.post} />}</PostContainer>
-        <CommentContainer>
-          <h2 className="ir-hidden">댓글창</h2>
-          {postDetail.comments && postDetail.comments.map((comment) => <CommentItem key={comment.id} comment={comment} onClick={handleMoreIcon} />)}
-        </CommentContainer>
-      </MainContainer>
-      <Comment />
-      {isOpen && (
-        <Modal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          modalInfo={[
-            {
-              text: "삭제",
-              handleFunc: () => {
-                handleDeleteComment(selectComment);
-              },
-            },
-          ]}
-        />
-      )}
-    </>
-  );
-}
-
-export default PostDetail;

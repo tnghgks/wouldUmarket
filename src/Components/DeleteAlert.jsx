@@ -1,13 +1,20 @@
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { CLOSE_MODAL } from "../store/Modal";
 
-const DeletAlertContainer = styled.article`
+const DeleteAlertContainer = styled.article`
   width: 252px;
   border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
 `;
 
 const DeleteAlertHead = styled.h1`
@@ -39,15 +46,21 @@ const DeleteAlertBtn = styled.button`
   cursor: pointer;
 `;
 
-function DeleteAlert() {
+function DeleteAlert({ mainText, rightText, handleAccept }) {
+  const dispatch = useDispatch();
+
   return (
-    <DeletAlertContainer>
-      <DeleteAlertHead>상품을 삭제할까요?</DeleteAlertHead>
+    <DeleteAlertContainer>
+      <DeleteAlertHead>{mainText}</DeleteAlertHead>
       <DeleteAlertDiv>
-        <DeleteAlertBtn props={true}>취소</DeleteAlertBtn>
-        <DeleteAlertBtn props={false}>삭제</DeleteAlertBtn>
+        <DeleteAlertBtn props={true} onClick={() => dispatch(CLOSE_MODAL())}>
+          취소
+        </DeleteAlertBtn>
+        <DeleteAlertBtn props={false} onClick={handleAccept}>
+          {rightText}
+        </DeleteAlertBtn>
       </DeleteAlertDiv>
-    </DeletAlertContainer>
+    </DeleteAlertContainer>
   );
 }
 
