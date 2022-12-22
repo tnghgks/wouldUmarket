@@ -5,6 +5,7 @@ import ProfileReducer from "./Profile";
 import RegisteredReducer from "./Register";
 import PostDetailReducer from "./PostDetail";
 import SearchDataReducer from "./SearchData";
+import ModalInfoReducer from "./Modal";
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     signUp: RegisteredReducer,
     postDetail: PostDetailReducer,
     searchData: SearchDataReducer,
+    modalData: ModalInfoReducer,
   },
 });
