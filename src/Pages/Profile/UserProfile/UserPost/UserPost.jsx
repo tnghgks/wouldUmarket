@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import HomePost from "../../../../Components/HomePost";
 import IconPostList from "../../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../../Components/icon/IconPostAlbum.jsx";
-import { useSelector } from "react-redux";
 import { getCookie } from "../../../../cookie";
 import { useParams } from "react-router-dom";
 
@@ -42,12 +41,11 @@ const AlbumContainer = styled.ul`
   }
 `;
 
-function UserPost() {
+function UserPost({ setModalInfo, setSubModalData }) {
   const [post, setPost] = useState([]);
   const [toggle, setToggle] = useState(true);
   const token = getCookie("accessToken");
   const { accountname } = useParams();
-  const { profile } = useSelector((state) => state);
 
   async function getData() {
     try {
@@ -83,7 +81,7 @@ function UserPost() {
         </ViewModeContainer>
         <PostContainer>
           {post.length && toggle ? (
-            post.map((postItem, index) => <HomePost key={index} postItem={postItem} />)
+            post.map((postItem, index) => <HomePost key={index} postItem={postItem} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />)
           ) : (
             <AlbumContainer>
               {post.map((postItem, index) => (
