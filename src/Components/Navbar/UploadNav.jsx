@@ -29,10 +29,10 @@ const BackBtnIcon = styled(IconArrowLeft)`
 `;
 /**
  *
- * @param {{children: '저장' | '업로드'}} param0
+ * @param {{children: '저장' | '업로드' , btnDisabled: boolean}} param0
  * @returns
  */
-function UploadNav({ children }) {
+function UploadNav({ children, btnDisabled }) {
   const navigate = useNavigate();
   return (
     <Container>
@@ -43,7 +43,12 @@ function UploadNav({ children }) {
       >
         <BackBtnIcon />
       </Back>
-      <CommonButton size="ms" bgColor="accent" children={children} />
+      <CommonButton
+        size="ms"
+        bgColor="accent"
+        children={children}
+        disabled={btnDisabled}
+      />
     </Container>
   );
 }
