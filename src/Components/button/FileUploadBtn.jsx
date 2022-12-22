@@ -19,7 +19,10 @@ const Btn = styled.button`
   }
 `;
 
-export default function FileUploadBtn() {
+/**
+ * @param {{onChangeImage:import('react').ChangeEventHandler<HTMLInputElement> }} param0
+ */
+function FileUploadBtn({ onChangeImage }) {
   const inputRef = useRef();
 
   return (
@@ -27,7 +30,15 @@ export default function FileUploadBtn() {
       <Btn onClick={() => inputRef.current?.click()}>
         <img src={imgBtn} alt="사진추가버튼이미지" />
       </Btn>
-      <input type="file" hidden ref={inputRef} />
+      <input
+        ref={inputRef}
+        multiple
+        type="file"
+        accept=".jpg, .gif, .png, .jpeg, .bmp, .tif, .heic"
+        hidden
+        onChange={onChangeImage}
+      />
     </Container>
   );
 }
+export default FileUploadBtn;
