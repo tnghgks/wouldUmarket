@@ -92,9 +92,30 @@ function elapsedTime(date) {
   return "방금 전";
 }
 
-function CommentItem({ comment, setModalInfo }) {
+function CommentItem({ comment, setModalInfo, setSubModalData }) {
   const dispatch = useDispatch();
+  const token = getCookie("accessToken");
+  const {
+    postDetail: {
+      post: { id },
+    },
+  } = useSelector((state) => state);
 
+  async function handleDeleteComment() {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${comment.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   function handleModalOpen() {
     dispatch(SET_MAIN_MODAL());
     setModalInfo([
@@ -102,6 +123,9 @@ function CommentItem({ comment, setModalInfo }) {
         text: "삭제",
         handleFunc: () => {
           dispatch(SET_SUB_MODAL());
+          setSubModalData((state) => {
+            return { ...state, text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeleteComment };
+          });
           dispatch(MODAL_TARGET(comment.id));
         },
       },
