@@ -11,11 +11,11 @@ function FollowBtns({ isFollow, handleFollow, handleUnFollow }) {
         <IconMessageCircle />
       </LinkBtn>
       {isFollow ? (
-        <CommonButton size="md" fontColor="#767676" bgColor="white" event={handleUnFollow}>
+        <CommonButton size="md" fontColor="#767676" bgColor="white" onClick={handleUnFollow}>
           언팔로우
         </CommonButton>
       ) : (
-        <CommonButton size="md" event={handleFollow}>
+        <CommonButton size="md" onClick={handleFollow}>
           팔로우
         </CommonButton>
       )}

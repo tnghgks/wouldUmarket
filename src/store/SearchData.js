@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   data: [],
+
   status: "",
 };
 
-export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFetch", async ({ searchInput, token }) => {
+export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFetch", async ({ searchInput, token, pageNum = 1 }) => {
   try {
     const response = await fetch(`https://mandarin.api.weniv.co.kr/user/searchuser/?keyword=${searchInput}`, {
       method: "GET",
@@ -15,7 +16,8 @@ export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFet
       },
     });
     const users = await response.json();
-    return users;
+
+    return users.slice(0, pageNum * 100);
   } catch (error) {
     console.log(error);
   }
@@ -24,6 +26,7 @@ export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFet
 const searchDataSlice = createSlice({
   name: "searchData",
   initialState,
+
   extraReducers: (builder) => {
     builder.addCase(asyncSearchFetch.pending, (state, action) => {
       state.status = "pending";

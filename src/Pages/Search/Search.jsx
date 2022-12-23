@@ -7,40 +7,44 @@ import UserSearch from "../../Components/UserSearch";
 import { getCookie } from "../../cookie";
 import { asyncSearchFetch } from "../../store/SearchData";
 
-const Container = styled.main`
-  width: 100%;
-  height: 100vh;
-  margin-top: 48px;
-  padding: 20px 16px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
 function Search() {
   const dispatch = useDispatch();
   const token = getCookie("accessToken");
   const { searchData } = useSelector((state) => state);
+  const [pageNum, setPageNum] = useState(1);
   const [searchInput, setSearchInput] = useState("");
-  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") return;
-    clearTimeout(timer);
-    setTimer(
-      setTimeout(function () {
-        dispatch(asyncSearchFetch({ searchInput, token }));
-      }, 500)
-    );
+    window.scrollTo(0, 0);
+    setPageNum(1);
+    dispatch(asyncSearchFetch({ searchInput, token }));
   }, [searchInput]);
+
+  useEffect(() => {
+    dispatch(asyncSearchFetch({ searchInput, token, pageNum }));
+  }, [pageNum]);
+
+  useEffect(() => {
+    let scrollTimer;
+    window.addEventListener("scroll", () => {
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+      }
+      scrollTimer = setTimeout(function () {
+        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
+          setPageNum((prev) => prev + 1);
+        }
+      }, 100);
+    });
+  }, []);
 
   return (
     <>
       <SearchNav setValue={setSearchInput} />
       <Container>
         {searchData.status === "rejected" && <div>ERROR</div>}
-        {searchData.data && searchData.data.map((userData, index) => <UserSearch key={index} userData={userData} />)}
+        {!!searchData.data.length && searchData.data.map((userData, index) => <UserSearch key={index} userData={userData} searchInput={searchInput} />)}
       </Container>
       <TabMenu />
     </>
@@ -48,3 +52,14 @@ function Search() {
 }
 
 export default Search;
+
+const Container = styled.main`
+  width: 100%;
+  margin-top: 48px;
+  padding: 20px 16px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 61px;
+`;

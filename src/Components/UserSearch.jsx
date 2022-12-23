@@ -9,7 +9,7 @@ const Img = styled.img`
   object-fit: cover;
 `;
 
-const UserSerchContainer = styled.li`
+const UserSearchContainer = styled.li`
   width: 100%;
   display: flex;
   align-items: center;
@@ -26,18 +26,43 @@ const UserFollowSmall = styled.small`
   margin-top: 6px;
 `;
 
-function UserSerch({ userData }) {
+const ColorKeyword = styled.span`
+  color: var(--accentColor);
+`;
+
+function UserSearch({ userData, searchInput }) {
+  function MatchingData({ children }) {
+    let targetString = children;
+    if (typeof children === "object") {
+      targetString = children.join("");
+    }
+
+    if (targetString.includes(searchInput)) {
+      const splitData = targetString.split(searchInput);
+      return (
+        <div>
+          <span>{splitData[0]}</span>
+          <ColorKeyword>{searchInput}</ColorKeyword>
+          <span>{splitData[1]}</span>
+        </div>
+      );
+    }
+    return <div>{children}</div>;
+  }
+
   return (
     <Link to={`/profile/${userData.accountname}`}>
-      <UserSerchContainer>
+      <UserSearchContainer>
         <Img src={userData.image ? userData.image : profileImg} />
         <div>
-          <p>{userData.username}</p>
-          <UserFollowSmall>@ {userData.accountname}</UserFollowSmall>
+          <MatchingData>{userData.username}</MatchingData>
+          <UserFollowSmall>
+            <MatchingData>@ {userData.accountname}</MatchingData>
+          </UserFollowSmall>
         </div>
-      </UserSerchContainer>
+      </UserSearchContainer>
     </Link>
   );
 }
 
-export default UserSerch;
+export default UserSearch;
