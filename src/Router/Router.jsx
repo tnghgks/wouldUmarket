@@ -8,7 +8,7 @@ import Register from "../Pages/Register/Register";
 import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
-import Followers from "../Pages/Profile/Follower/Followers";
+import Follows from "../Pages/Profile/Follows/Follows";
 import Login from "../Pages/Login/Login";
 import LoginEmail from "../Pages/Login/LoginEmail";
 import SplashScreen from "../Pages/SplashScreen/SplashScreen";
@@ -35,7 +35,8 @@ function Router() {
 
         <Route path="/profile/:accountname" element={<Profile />} />
 
-        <Route path="/profile/followers" element={<Followers />} />
+        <Route path="/profile/:accountname/followers" element={<Follows />} />
+        <Route path="/profile/:accountname/followings" element={<Follows />} />
 
         <Route path="/search" element={<Search />} />
         <Route path="/post/:id" element={<PostDetail />} />
