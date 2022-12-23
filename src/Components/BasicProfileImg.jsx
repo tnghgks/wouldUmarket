@@ -11,6 +11,6 @@ const Img = styled.div`
 `;
 
 function BasicProfileImg({ className, src = basicProfile }) {
-  return <Img className={className} src={src} />;
+  return <Img className={className} src={src} onError={(e) => (e.target.src = basicProfile)} />;
 }
 export default BasicProfileImg;
