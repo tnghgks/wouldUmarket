@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BasicProfileImg from "../../../../Components/BasicProfileImg";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCookie } from "../../../../cookie";
 import { FOLLOW, UN_FOLLOW } from "../../../../store/Profile";
@@ -8,61 +8,33 @@ import FollowBtns from "../FollowBtns/FollowBtns";
 import EditBtns from "../EditBtns/EditBtns";
 
 function UserInfo() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { accountname } = useParams();
   const { userInfo, profile } = useSelector((state) => state);
   const token = getCookie("accessToken");
+  console.log(userInfo);
+  console.log(profile);
   const ownUser = userInfo.userId === profile.userId;
+
   async function handleFollowBtn() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/follow`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile, message } = await res.json();
-
-      if (!profile) return alert(message);
-
-      dispatch(FOLLOW(profile));
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(FOLLOW({ dispatch, accountname, token }));
   }
   async function handleUnFollowBtn() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/unfollow`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile, message } = await res.json();
-
-      if (!profile) return alert(message);
-
-      dispatch(UN_FOLLOW(profile));
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(UN_FOLLOW({ dispatch, accountname, token }));
   }
 
   return (
     !!profile && (
       <Container>
         <RowContainer>
-          <Link>
+          <Link to={`/profile/${accountname}/followers`}>
             <FollowerInfo>
               <span>{profile.followerCount}</span>
               <span>followers</span>
             </FollowerInfo>
           </Link>
           <BasicProfileImg src={profile.image} />
-          <Link>
+          <Link to={`/profile/${accountname}/followings`}>
             <FollowingInfo>
               <span>{profile.followingCount}</span>
               <span>followings</span>
@@ -71,7 +43,7 @@ function UserInfo() {
         </RowContainer>
         <UserNicname>{profile.username}</UserNicname>
         <UserId>@ {profile.accountname}</UserId>
-        <UserDiscription>{profile.intro}</UserDiscription>
+        <UserDescription>{profile.intro}</UserDescription>
         {ownUser ? <EditBtns /> : <FollowBtns isFollow={profile.isfollow} handleFollow={handleFollowBtn} handleUnFollow={handleUnFollowBtn} />}
       </Container>
     )
@@ -132,7 +104,7 @@ const UserId = styled.p`
   color: #767676;
   margin-top: 6px;
 `;
-const UserDiscription = styled.p`
+const UserDescription = styled.p`
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 1.84rem;
