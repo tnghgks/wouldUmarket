@@ -1,10 +1,75 @@
+import { useState } from "react";
 import styled from "styled-components";
-import profileImg from "../assets/Ellipse-1.png";
 import FollowButton from "../Components/button/CommonButton";
+import { getCookie } from "../cookie";
+import BasicProfileImg from "./BasicProfileImg";
 
-const Img = styled.img`
+function UserFollow({ username, accountname, isfollow, image }) {
+  const [toggle, setToggle] = useState(isfollow);
+  const token = getCookie("accessToken");
+
+  async function handleFollowing() {
+    try {
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/follow`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+      const { profile, message } = await res.json();
+      if (!profile) return alert(message);
+
+      setToggle(true);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleUnFollowing() {
+    try {
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/unfollow`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+      const { profile, message } = await res.json();
+      if (!profile) return alert(message);
+
+      setToggle(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <UserFollowContainer>
+      <ProfileImg src={image} />
+      <UserInfoContainer>
+        <p>{username}</p>
+        <UserFollowSmall>@ {accountname}</UserFollowSmall>
+      </UserInfoContainer>
+      {toggle ? (
+        <FollowButton size="sm" fontColor="#767676" bgColor="white" children="취소" onClick={handleUnFollowing} />
+      ) : (
+        <FollowButton size="sm" fontColor="white" bgColor="main" children="팔로우" onClick={handleFollowing} />
+      )}
+    </UserFollowContainer>
+  );
+}
+
+export default UserFollow;
+
+const ProfileImg = styled(BasicProfileImg)`
   width: 50px;
   height: 50px;
+  border-radius: 50%;
+  flex-shrink: 0;
+`;
+const UserInfoContainer = styled.div`
+  width: 100%;
 `;
 const UserFollowContainer = styled.li`
   width: 100%;
@@ -23,28 +88,3 @@ const UserFollowSmall = styled.small`
   font-family: "LINESeedKR";
   margin-top: 6px;
 `;
-
-const FollowBtn = styled(FollowButton)`
-  margin-left: auto;
-  cursor: pointer;
-`;
-
-function UserFollow() {
-  return (
-    <UserFollowContainer>
-      <Img src={profileImg} />
-      <div>
-        <p>애월읍 위니브 감귤 농장</p>
-        <UserFollowSmall>@ weniv_Mandarin</UserFollowSmall>
-      </div>
-      <FollowBtn
-        size="sm"
-        fontColor="white"
-        bgColor="main"
-        children={"팔로우"}
-      />
-    </UserFollowContainer>
-  );
-}
-
-export default UserFollow;

@@ -57,8 +57,7 @@ const ButtonContainer = styled.button`
         return "30px";
     }
   }};
-  border: ${(props) =>
-    props.bgColor === "white" ? "1px solid #dbdbdb" : "none"};
+  border: ${(props) => (props.bgColor === "white" ? "1px solid #dbdbdb" : "none")};
   font-family: inherit;
   font-weight: ${(props) => (props.size === "sm" ? "400" : "500")};
 
@@ -81,28 +80,16 @@ const ButtonContainer = styled.button`
   }};
   cursor: pointer;
   line-height: 20px;
+  flex-shrink: 0;
 `;
 /**
  *
  * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white";  onClick: "eventprops" ; disabled: "false"|"true" ; children: "buttonText"}} param0
  * @returns
  */
-function CommonButton({
-  size,
-  fontColor,
-  bgColor,
-  onClick,
-  disabled,
-  children,
-}) {
+function CommonButton({ size, fontColor, bgColor, onClick, disabled, children }) {
   return (
-    <ButtonContainer
-      size={size}
-      fontColor={fontColor}
-      bgColor={bgColor}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <ButtonContainer size={size} fontColor={fontColor} bgColor={bgColor} onClick={onClick} disabled={disabled}>
       {children}
     </ButtonContainer>
   );
