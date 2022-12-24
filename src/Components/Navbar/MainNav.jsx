@@ -1,7 +1,6 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import IconArrowLeft from "../icon/IconArrowLeft";
 import IconSearch from "../icon/IconSearch";
 
 const Container = styled.div`
@@ -25,15 +24,7 @@ const Title = styled.h2`
   font-weight: 500;
   line-height: 2.2rem;
 `;
-const Back = styled(Link)`
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-`;
-const BackBtnIcon = styled(IconArrowLeft)`
-  width: 22px;
-  height: 22px;
-`;
+
 const Search = styled(Link)`
   width: 24px;
   height: 24px;
@@ -51,16 +42,8 @@ const SearchIcon = styled(IconSearch)`
  * @returns
  */
 function MainNav({ titleContent }) {
-  const navigate = useNavigate();
   return (
     <Container>
-      <Back
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <BackBtnIcon />
-      </Back>
       <Title>{titleContent}</Title>
       <Search to="/search">
         <SearchIcon />
