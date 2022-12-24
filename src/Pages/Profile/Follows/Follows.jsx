@@ -16,14 +16,35 @@ function Followers() {
   } = useSelector((state) => state);
   const { accountname } = useParams();
   const location = useLocation();
+  const [limit, setLimit] = useState(20);
 
   useEffect(() => {
-    if (location.pathname.split("/")[3] === "followers") {
-      dispatch(SET_FOLLOWER_LIST({ accountname, token }));
-    } else if (location.pathname.split("/")[3] === "followings") {
-      dispatch(SET_FOLLOWING_LIST({ accountname, token }));
-    }
+    getFollowData();
+
+    let scrollTimer;
+    window.addEventListener("scroll", () => {
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+      }
+      scrollTimer = setTimeout(function () {
+        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
+          setLimit((prev) => prev + 20);
+        }
+      }, 100);
+    });
   }, []);
+
+  useEffect(() => {
+    getFollowData();
+  }, [limit]);
+
+  function getFollowData() {
+    if (location.pathname.split("/")[3] === "followers") {
+      dispatch(SET_FOLLOWER_LIST({ accountname, token, limit }));
+    } else if (location.pathname.split("/")[3] === "followings") {
+      dispatch(SET_FOLLOWING_LIST({ accountname, token, limit }));
+    }
+  }
 
   return (
     <>
