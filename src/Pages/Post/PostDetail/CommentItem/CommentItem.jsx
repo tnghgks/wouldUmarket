@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../../Components/icon/IconMoreVerticalSmall";
 import { getCookie } from "../../../../cookie";
-import { MODAL_TARGET, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../../../store/Modal";
+import { CLOSE_MODAL, MODAL_TARGET, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../../../store/Modal";
+import { FETCH_COMMENT_DATA } from "../../../../store/PostDetail";
 
 const Container = styled.div`
   width: 358px;
@@ -112,6 +113,8 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
       });
       const data = await response.json();
       alert(data.message);
+      dispatch(CLOSE_MODAL());
+      dispatch(FETCH_COMMENT_DATA({ id, token }));
     } catch (error) {
       console.log(error);
     }

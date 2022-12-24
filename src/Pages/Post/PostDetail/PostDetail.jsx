@@ -16,12 +16,12 @@ function PostDetail() {
   const dispatch = useDispatch();
   const {
     postDetail: { post, comments },
-    modalData: { targetId, isOpen, subModal },
+    modalData: { isOpen, subModal },
+    userInfo,
   } = useSelector((state) => state);
   const [modalInfo, setModalInfo] = useState([]);
   const { id } = useParams();
   const token = getCookie("accessToken");
-  const { modalData } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(FETCH_POST_DATA({ id, token }));
@@ -38,7 +38,7 @@ function PostDetail() {
           {comments && comments.map((comment) => <CommentItem key={comment.id} comment={comment} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />)}
         </CommentContainer>
       </MainContainer>
-      <Comment />
+      <Comment img={userInfo.image} placeholder="댓글 입력하기..." btn="게시" postId={post.id} />
       {isOpen && <Modal modalInfo={modalInfo} />}
       {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
     </>
