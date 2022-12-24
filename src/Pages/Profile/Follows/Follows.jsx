@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import MainNav from "../../../Components/Navbar/MainNav";
+import ChatNav from "../../../Components/Navbar/ChatNav";
 import TabMenu from "../../../Components/TabMenu";
 import UserFollow from "../../../Components/UserFollow";
 import { getCookie } from "../../../cookie";
@@ -48,7 +48,7 @@ function Followers() {
 
   return (
     <>
-      <MainNav titleContent="Follower" />
+      <ChatNav sellerName="Follower" />
       <Container>
         <FollowContainer>{!!users.length && users.map((user) => <UserFollow key={crypto.randomUUID()} {...user} />)}</FollowContainer>
       </Container>
@@ -63,6 +63,7 @@ const Container = styled.main`
   height: 100vh;
   margin-top: 48px;
   padding: 24px 16px;
+  margin-bottom: 61px;
 `;
 const FollowContainer = styled.section`
   width: 358px;
