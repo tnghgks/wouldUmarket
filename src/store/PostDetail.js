@@ -43,6 +43,11 @@ const initialState = {
 const postDetailSlice = createSlice({
   name: "postDetail",
   initialState,
+  reducers: {
+    ADD_COMMENT: (state, action) => {
+      state.comments.unshift(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(FETCH_POST_DATA.pending, (state, action) => {
       state.status = "pending";
@@ -68,5 +73,5 @@ const postDetailSlice = createSlice({
 });
 
 export { FETCH_POST_DATA, FETCH_COMMENT_DATA };
-
+export const { ADD_COMMENT } = postDetailSlice.actions;
 export default postDetailSlice.reducer;
