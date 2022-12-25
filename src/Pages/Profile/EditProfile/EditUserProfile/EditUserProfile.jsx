@@ -109,7 +109,7 @@ function EditUserProfile() {
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg />
+              <BasicProfileImg src={myProfileImg} />
               <label htmlFor="file">
                 <UploadImgDiv></UploadImgDiv>
               </label>
