@@ -6,14 +6,17 @@ import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
 import { getCookie } from "../cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 
 function HomePost({ postItem, setModalInfo, setSubModalData }) {
   const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
-  const dispatch = useDispatch();
   const [isLike, setIsLike] = useState(postItem.hearted);
   const token = getCookie("accessToken");
+  const dispatch = useDispatch();
+  const {
+    userInfo: { userId },
+  } = useSelector((state) => state);
 
   const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
 
@@ -33,20 +36,50 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
     }
   }
 
+  async function handleReportPost() {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const { report } = await response.json();
+      if (report) {
+        alert("게시물이 신고 되었습니다.");
+      } else {
+        alert("신고가 정상적으로 되지 않았습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleModalOpen() {
     dispatch(SET_MAIN_MODAL());
 
-    setModalInfo([
-      {
-        text: "삭제",
-        handleFunc: () => {
-          setSubModalData((state) => {
-            return { ...state, text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeletePost };
-          });
-          dispatch(SET_SUB_MODAL());
+    if (userId === author._id) {
+      setModalInfo([
+        {
+          text: "삭제",
+          handleFunc: () => {
+            setSubModalData({ text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeletePost });
+            dispatch(SET_SUB_MODAL());
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      setModalInfo([
+        {
+          text: "신고",
+          handleFunc: () => {
+            setSubModalData({ text: "신고하시겠습니까?", rightText: "신고", handleFunc: handleReportPost });
+            dispatch(SET_SUB_MODAL());
+          },
+        },
+      ]);
+    }
   }
 
   return (

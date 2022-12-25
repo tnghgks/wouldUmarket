@@ -100,6 +100,7 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
     postDetail: {
       post: { id },
     },
+    userInfo: { userId },
   } = useSelector((state) => state);
 
   async function handleDeleteComment() {
@@ -119,20 +120,52 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
       console.log(error);
     }
   }
+
+  async function handleReportComment() {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${id}/comments/${comment.id}/report`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const { report } = await response.json();
+      if (report) {
+        alert("댓글이 신고 되었습니다.");
+      } else {
+        alert("신고가 정상적으로 되지 않았습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleModalOpen() {
     dispatch(SET_MAIN_MODAL());
-    setModalInfo([
-      {
-        text: "삭제",
-        handleFunc: () => {
-          dispatch(SET_SUB_MODAL());
-          setSubModalData((state) => {
-            return { ...state, text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeleteComment };
-          });
-          dispatch(MODAL_TARGET(comment.id));
+    if (userId === comment.author._id) {
+      setModalInfo([
+        {
+          text: "삭제",
+          handleFunc: () => {
+            dispatch(SET_SUB_MODAL());
+            setSubModalData({ text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeleteComment });
+            dispatch(MODAL_TARGET(comment.id));
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      setModalInfo([
+        {
+          text: "신고",
+          handleFunc: () => {
+            dispatch(SET_SUB_MODAL());
+            setSubModalData({ text: "신고하시겠습니까?", rightText: "신고", handleFunc: handleReportComment });
+            dispatch(MODAL_TARGET(comment.id));
+          },
+        },
+      ]);
+    }
   }
 
   return (
