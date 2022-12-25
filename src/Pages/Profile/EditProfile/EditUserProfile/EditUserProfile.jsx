@@ -3,7 +3,7 @@ import BasicProfileImg from "../../../../Components/BasicProfileImg";
 import ImgButton from "../../../../assets/upload-file.png";
 import CommonInput from "../../../../Components/CommonInput";
 import BasicNav from "../../../../Components/Navbar/UploadNav";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { MODIFY_PROFILE } from "../../../../store/Profile";
@@ -17,7 +17,7 @@ function EditUserProfile() {
   const [userIntroError, setUserIntroError] = useState("");
   const [myProfileImg, setMyProfileImg] = useState("");
   const { profile } = useSelector((state) => state);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // NAME 유효성검사
   function handleUserName(e) {
@@ -100,7 +100,7 @@ function EditUserProfile() {
     console.log(editUserData);
 
     dispatch(MODIFY_PROFILE({ editUserData, token }));
-    // navigate(`/profile/${profile.accountname}`);
+    navigate(`/profile/${profile.accountname}`);
   }
   return (
     <>
