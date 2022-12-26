@@ -109,7 +109,9 @@ function EditUserProfile() {
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg src={myProfileImg} />
+              <BasicProfileImg
+                src={myProfileImg ? myProfileImg : profile.image}
+              />
               <label htmlFor="file">
                 <UploadImgDiv></UploadImgDiv>
               </label>
@@ -129,6 +131,7 @@ function EditUserProfile() {
               name="userName"
               onChange={handleUserName}
               required={true}
+              defaultValue={profile.username}
             />
             <Warning>{userNameError}</Warning>
             <CommonInput
@@ -138,6 +141,7 @@ function EditUserProfile() {
               name="userID"
               onChange={handleUserId}
               required={true}
+              defaultValue={profile.accountname}
             />
             <Warning>{userIdError}</Warning>
             <CommonInput
@@ -146,6 +150,7 @@ function EditUserProfile() {
               placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
               name="aboutMe"
               onChange={handleUserIntro}
+              defaultValue={profile.intro}
             />
             <Warning>{userIntroError}</Warning>
           </InputContainer>
