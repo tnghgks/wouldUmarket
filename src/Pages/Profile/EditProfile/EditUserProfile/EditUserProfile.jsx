@@ -5,23 +5,41 @@ import CommonInput from "../../../../Components/CommonInput";
 import BasicNav from "../../../../Components/Navbar/UploadNav";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MODIFY_PROFILE } from "../../../../store/Profile";
 import { getCookie } from "../../../../cookie";
 
 function EditUserProfile() {
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
+
+  const [profileName, setProfileName] = useState("");
+  const [profileId, setProfileId] = useState("");
+  const [profileIntro, setProfileIntro] = useState("");
+  const [myProfileImg, setMyProfileImg] = useState("");
+
   const [userNameError, setUserNameError] = useState("");
   const [userIdError, setUserIdError] = useState("");
   const [userIntroError, setUserIntroError] = useState("");
-  const [myProfileImg, setMyProfileImg] = useState("");
+
   const { profile } = useSelector((state) => state);
   const navigate = useNavigate();
+
+  const btnDisabled =
+    !(profileName || profileId) || !(profileIntro || myProfileImg);
+
+  console.log(btnDisabled);
+
+  useEffect(() => {
+    setProfileName(profile.username);
+    setProfileId(profile.accountname);
+    setProfileIntro(profile.intro);
+  }, []);
 
   // NAME 유효성검사
   function handleUserName(e) {
     const userName = e.target.value;
+    setProfileName(userName);
 
     // 한글,영어 표현식
     const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]*$/;
@@ -40,6 +58,7 @@ function EditUserProfile() {
   // ID 유효성검사
   function handleUserId(e) {
     const userId = e.target.value;
+    setProfileId(userId);
 
     // 영문,숫자,특수문자 표현식
     const Regex = /^[a-zA-Z0-9._]*$/;
@@ -55,9 +74,12 @@ function EditUserProfile() {
   // intro 유효성검사
   function handleUserIntro(e) {
     const userIntro = e.target.value;
+    setProfileIntro(userIntro);
 
     if (!userIntro) {
       setUserIntroError("소개를 입력해주세요.");
+    } else {
+      setUserIntroError("");
     }
   }
 
@@ -78,7 +100,7 @@ function EditUserProfile() {
       );
       const imgData = await res.json();
       if (!imgData) return;
-      setMyProfileImg("//mandarin.api.weniv.co.kr/" + imgData.filename);
+      setMyProfileImg("https://mandarin.api.weniv.co.kr/" + imgData.filename);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +127,11 @@ function EditUserProfile() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <BasicNav children="저장" />
+        <BasicNav
+          children="저장"
+          btnDisabled={btnDisabled}
+          bgColor={btnDisabled || false ? "light" : "accent"}
+        />
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
