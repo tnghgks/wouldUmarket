@@ -28,8 +28,6 @@ function EditUserProfile() {
   const btnDisabled =
     !(profileName || profileId) || !(profileIntro || myProfileImg);
 
-  console.log(btnDisabled);
-
   useEffect(() => {
     setProfileName(profile.username);
     setProfileId(profile.accountname);
@@ -111,6 +109,20 @@ function EditUserProfile() {
     e.preventDefault();
     const { userName, userID, aboutMe, imgfile } = e.target;
 
+    // 유효성 검사 및 disabled
+    if (btnDisabled) {
+      if (!userName.value) {
+        setUserNameError("사용자 이름을 입력해주세요.");
+      }
+      if (!userID.value) {
+        setUserIdError("계정 ID를 입력해주세요.");
+      }
+      if (!aboutMe.value) {
+        setUserIntroError("소개를 입력해주세요.");
+      }
+      return false;
+    }
+
     const editUserData = {
       user: {
         username: userName.value,
@@ -119,7 +131,6 @@ function EditUserProfile() {
         image: imgfile.files[0] ? myProfileImg : profile.image,
       },
     };
-    console.log(editUserData);
 
     dispatch(MODIFY_PROFILE({ editUserData, token }));
     navigate(`/profile/${profile.accountname}`);
@@ -129,7 +140,7 @@ function EditUserProfile() {
       <form onSubmit={handleSubmit}>
         <BasicNav
           children="저장"
-          btnDisabled={btnDisabled}
+          // btnDisabled={btnDisabled}
           bgColor={btnDisabled || false ? "light" : "accent"}
         />
         <EditProfileContainer>
@@ -156,7 +167,7 @@ function EditUserProfile() {
               placeholder="2~10자 이내여야 합니다."
               name="userName"
               onChange={handleUserName}
-              required={true}
+              // required={true}
               defaultValue={profile.username}
             />
             <Warning>{userNameError}</Warning>
@@ -166,7 +177,7 @@ function EditUserProfile() {
               placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
               name="userID"
               onChange={handleUserId}
-              required={true}
+              // required={true}
               defaultValue={profile.accountname}
             />
             <Warning>{userIdError}</Warning>
