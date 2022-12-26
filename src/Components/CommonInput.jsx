@@ -29,7 +29,15 @@ const ActivTextInput = styled.input`
   }
 `;
 
-function CommonInput({ label, name, type, placeholder, onChange, required }) {
+function CommonInput({
+  label,
+  name,
+  type,
+  placeholder,
+  onChange,
+  required,
+  defaultValue,
+}) {
   return (
     <TextActivInputContainer>
       <TextActivInputLabel htmlFor={name}>{label}</TextActivInputLabel>
@@ -39,6 +47,7 @@ function CommonInput({ label, name, type, placeholder, onChange, required }) {
         name={name}
         onChange={onChange}
         required={required}
+        defaultValue={defaultValue}
       />
     </TextActivInputContainer>
   );
