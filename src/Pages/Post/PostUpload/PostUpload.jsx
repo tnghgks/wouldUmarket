@@ -101,6 +101,7 @@ export default function PostUpload() {
       const id = Date.now();
       setImageList((prev) => [...prev, { id, result }]);
     }
+    // input 초기화
     e.target.value = "";
   };
 
