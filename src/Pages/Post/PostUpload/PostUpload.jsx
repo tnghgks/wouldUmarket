@@ -25,6 +25,7 @@ const ProfileImg = styled.img`
   width: 42px;
   height: 42px;
   margin-right: 12px;
+  border-radius: 50%;
 `;
 
 const Textarea = styled.textarea`
@@ -84,7 +85,6 @@ export default function PostUpload() {
 
   const onChangeImage = async (e) => {
     const { files } = e.target;
-    console.log(imageList);
     if (files.length > 3 || imageList.length > 2) {
       alert("첨부 가능 이미지 수는 최대 3장입니다.");
       return;
@@ -101,6 +101,8 @@ export default function PostUpload() {
       const id = Date.now();
       setImageList((prev) => [...prev, { id, result }]);
     }
+    // input 초기화
+    e.target.value = "";
   };
 
   return (
