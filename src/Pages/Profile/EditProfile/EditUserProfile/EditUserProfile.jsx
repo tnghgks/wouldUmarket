@@ -25,8 +25,7 @@ function EditUserProfile() {
   const { profile } = useSelector((state) => state);
   const navigate = useNavigate();
 
-  const btnDisabled =
-    !(profileName || profileId) || !(profileIntro || myProfileImg);
+  const btnDisabled = !(profileName || profileId) || !(profileIntro || myProfileImg);
 
   useEffect(() => {
     setProfileName(profile.username);
@@ -89,13 +88,10 @@ function EditUserProfile() {
     formData.append("image", imgfile.files[0]);
 
     try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/image/uploadfile`, {
+        method: "POST",
+        body: formData,
+      });
       const imgData = await res.json();
       if (!imgData) return;
       setMyProfileImg("https://mandarin.api.weniv.co.kr/" + imgData.filename);
@@ -105,7 +101,7 @@ function EditUserProfile() {
   }
 
   // 유저입력 데이터 핸들러
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const { userName, userID, aboutMe, imgfile } = e.target;
 
@@ -132,8 +128,8 @@ function EditUserProfile() {
       },
     };
 
-    dispatch(MODIFY_PROFILE({ editUserData, token }));
-    navigate(`/profile/${profile.accountname}`);
+    await dispatch(MODIFY_PROFILE({ editUserData, token }));
+    navigate(`/profile/${userID.value}`);
   }
   return (
     <>
@@ -146,18 +142,11 @@ function EditUserProfile() {
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg
-                src={myProfileImg ? myProfileImg : profile.image}
-              />
+              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
               <label htmlFor="file">
                 <UploadImgDiv></UploadImgDiv>
               </label>
-              <UploadImgInput
-                type="file"
-                name="imgfile"
-                id="file"
-                onChange={UserProfileImg}
-              />
+              <UploadImgInput type="file" name="imgfile" id="file" onChange={UserProfileImg} />
             </EditImgContainer>
           </ProfileContainer>
           <InputContainer>
@@ -181,14 +170,7 @@ function EditUserProfile() {
               defaultValue={profile.accountname}
             />
             <Warning>{userIdError}</Warning>
-            <CommonInput
-              label="소개"
-              type="text"
-              placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
-              name="aboutMe"
-              onChange={handleUserIntro}
-              defaultValue={profile.intro}
-            />
+            <CommonInput label="소개" type="text" placeholder="자신과 판매할 상품에 대해 소개해 주세요!" name="aboutMe" onChange={handleUserIntro} defaultValue={profile.intro} />
             <Warning>{userIntroError}</Warning>
           </InputContainer>
         </EditProfileContainer>
