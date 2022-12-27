@@ -60,7 +60,7 @@ function EmptyFeed() {
         {post.map((postItem, index) =>
           postItem.author.following ? (
             <PostContainer>
-              <HomePost key={index} postItem={postItem} />
+              <HomePost key={index} postItem={postItem} getData={getData} />
             </PostContainer>
           ) : (
             <FeedContainer>

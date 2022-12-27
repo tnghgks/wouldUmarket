@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
@@ -8,27 +8,45 @@ import IconComment from "./icon/IconMessageCircleSmall";
 import { getCookie } from "../cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
+import { FETCH_POST_DATA } from "../store/PostDetail";
 
 function HomePost({ postItem, setModalInfo, setSubModalData }) {
-  const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
-  const [isLike, setIsLike] = useState(postItem.hearted);
+  const {
+    author,
+    content,
+    image,
+    hearted,
+    id: postId,
+    heartCount,
+    commentCount,
+  } = postItem;
+  const [isHearted, setIsHearted] = useState(hearted);
+  const [countHeart, setCountHeart] = useState(heartCount);
+  const [countComment, setCountComment] = useState(commentCount);
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const {
     userInfo: { userId },
   } = useSelector((state) => state);
 
-  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
+  const createdAt = postItem.createdAt
+    .slice(0, 11)
+    .replace("-", "년 ")
+    .replace("-", "월 ")
+    .replace("T", "일");
 
   async function handleDeletePost() {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://mandarin.api.weniv.co.kr/post/${postItem.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       alert(data.message);
     } catch (error) {
@@ -38,13 +56,16 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
 
   async function handleReportPost() {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const { report } = await response.json();
       if (report) {
         alert("게시물이 신고 되었습니다.");
@@ -64,7 +85,11 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
         {
           text: "삭제",
           handleFunc: () => {
-            setSubModalData({ text: "삭제하시겠습니까?", rightText: "삭제", handleFunc: handleDeletePost });
+            setSubModalData({
+              text: "삭제하시겠습니까?",
+              rightText: "삭제",
+              handleFunc: handleDeletePost,
+            });
             dispatch(SET_SUB_MODAL());
           },
         },
@@ -74,12 +99,59 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
         {
           text: "신고",
           handleFunc: () => {
-            setSubModalData({ text: "신고하시겠습니까?", rightText: "신고", handleFunc: handleReportPost });
+            setSubModalData({
+              text: "신고하시겠습니까?",
+              rightText: "신고",
+              handleFunc: handleReportPost,
+            });
             dispatch(SET_SUB_MODAL());
           },
         },
       ]);
     }
+  }
+
+  async function getHeart() {
+    try {
+      await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/heart`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+
+      setCountHeart((prev) => prev + 1);
+      setIsHearted(true);
+      dispatch(FETCH_POST_DATA({ id: postId, token }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function getUnHeart() {
+    try {
+      await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/unheart`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+
+      setCountHeart((prev) => prev - 1);
+      setIsHearted(false);
+      dispatch(FETCH_POST_DATA({ id: postId, token }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleHeartClick() {
+    getHeart();
+  }
+
+  function handleUnHeartClick() {
+    getUnHeart();
   }
 
   return (
@@ -102,8 +174,11 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
           ) : null}
           <ReactContainer>
             <IconContainer>
-              <HeartIcon toggle={hearted} />
-              {heartCount}
+              <HeartIcon
+                toggle={isHearted}
+                onClick={isHearted ? handleUnHeartClick : handleHeartClick}
+              />
+              {countHeart}
             </IconContainer>
             <Link to={`/post/${postId}`}>
               <IconContainer>
