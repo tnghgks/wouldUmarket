@@ -10,27 +10,6 @@ import TabMenu from "../../../Components/TabMenu";
 import { useDispatch } from "react-redux";
 import { SET_USERINFO } from "../../../store/UserInfo";
 
-const FeedContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  gap: 20px;
-`;
-
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 68px;
-`;
-
-const Desc = styled.p`
-  font-size: 1.4rem;
-  color: #767676;
-`;
-
 function EmptyFeed() {
   const dispatch = useDispatch();
   const [post, setPost] = useState([]);
@@ -63,8 +42,8 @@ function EmptyFeed() {
       <main>
         {!!post.length ? (
           post.map((postItem, index) => (
-            <PostContainer>
-              <HomePost key={index} postItem={postItem} getData={getData} />
+            <PostContainer key={postItem.id}>
+              <HomePost key={postItem.id} postItem={postItem} getData={getData} />
             </PostContainer>
           ))
         ) : (
@@ -83,3 +62,24 @@ function EmptyFeed() {
 }
 
 export default EmptyFeed;
+
+const FeedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 20px;
+`;
+
+const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 68px;
+`;
+
+const Desc = styled.p`
+  font-size: 1.4rem;
+  color: #767676;
+`;
