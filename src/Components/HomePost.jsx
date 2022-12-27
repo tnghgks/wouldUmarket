@@ -145,7 +145,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
           <ImageContainer>
             {!!image &&
               image.split(",").map((img) => (
-                <Link to={`/post/${postId}`}>
+                <Link to={`/post/${postId}`} key={crypto.randomUUID()}>
                   <PostImg src={img} key={crypto.randomUUID()} />
                 </Link>
               ))}
