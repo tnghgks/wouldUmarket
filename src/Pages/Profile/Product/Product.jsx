@@ -15,15 +15,15 @@ function EditProduct() {
   const [productName, setProductName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [saleAddress, setSaleAddress] = useState("");
-  // const [productImg, setProductImg] = useState("");
+  const [productImg, setProductImg] = useState("");
 
-  // function handleProductImg(imgFile) {
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(imgFile);
-  //   reader.onloadend = () => {
-  //     setProductImg(reader.result);
-  //   };
-  // }
+  function handleProductImg(imgFile) {
+    const reader = new FileReader();
+    reader.readAsDataURL(imgFile);
+    reader.onloadend = () => {
+      setProductImg(reader.result);
+    };
+  }
 
   function handleformsubmit(event) {
     event.preventDefault();
@@ -48,7 +48,7 @@ function EditProduct() {
         <ProductContainer>
           <p>이미지 등록</p>
           <EditProductImgContainer>
-            {/* <ProductItemImg src={productImg} alt="" /> */}
+            <ProductItemImg src={productImg} alt="" />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
@@ -56,7 +56,7 @@ function EditProduct() {
               type="file"
               name="imgfile"
               id="file"
-              // onChange={(e) => handleProductImg(e.currentTarget.files[0])}
+              onChange={(e) => handleProductImg(e.currentTarget.files[0])}
             />
           </EditProductImgContainer>
         </ProductContainer>
@@ -120,15 +120,15 @@ const EditProductImgContainer = styled.section`
   background-color: #f2f2f2;
   border-radius: 10px;
   position: relative;
-  /* overflow: hidden;
-  text-align: center; */
+  overflow: hidden;
+  text-align: center;
 `;
 
-// const ProductItemImg = styled.img`
-//   width: 332px;
-//   height: 204px;
-//   object-fit: cover;
-// `;
+const ProductItemImg = styled.img`
+  width: 332px;
+  height: 204px;
+  object-fit: cover;
+`;
 
 // input 컴퍼넌트
 const InputContainer = styled.section`
