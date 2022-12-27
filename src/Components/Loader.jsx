@@ -42,7 +42,7 @@ const Title = styled.h2`
   position: absolute;
   left: 50%;
   top: 50%;
-  font-size: 3rem;
+  font-size: 2.5rem;
   transform: translate(-50%, -50%);
   z-index: 10;
   color: white;
