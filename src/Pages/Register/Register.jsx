@@ -3,8 +3,6 @@ import CommonInput from "../../Components/CommonInput";
 import CommonButton from "../../Components/button/CommonButton";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { SET_EMAIL_PASSWORD } from "../../store/Register";
 
 const Container = styled.section`
   width: 390px;
@@ -36,7 +34,6 @@ const Warning = styled.p`
 
 function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -133,11 +130,13 @@ function Register() {
       } else {
         //이메일 에러도 없고 패스워드 에러도 없다면
         if (!emailError && !passwordError) {
-          //스토어에 이메일과 패스워드만 저장
-          dispatch(SET_EMAIL_PASSWORD({ email, password }));
-
           // 다음 페이지로 이동
-          navigate("/profile/setProfile");
+          navigate("/profile/setProfile", {
+            state: {
+              email: email,
+              password: password,
+            },
+          });
         }
       }
     } catch (error) {
