@@ -45,17 +45,17 @@ function EditProduct() {
   function priceVaildation(e) {
     const priceValue = e.target.value;
 
-    // setItemPrice(() => {
-    //   const comma = (priceValue) => {
-    //     priceValue = String(priceValue);
-    //     return priceValue.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
-    //   };
-    //   const uncomma = (priceValue) => {
-    //     priceValue = String(priceValue);
-    //     return priceValue.replace(/[^\d]+/g, "");
-    //   };
-    //   return comma(uncomma(priceValue));
-    // });
+    setItemPrice(() => {
+      const comma = (priceValue) => {
+        priceValue = String(priceValue);
+        return priceValue.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
+      };
+      const uncomma = (priceValue) => {
+        priceValue = String(priceValue);
+        return priceValue.replace(/[^\d]+/g, "");
+      };
+      return comma(uncomma(priceValue));
+    });
 
     if (!priceValue) {
       setItemPriceError("가격을 입력해주세요.");
