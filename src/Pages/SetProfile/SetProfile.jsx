@@ -4,9 +4,9 @@ import BasicProfileImg from "../../Components/BasicProfileImg";
 import UploadFile from "../../Components/UploadFile";
 import CommonInput from "../../Components/CommonInput";
 import CommonButton from "../../Components/button/CommonButton";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useDispatch } from "react-redux";
-import { SET_PROFILE_DATA } from "../../store/Register";
+import { removeCookie, setCookie } from "../../cookie";
 
 const Container = styled.section`
   width: 390px;
@@ -80,6 +80,10 @@ function SetProfile() {
   const [introError, setIntroError] = useState("");
   const [validationError, setValidationError] = useState("");
 
+  // 이메일, 비밀번호 가져오기
+  const location = useLocation();
+  const { email, password } = { ...location.state };
+
   function handleUsernameChange(e) {
     const { value } = e.target;
     setUsername((prev) => {
@@ -132,7 +136,7 @@ function SetProfile() {
     }
   }
 
-  async function getAccountnameValidation(accountnameValue) {
+  async function getAccountnameValidation(inputData) {
     try {
       setValidationError("");
 
@@ -143,7 +147,7 @@ function SetProfile() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             user: {
-              accountname: accountnameValue,
+              accountname: accountname,
             },
           }),
         }
@@ -152,25 +156,91 @@ function SetProfile() {
       const { message } = await response.json();
       if (usernameError || accountnameError || introError) {
         setValidationError("올바른 양식이 아닙니다.");
+        return false;
       } else if (message !== "사용 가능한 계정ID 입니다.") {
         setValidationError(message);
-      } else {
-        if (!usernameError && !accountnameError && !introError) {
-          dispatch(SET_PROFILE_DATA({ username, accountname, intro }));
-          navigate("/feed");
-        }
+        return false;
       }
+      return true;
     } catch (error) {
       console.log(error);
     }
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    const {
-      accountname: { value: accountnameValue },
-    } = e.target;
 
-    getAccountnameValidation(accountnameValue);
+  async function getRegisteredData(inputData) {
+    try {
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputData),
+      });
+
+      const { user } = await response.json();
+
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getLogin() {
+    try {
+      const response = await fetch(
+        `https://mandarin.api.weniv.co.kr/user/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user: {
+              email,
+              password,
+            },
+          }),
+        }
+      );
+
+      const { user } = await response.json();
+
+      setCookie("accessToken", user.token, {
+        path: "/",
+        secure: true,
+        sameSite: "strict",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const { username, accountname, intro } = e.target;
+
+    // 비동기함수를 기다렸다가 벨리데이션에 따라 false 혹은 true를 반환
+    const result = await getAccountnameValidation(accountname.value);
+
+    //false면 함수 종료
+    if (!result) return;
+
+    const inputData = {
+      user: {
+        username: username.value,
+        accountname: accountname.value,
+        intro: intro.value,
+        email,
+        password,
+        image: "https://mandarin.api.weniv.co.kr/1641906557953.png",
+      },
+    };
+
+    const userData = await getRegisteredData(inputData);
+
+    if (userData) {
+      getLogin();
+    } else {
+      return;
+    }
+
+    navigate("/feed");
   }
 
   return (
