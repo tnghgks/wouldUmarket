@@ -48,7 +48,7 @@ function Followers() {
 
   return (
     <>
-      <ChatNav sellerName="Follower" />
+      <ChatNav sellerName="Follower" isMore={true} />
       <Container>
         <FollowContainer>{!!users.length && users.map((user) => <UserFollow key={crypto.randomUUID()} {...user} />)}</FollowContainer>
       </Container>

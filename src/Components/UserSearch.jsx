@@ -39,11 +39,12 @@ function UserSearch({ userData, searchInput }) {
 
     if (targetString.includes(searchInput)) {
       const splitData = targetString.split(searchInput);
+
       return (
         <div>
-          <span>{splitData[0]}</span>
+          <span>{splitData.shift()}</span>
           <ColorKeyword>{searchInput}</ColorKeyword>
-          <span>{splitData[1]}</span>
+          <span>{splitData.join("")}</span>
         </div>
       );
     }

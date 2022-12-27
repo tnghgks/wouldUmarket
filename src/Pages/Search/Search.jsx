@@ -43,7 +43,7 @@ function Search() {
 
   return (
     <>
-      <SearchNav setValue={setSearchInput} />
+      <SearchNav value={searchInput} setValue={setSearchInput} />
       <Container>
         {searchData.status === "rejected" && <div>ERROR</div>}
         {!searchData.data.length && searchData.status === "pending" && <Loader />}
