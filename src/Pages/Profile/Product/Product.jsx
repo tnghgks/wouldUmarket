@@ -2,8 +2,7 @@ import styled from "styled-components";
 import ImgButton from "../../../assets/upload-file.png";
 import CommonInput from "../../../Components/CommonInput";
 import BasicNav from "../../../Components/Navbar/UploadNav";
-// import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ADD_PRODUCT } from "../../../store/Product";
 import { useState } from "react";
 import { getCookie } from "../../../cookie";
@@ -13,13 +12,12 @@ function EditProduct() {
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { profile } = useSelector((state) => state);
 
   const [productName, setProductName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [address, setAddress] = useState("");
   const [productImg, setProductImg] = useState("");
-
-  console.log(itemPrice);
 
   const [productNameError, setProductNameError] = useState(true);
   const [itemPriceError, setItemPriceError] = useState(true);
@@ -138,7 +136,7 @@ function EditProduct() {
     };
 
     dispatch(ADD_PRODUCT({ productData, token }));
-    // navigate("/")
+    navigate(`/profile/${profile.accountname}`);
   }
 
   return (
