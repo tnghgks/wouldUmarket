@@ -7,6 +7,8 @@ import CommonButton from "../../../Components/button/CommonButton";
 import HomePost from "../../../Components/HomePost";
 import MainNav from "../../../Components/Navbar/MainNav";
 import TabMenu from "../../../Components/TabMenu";
+import { useDispatch } from "react-redux";
+import { SET_USERINFO } from "../../../store/UserInfo";
 
 const FeedContainer = styled.div`
   display: flex;
@@ -30,6 +32,7 @@ const Desc = styled.p`
 `;
 
 function EmptyFeed() {
+  const dispatch = useDispatch();
   const [post, setPost] = useState([]);
   const token = getCookie("accessToken");
 
@@ -50,6 +53,7 @@ function EmptyFeed() {
     }
   }
   useEffect(() => {
+    dispatch(SET_USERINFO(token));
     getData();
   }, []);
 
