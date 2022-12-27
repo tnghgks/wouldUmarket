@@ -61,20 +61,20 @@ function EmptyFeed() {
     <>
       <MainNav titleContent="우주쉐어 피드" />
       <main>
-        {post.map((postItem, index) =>
-          postItem.author.following ? (
+        {!!post.length ? (
+          post.map((postItem, index) => (
             <PostContainer>
               <HomePost key={index} postItem={postItem} getData={getData} />
             </PostContainer>
-          ) : (
-            <FeedContainer>
-              <SymbolLogoGray />
-              <Desc>유저를 검색해 팔로우 해보세요!</Desc>
-              <Link to={`/search`}>
-                <CommonButton size="md" bgColor="main" children="검색하기" />
-              </Link>
-            </FeedContainer>
-          )
+          ))
+        ) : (
+          <FeedContainer>
+            <SymbolLogoGray />
+            <Desc>유저를 검색해 팔로우 해보세요!</Desc>
+            <Link to={`/search`}>
+              <CommonButton size="md" bgColor="main" children="검색하기" />
+            </Link>
+          </FeedContainer>
         )}
       </main>
       <TabMenu />
