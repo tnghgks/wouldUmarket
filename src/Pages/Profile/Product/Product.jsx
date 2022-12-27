@@ -89,22 +89,22 @@ function EditProduct() {
     };
   }
 
-  // async function UserProfileImg(formData) {
-  //   try {
-  //     const res = await fetch(
-  //       `https://mandarin.api.weniv.co.kr/image/uploadfile`,
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-  //     const imgData = await res.json();
-  //     if (!imgData) return;
-  //     return `https://mandarin.api.weniv.co.kr/ ${imgData.filename}`;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  async function UserProfileImg(formData) {
+    try {
+      const res = await fetch(
+        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const imgData = await res.json();
+      if (!imgData) return;
+      return `https://mandarin.api.weniv.co.kr/ ${imgData.filename}`;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function handleformsubmit(event) {
     event.preventDefault();
@@ -208,7 +208,6 @@ const EditProfileContainer = styled.main`
 // 상품 사진 변경 컴퍼넌트
 
 const ProductContainer = styled.section`
-  /* background-image: ; */
   width: 322px;
   margin-top: 30px;
   color: #767676;
