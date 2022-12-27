@@ -7,13 +7,20 @@ import CommonButton from "../../../Components/button/CommonButton";
 import HomePost from "../../../Components/HomePost";
 import MainNav from "../../../Components/Navbar/MainNav";
 import TabMenu from "../../../Components/TabMenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_USERINFO } from "../../../store/UserInfo";
+import Modal from "../../../Components/Modal";
+import DeleteAlert from "../../../Components/DeleteAlert";
 
 function EmptyFeed() {
+  const [subModalData, setSubModalData] = useState({});
+  const [modalInfo, setModalInfo] = useState([]);
   const dispatch = useDispatch();
   const [post, setPost] = useState([]);
   const token = getCookie("accessToken");
+  const {
+    modalData: { isOpen, subModal },
+  } = useSelector((state) => state);
 
   async function getData() {
     try {
@@ -41,9 +48,9 @@ function EmptyFeed() {
       <MainNav titleContent="우주쉐어 피드" />
       <main>
         {!!post.length ? (
-          post.map((postItem, index) => (
+          post.map((postItem) => (
             <PostContainer key={postItem.id}>
-              <HomePost key={postItem.id} postItem={postItem} getData={getData} />
+              <HomePost key={postItem.id} postItem={postItem} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />
             </PostContainer>
           ))
         ) : (
@@ -57,6 +64,8 @@ function EmptyFeed() {
         )}
       </main>
       <TabMenu />
+      {isOpen && <Modal modalInfo={modalInfo} />}
+      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
     </>
   );
 }
