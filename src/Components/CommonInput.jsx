@@ -37,6 +37,7 @@ function CommonInput({
   onChange,
   required,
   defaultValue,
+  value,
 }) {
   return (
     <TextActivInputContainer>
@@ -48,6 +49,7 @@ function CommonInput({
         onChange={onChange}
         required={required}
         defaultValue={defaultValue}
+        value={value}
       />
     </TextActivInputContainer>
   );
