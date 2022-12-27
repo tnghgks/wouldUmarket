@@ -13,8 +13,8 @@ import Login from "../Pages/Login/Login";
 import LoginEmail from "../Pages/Login/LoginEmail";
 import SplashScreen from "../Pages/SplashScreen/SplashScreen";
 import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
-import EditUserProfile from "../Pages/Profile/EditProfile/EditUserProfile/EditUserProfile";
-import EditProduct from "../Pages/Profile/EditProfile/EditProduct/Editproduct";
+import EditUserProfile from "../Pages/Profile/EditUserProfile/EditUserProfile";
+import EditProduct from "../Pages/Profile/Product/EditProduct/Editproduct";
 
 function Router() {
   return (
