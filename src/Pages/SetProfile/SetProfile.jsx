@@ -1,88 +1,50 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import BasicProfileImg from "../../Components/BasicProfileImg";
-import UploadFile from "../../Components/UploadFile";
 import CommonInput from "../../Components/CommonInput";
 import CommonButton from "../../Components/button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
-import { useDispatch } from "react-redux";
-import { removeCookie, setCookie } from "../../cookie";
-
-const Container = styled.section`
-  width: 390px;
-  margin: 20px auto;
-  padding: 30px 34px;
-`;
-
-const Title = styled.h1`
-  font-size: 2.4rem;
-  text-align: center;
-  margin-bottom: 12px;
-`;
-
-const TitleDesc = styled.p`
-  font-size: 1.4rem;
-  text-align: center;
-  color: #767676;
-`;
-
-const ProfileImgContainer = styled.div`
-  position: relative;
-  width: 110px;
-  height: 110px;
-  margin: 30px auto;
-`;
-
-const UploadfileImgBtn = styled.button`
-  position: absolute;
-  background: none;
-  border: none;
-  bottom: 0;
-  right: 0;
-  cursor: pointer;
-`;
-
-const Uploadfile = styled(UploadFile)`
-  width: 36px;
-  height: 36px;
-`;
-
-const TextContainer = styled.div`
-  & > div {
-    :nth-child(2) {
-      margin: 16px 0;
-    }
-    :last-child {
-      margin-bottom: 30px;
-    }
-  }
-  & > div > div > input {
-    &:focus {
-      border-bottom-color: var(--subColor);
-      transition: border-bottom-color 200ms;
-    }
-  }
-`;
-
-const Warning = styled.p`
-  font-size: 1.2rem;
-  color: #eb5757;
-`;
+import { setCookie } from "../../cookie";
+import ImgButton from "../../assets/upload-file.png";
 
 function SetProfile() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [accountname, setAccountname] = useState("");
   const [intro, setIntro] = useState("");
+  const [image, SetImage] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [accountnameError, setAccountnameError] = useState("");
   const [introError, setIntroError] = useState("");
   const [validationError, setValidationError] = useState("");
+  const [RegisterError, setRegisterError] = useState("");
+  const fileInput = useRef(null);
 
   // 이메일, 비밀번호 가져오기
   const location = useLocation();
   const { email, password } = { ...location.state };
+
+  // 프로필 이미지 API
+  async function handleSetProfileImg(e) {
+    const imgFile = fileInput.current.files[0];
+    const formData = new FormData();
+    formData.append("image", imgFile);
+
+    try {
+      const res = await fetch(
+        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const imgData = await res.json();
+      if (!imgData) return;
+      SetImage("https://mandarin.api.weniv.co.kr/" + imgData.filename);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function handleUsernameChange(e) {
     const { value } = e.target;
@@ -106,6 +68,7 @@ function SetProfile() {
     });
   }
 
+  // 유효성 검사
   function usernameValidation(username) {
     const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]{2,10}$/;
     if (!username) {
@@ -136,7 +99,8 @@ function SetProfile() {
     }
   }
 
-  async function getAccountnameValidation(inputData) {
+  // 계정ID 유효성 검사
+  async function getAccountnameValidation(accountnameValue) {
     try {
       setValidationError("");
 
@@ -147,7 +111,7 @@ function SetProfile() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             user: {
-              accountname: accountname,
+              accountname: accountnameValue,
             },
           }),
         }
@@ -167,6 +131,7 @@ function SetProfile() {
     }
   }
 
+  // 회원가입 API
   async function getRegisteredData(inputData) {
     try {
       const response = await fetch(`https://mandarin.api.weniv.co.kr/user`, {
@@ -175,14 +140,18 @@ function SetProfile() {
         body: JSON.stringify(inputData),
       });
 
-      const { user } = await response.json();
-
+      const { user, message } = await response.json();
+      if (message !== "회원가입 성공") {
+        setRegisterError(message);
+        return false;
+      }
       return user;
     } catch (error) {
       console.log(error);
     }
   }
 
+  // 로그인 API
   async function getLogin() {
     try {
       const response = await fetch(
@@ -220,7 +189,7 @@ function SetProfile() {
 
     //false면 함수 종료
     if (!result) return;
-
+    console.log(image);
     const inputData = {
       user: {
         username: username.value,
@@ -228,9 +197,10 @@ function SetProfile() {
         intro: intro.value,
         email,
         password,
-        image: "https://mandarin.api.weniv.co.kr/1641906557953.png",
+        image: image,
       },
     };
+    console.log(inputData);
 
     const userData = await getRegisteredData(inputData);
 
@@ -249,10 +219,17 @@ function SetProfile() {
       <TitleDesc>나중에 언제든지 변경할 수 있습니다.</TitleDesc>
       <form onSubmit={handleSubmit}>
         <ProfileImgContainer>
-          <BasicProfileImg />
-          <UploadfileImgBtn>
-            <Uploadfile />
-          </UploadfileImgBtn>
+          <BasicProfileImg src={image ? image : ""} />
+          <label htmlFor="file">
+            <UploadImgDiv></UploadImgDiv>
+          </label>
+          <UploadImgInput
+            type="file"
+            name="profileImage"
+            id="file"
+            onChange={handleSetProfileImg}
+            ref={fileInput}
+          />
         </ProfileImgContainer>
         <TextContainer>
           <div>
@@ -296,9 +273,73 @@ function SetProfile() {
           children="우주쉐어 시작하기"
           disabled={!(username && accountname && intro)}
         />
+        {RegisterError && <Warning>*{RegisterError}</Warning>}
       </form>
     </Container>
   );
 }
 
 export default SetProfile;
+
+const Container = styled.section`
+  width: 390px;
+  margin: 20px auto;
+  padding: 30px 34px;
+`;
+
+const Title = styled.h1`
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 12px;
+`;
+
+const TitleDesc = styled.p`
+  font-size: 1.4rem;
+  text-align: center;
+  color: #767676;
+`;
+
+const ProfileImgContainer = styled.div`
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 30px auto;
+`;
+
+const UploadImgInput = styled.input`
+  display: none;
+`;
+
+const UploadImgDiv = styled.div`
+  background-image: url(${ImgButton});
+  background-size: contain;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+const TextContainer = styled.div`
+  & > div {
+    :nth-child(2) {
+      margin: 16px 0;
+    }
+    :last-child {
+      margin-bottom: 30px;
+    }
+  }
+  & > div > div > input {
+    &:focus {
+      border-bottom-color: var(--subColor);
+      transition: border-bottom-color 200ms;
+    }
+  }
+`;
+
+const Warning = styled.p`
+  font-size: 1.2rem;
+  color: #eb5757;
+`;
