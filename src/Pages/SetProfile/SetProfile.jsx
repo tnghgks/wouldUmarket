@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import BasicProfileImg from "../../Components/BasicProfileImg";
-// import UploadFile from "../../Components/UploadFile";
 import CommonInput from "../../Components/CommonInput";
 import CommonButton from "../../Components/button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
@@ -322,19 +321,6 @@ const UploadImgDiv = styled.div`
   border-radius: 50%;
   cursor: pointer;
 `;
-// const UploadfileImgBtn = styled.button`
-//   position: absolute;
-//   background: none;
-//   border: none;
-//   bottom: 0;
-//   right: 0;
-//   cursor: pointer;
-// `;
-
-// const Uploadfile = styled(UploadFile)`
-//   width: 36px;
-//   height: 36px;
-// `;
 
 const TextContainer = styled.div`
   & > div {
