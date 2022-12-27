@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { MODIFY_PROFILE } from "../../../../store/Profile";
 import { getCookie } from "../../../../cookie";
+import { SET_USERINFO } from "../../../../store/UserInfo";
 
 function EditUserProfile() {
   const token = getCookie("accessToken");
@@ -129,6 +130,10 @@ function EditUserProfile() {
     };
 
     await dispatch(MODIFY_PROFILE({ editUserData, token }));
+
+    //변경된 UserInfo 다시 불러오기
+    await dispatch(SET_USERINFO(token));
+
     navigate(`/profile/${userID.value}`);
   }
   return (
