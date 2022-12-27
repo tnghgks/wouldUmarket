@@ -11,42 +11,26 @@ import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 
 function HomePost({ postItem, setModalInfo, setSubModalData }) {
-  const {
-    author,
-    content,
-    image,
-    hearted,
-    id: postId,
-    heartCount,
-    commentCount,
-  } = postItem;
+  const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
   const [isHearted, setIsHearted] = useState(hearted);
   const [countHeart, setCountHeart] = useState(heartCount);
-  const [countComment, setCountComment] = useState(commentCount);
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const {
     userInfo: { userId },
   } = useSelector((state) => state);
 
-  const createdAt = postItem.createdAt
-    .slice(0, 11)
-    .replace("-", "년 ")
-    .replace("-", "월 ")
-    .replace("T", "일");
+  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
 
   async function handleDeletePost() {
     try {
-      const response = await fetch(
-        `https://mandarin.api.weniv.co.kr/post/${postItem.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
       alert(data.message);
     } catch (error) {
@@ -56,16 +40,13 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
 
   async function handleReportPost() {
     try {
-      const response = await fetch(
-        `https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const { report } = await response.json();
       if (report) {
         alert("게시물이 신고 되었습니다.");
@@ -111,7 +92,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
     }
   }
 
-  async function getHeart() {
+  async function handleHeartClick() {
     try {
       await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/heart`, {
         method: "POST",
@@ -128,7 +109,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
       console.log(error);
     }
   }
-  async function getUnHeart() {
+  async function handleUnHeartClick() {
     try {
       await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/unheart`, {
         method: "DELETE",
@@ -146,19 +127,13 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
     }
   }
 
-  function handleHeartClick() {
-    getHeart();
-  }
-
-  function handleUnHeartClick() {
-    getUnHeart();
-  }
-
   return (
     <>
       <PostContainer>
         <TitleContainer>
-          <ProfileImg src={author.image} />
+          <Link to={`/profile/${author.accountname}`}>
+            <ProfileImg src={author.image} />
+          </Link>
           <Link to={`/profile/${author.accountname}`}>
             <UserName>{author.username}</UserName>
             <UserID>@ {author.accountname}</UserID>
@@ -167,17 +142,17 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
         </TitleContainer>
         <ContContainer>
           <Cont>{content}</Cont>
-          {image ? (
-            <Link to={`/post/${postId}`}>
-              <PostImg src={image} />
-            </Link>
-          ) : null}
+          <ImageContainer>
+            {!!image &&
+              image.split(",").map((img) => (
+                <Link to={`/post/${postId}`} key={crypto.randomUUID()}>
+                  <PostImg src={img} key={crypto.randomUUID()} />
+                </Link>
+              ))}
+          </ImageContainer>
           <ReactContainer>
             <IconContainer>
-              <HeartIcon
-                toggle={isHearted}
-                onClick={isHearted ? handleUnHeartClick : handleHeartClick}
-              />
+              <HeartIcon toggle={isHearted} onClick={isHearted ? handleUnHeartClick : handleHeartClick} />
               {countHeart}
             </IconContainer>
             <Link to={`/post/${postId}`}>
@@ -200,7 +175,6 @@ const PostContainer = styled.section`
   display: flex;
   flex-direction: column;
   width: 358px;
-  height: 434px;
   background-color: #ffffff;
 `;
 const TitleContainer = styled.div`
@@ -238,6 +212,13 @@ const UserID = styled.span`
 const Cont = styled.p`
   font-size: 1.4rem;
   margin: 16px 0;
+`;
+const ImageContainer = styled.ul`
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  overflow: auto hidden;
+  width: 304px;
 `;
 
 const PostImg = styled.img`

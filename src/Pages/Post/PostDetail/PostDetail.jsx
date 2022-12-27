@@ -13,16 +13,16 @@ import DeleteAlert from "../../../Components/DeleteAlert";
 
 function PostDetail() {
   const [subModalData, setSubModalData] = useState({});
+  const [modalInfo, setModalInfo] = useState([]);
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const token = getCookie("accessToken");
   const {
     postDetail: { post, comments },
     modalData: { isOpen, subModal },
     userInfo,
   } = useSelector((state) => state);
-  const [modalInfo, setModalInfo] = useState([]);
-  const { id } = useParams();
-  const token = getCookie("accessToken");
-  console.log(userInfo);
+
   useEffect(() => {
     dispatch(FETCH_POST_DATA({ id, token }));
     dispatch(FETCH_COMMENT_DATA({ id, token }));
