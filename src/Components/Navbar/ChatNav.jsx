@@ -56,7 +56,7 @@ const MoreIcon = styled(IconMoreVertical)`
  * @param {{sellerName: string}} param0
  * @returns
  */
-function ChatNav({ sellerName }) {
+function ChatNav({ sellerName, isMore = false }) {
   const navigate = useNavigate();
   return (
     <Container>
@@ -68,9 +68,11 @@ function ChatNav({ sellerName }) {
         <BackBtnIcon />
       </Back>
       <SellerName>{sellerName}</SellerName>
-      <More type="button">
-        <MoreIcon />
-      </More>
+      {!isMore && (
+        <More type="button">
+          <MoreIcon />
+        </More>
+      )}
     </Container>
   );
 }

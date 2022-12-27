@@ -12,8 +12,7 @@ function UserInfo() {
   const { accountname } = useParams();
   const { userInfo, profile } = useSelector((state) => state);
   const token = getCookie("accessToken");
-  console.log(userInfo);
-  console.log(profile);
+
   const ownUser = userInfo.userId === profile.userId;
 
   async function handleFollowBtn() {

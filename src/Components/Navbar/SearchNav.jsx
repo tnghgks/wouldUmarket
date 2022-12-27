@@ -1,7 +1,27 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconArrowLeft from "../icon/IconArrowLeft";
+
+function SearchNav({ value, setValue }) {
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+
+  const navigate = useNavigate();
+  return (
+    <Container>
+      <Back
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <BackBtnIcon />
+      </Back>
+      <Input placeholder="계정 검색" value={value} onChange={handleChange} />
+    </Container>
+  );
+}
+export default SearchNav;
 
 const Container = styled.div`
   display: flex;
@@ -44,23 +64,3 @@ const BackBtnIcon = styled(IconArrowLeft)`
   width: 22px;
   height: 22px;
 `;
-
-function SearchNav({ setValue }) {
-  function handleChange(e) {
-    setValue(e.target.value);
-  }
-  const navigate = useNavigate();
-  return (
-    <Container>
-      <Back
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <BackBtnIcon />
-      </Back>
-      <Input placeholder="계정 검색" onChange={handleChange} />
-    </Container>
-  );
-}
-export default SearchNav;

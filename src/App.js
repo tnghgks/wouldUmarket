@@ -60,6 +60,21 @@ html{
 body{
   font-family: 'LINESeedKR-Bd', sans-serif;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--mainColor);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--accentColor);
+}
+
 `;
 
 function App() {

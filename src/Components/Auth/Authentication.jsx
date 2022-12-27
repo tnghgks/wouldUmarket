@@ -8,28 +8,10 @@ function Authentication() {
   const { userInfo } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  async function getUserData() {
-    const response = await fetch("https://mandarin.api.weniv.co.kr/user/myinfo", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const { user } = await response.json();
-    dispatch(
-      SET_USERINFO({
-        _id: user._id,
-        username: user.username,
-        accountname: user.accountname,
-        image: user.image,
-      })
-    );
-  }
-
   useEffect(() => {
     if (!userInfo.accountname) {
       if (token) {
-        getUserData();
+        dispatch(SET_USERINFO(token));
       }
     }
   });

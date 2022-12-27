@@ -90,7 +90,7 @@ function Comment({ img, placeholder, btn, postId }) {
     <CommentContainer>
       <FromContainer onSubmit={onSubmitComments}>
         <SmallProfileImg src={img} />
-        <CommentInput tpye="text" value={value} onChange={onChange} placeholder={placeholder} />
+        <CommentInput type="text" value={value} onChange={onChange} placeholder={placeholder} />
         <CommentBtn value={!!value}>{btn}</CommentBtn>
       </FromContainer>
     </CommentContainer>
