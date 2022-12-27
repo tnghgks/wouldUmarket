@@ -131,7 +131,9 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
     <>
       <PostContainer>
         <TitleContainer>
-          <ProfileImg src={author.image} />
+          <Link to={`/profile/${author.accountname}`}>
+            <ProfileImg src={author.image} />
+          </Link>
           <Link to={`/profile/${author.accountname}`}>
             <UserName>{author.username}</UserName>
             <UserID>@ {author.accountname}</UserID>
