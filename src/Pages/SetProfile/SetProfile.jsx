@@ -19,7 +19,6 @@ function SetProfile() {
   const [validationError, setValidationError] = useState("");
   const [RegisterError, setRegisterError] = useState("");
   const fileInput = useRef(null);
-
   // 이메일, 비밀번호 가져오기
   const location = useLocation();
   const { email, password } = { ...location.state };
@@ -31,13 +30,10 @@ function SetProfile() {
     formData.append("image", imgFile);
 
     try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/image/uploadfile`, {
+        method: "POST",
+        body: formData,
+      });
       const imgData = await res.json();
       if (!imgData) return;
       SetImage("https://mandarin.api.weniv.co.kr/" + imgData.filename);
@@ -104,18 +100,15 @@ function SetProfile() {
     try {
       setValidationError("");
 
-      const response = await fetch(
-        "https://mandarin.api.weniv.co.kr/user/accountnamevalid",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user: {
-              accountname: accountnameValue,
-            },
-          }),
-        }
-      );
+      const response = await fetch("https://mandarin.api.weniv.co.kr/user/accountnamevalid", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: {
+            accountname: accountnameValue,
+          },
+        }),
+      });
 
       const { message } = await response.json();
       if (usernameError || accountnameError || introError) {
@@ -141,10 +134,12 @@ function SetProfile() {
       });
 
       const { user, message } = await response.json();
+
       if (message !== "회원가입 성공") {
         setRegisterError(message);
         return false;
       }
+
       return user;
     } catch (error) {
       console.log(error);
@@ -154,19 +149,16 @@ function SetProfile() {
   // 로그인 API
   async function getLogin() {
     try {
-      const response = await fetch(
-        `https://mandarin.api.weniv.co.kr/user/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user: {
-              email,
-              password,
-            },
-          }),
-        }
-      );
+      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: {
+            email,
+            password,
+          },
+        }),
+      });
 
       const { user } = await response.json();
 
@@ -189,7 +181,7 @@ function SetProfile() {
 
     //false면 함수 종료
     if (!result) return;
-    console.log(image);
+
     const inputData = {
       user: {
         username: username.value,
@@ -200,12 +192,11 @@ function SetProfile() {
         image: image,
       },
     };
-    console.log(inputData);
 
     const userData = await getRegisteredData(inputData);
 
     if (userData) {
-      getLogin();
+      await getLogin();
     } else {
       return;
     }
@@ -223,24 +214,11 @@ function SetProfile() {
           <label htmlFor="file">
             <UploadImgDiv></UploadImgDiv>
           </label>
-          <UploadImgInput
-            type="file"
-            name="profileImage"
-            id="file"
-            onChange={handleSetProfileImg}
-            ref={fileInput}
-          />
+          <UploadImgInput type="file" name="profileImage" id="file" onChange={handleSetProfileImg} ref={fileInput} />
         </ProfileImgContainer>
         <TextContainer>
           <div>
-            <CommonInput
-              name="username"
-              label="사용자 이름"
-              type="text"
-              placeholder="2~10자 이내여야 합니다."
-              onChange={handleUsernameChange}
-              required="required"
-            />
+            <CommonInput name="username" label="사용자 이름" type="text" placeholder="2~10자 이내여야 합니다." onChange={handleUsernameChange} required="required" />
             {usernameError && <Warning>*{usernameError}</Warning>}
           </div>
           <div>
@@ -255,24 +233,12 @@ function SetProfile() {
             {accountnameError && <Warning>*{accountnameError}</Warning>}
           </div>
           <div>
-            <CommonInput
-              name="intro"
-              label="소개"
-              type="text"
-              placeholder="자신과 쉐어할 상품에 대해 소개해주세요!"
-              onChange={handleIntroChange}
-              required="required"
-            />
+            <CommonInput name="intro" label="소개" type="text" placeholder="자신과 쉐어할 상품에 대해 소개해주세요!" onChange={handleIntroChange} required="required" />
             {introError && <Warning>*{introError}</Warning>}
           </div>
         </TextContainer>
         {validationError && <Warning>*{validationError}</Warning>}
-        <CommonButton
-          size="lg"
-          bgColor={!(username && accountname && intro) ? "light" : "accent"}
-          children="우주쉐어 시작하기"
-          disabled={!(username && accountname && intro)}
-        />
+        <CommonButton size="lg" bgColor={!(username && accountname && intro) ? "light" : "accent"} children="우주쉐어 시작하기" disabled={!(username && accountname && intro)} />
         {RegisterError && <Warning>*{RegisterError}</Warning>}
       </form>
     </Container>
