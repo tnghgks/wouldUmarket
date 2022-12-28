@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
 import { getCookie } from "../cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
+import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 
-function HomePost({ postItem, setModalInfo, setSubModalData }) {
+function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
   const [isHearted, setIsHearted] = useState(hearted);
   const [countHeart, setCountHeart] = useState(heartCount);
@@ -33,6 +33,9 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
       });
       const data = await response.json();
       alert(data.message);
+
+      getPostList();
+      dispatch(CLOSE_MODAL());
     } catch (error) {
       console.log(error);
     }
@@ -53,14 +56,13 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
       } else {
         alert("신고가 정상적으로 되지 않았습니다.");
       }
+      dispatch(CLOSE_MODAL());
     } catch (error) {
       console.log(error);
     }
   }
 
   function handleModalOpen() {
-    dispatch(SET_MAIN_MODAL());
-
     if (userId === author._id) {
       setModalInfo([
         {
@@ -90,6 +92,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData }) {
         },
       ]);
     }
+    dispatch(SET_MAIN_MODAL());
   }
 
   async function handleHeartClick() {
