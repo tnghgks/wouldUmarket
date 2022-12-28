@@ -5,6 +5,55 @@ import IconPostList from "../../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../../Components/icon/IconPostAlbum.jsx";
 import { getCookie } from "../../../../cookie";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_USER_POSTS } from "../../../../store/PostList";
+
+function UserPost({ setModalInfo, setSubModalData }) {
+  const {
+    postList: { posts },
+  } = useSelector((state) => state);
+  const [toggle, setToggle] = useState(true);
+  const dispatch = useDispatch();
+  const token = getCookie("accessToken");
+  const { accountname } = useParams();
+
+  useEffect(() => {
+    dispatch(SET_USER_POSTS({ accountname, token }));
+  }, []);
+
+  const handleClick = (toggle) => {
+    if (toggle) return;
+    setToggle((prev) => !prev);
+  };
+
+  return (
+    !!posts.length && (
+      <Container>
+        <ViewModeContainer>
+          <IconPostList toggle={toggle} onClick={handleClick} />
+          <IconPostAlbum toggle={!toggle} onClick={handleClick} />
+        </ViewModeContainer>
+        <PostContainer>
+          {posts.length && toggle ? (
+            posts.map((postItem, index) => (
+              <HomePost
+                key={index}
+                postItem={postItem}
+                setModalInfo={setModalInfo}
+                setSubModalData={setSubModalData}
+                getPostList={() => dispatch(SET_USER_POSTS({ accountname, token }))}
+              />
+            ))
+          ) : (
+            <AlbumContainer>{posts.map((postItem, index) => postItem.image.split(",").map((img) => <img key={index} src={img} alt="POST 이미지" />))}</AlbumContainer>
+          )}
+        </PostContainer>
+      </Container>
+    )
+  );
+}
+
+export default UserPost;
 
 const Container = styled.section`
   width: 100%;
@@ -40,59 +89,3 @@ const AlbumContainer = styled.ul`
     height: 100%;
   }
 `;
-
-function UserPost({ setModalInfo, setSubModalData }) {
-  const [post, setPost] = useState([]);
-  const [toggle, setToggle] = useState(true);
-  const token = getCookie("accessToken");
-  const { accountname } = useParams();
-
-  async function getData() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/post/${accountname}/userpost`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { post } = await res.json();
-
-      setPost(post);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const handleClick = (toggle) => {
-    if (toggle) return;
-    setToggle((prev) => !prev);
-  };
-
-  return (
-    !!post.length && (
-      <Container>
-        <ViewModeContainer>
-          <IconPostList toggle={toggle} onClick={handleClick} />
-          <IconPostAlbum toggle={!toggle} onClick={handleClick} />
-        </ViewModeContainer>
-        <PostContainer>
-          {post.length && toggle ? (
-            post.map((postItem, index) => <HomePost key={index} postItem={postItem} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />)
-          ) : (
-            <AlbumContainer>
-              {post.map((postItem, index) => (
-                <img key={index} src={postItem.image} alt="POST 이미지" />
-              ))}
-            </AlbumContainer>
-          )}
-        </PostContainer>
-      </Container>
-    )
-  );
-}
-
-export default UserPost;
