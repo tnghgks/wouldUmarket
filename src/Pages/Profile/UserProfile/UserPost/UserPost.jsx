@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HomePost from "../../../../Components/HomePost";
 import IconPostList from "../../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../../Components/icon/IconPostAlbum.jsx";
@@ -16,10 +16,6 @@ function UserPost({ setModalInfo, setSubModalData }) {
   const dispatch = useDispatch();
   const token = getCookie("accessToken");
   const { accountname } = useParams();
-
-  useEffect(() => {
-    dispatch(SET_USER_POSTS({ accountname, token }));
-  }, []);
 
   const handleClick = (toggle) => {
     if (toggle) return;

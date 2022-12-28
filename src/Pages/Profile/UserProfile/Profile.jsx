@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../Components/Modal";
 import DeleteAlert from "../../../Components/DeleteAlert";
+import { SET_PRODUCT_LIST } from "../../../store/ProductList";
+import { SET_USER_POSTS } from "../../../store/PostList";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -22,7 +24,9 @@ function Profile() {
 
   useEffect(() => {
     dispatch(SET_PROFILE({ accountname, token }));
-  }, []);
+    dispatch(SET_PRODUCT_LIST({ accountname, token }));
+    dispatch(SET_USER_POSTS({ accountname, token }));
+  }, [accountname]);
 
   return (
     <>
