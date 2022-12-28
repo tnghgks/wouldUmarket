@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import BasicProfileImg from "../../../../Components/BasicProfileImg";
-import ImgButton from "../../../../assets/upload-file.png";
-import CommonInput from "../../../../Components/CommonInput";
-import BasicNav from "../../../../Components/Navbar/UploadNav";
+import BasicProfileImg from "../../../Components/BasicProfileImg";
+import ImgButton from "../../../assets/upload-file.png";
+import CommonInput from "../../../Components/CommonInput";
+import BasicNav from "../../../Components/Navbar/UploadNav";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { MODIFY_PROFILE } from "../../../../store/Profile";
-import { getCookie } from "../../../../cookie";
-import { SET_USERINFO } from "../../../../store/UserInfo";
+import { MODIFY_PROFILE } from "../../../store/Profile";
+import { getCookie } from "../../../cookie";
+import { SET_USERINFO } from "../../../store/UserInfo";
 
 function EditUserProfile() {
   const token = getCookie("accessToken");
@@ -26,8 +26,7 @@ function EditUserProfile() {
   const { profile } = useSelector((state) => state);
   const navigate = useNavigate();
 
-  const btnDisabled =
-    !(profileName || profileId) || !(profileIntro || myProfileImg);
+  const btnDisabled = !(profileName || profileId) || !(profileIntro || myProfileImg);
 
   useEffect(() => {
     setProfileName(profile.username);
@@ -90,13 +89,10 @@ function EditUserProfile() {
     formData.append("image", imgfile.files[0]);
 
     try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`https://mandarin.api.weniv.co.kr/image/uploadfile`, {
+        method: "POST",
+        body: formData,
+      });
       const imgData = await res.json();
       if (!imgData) return;
       setMyProfileImg("https://mandarin.api.weniv.co.kr/" + imgData.filename);
@@ -151,18 +147,11 @@ function EditUserProfile() {
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg
-                src={myProfileImg ? myProfileImg : profile.image}
-              />
+              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
               <label htmlFor="file">
                 <UploadImgDiv></UploadImgDiv>
               </label>
-              <UploadImgInput
-                type="file"
-                name="imgfile"
-                id="file"
-                onChange={UserProfileImg}
-              />
+              <UploadImgInput type="file" name="imgfile" id="file" onChange={UserProfileImg} />
             </EditImgContainer>
           </ProfileContainer>
           <InputContainer>
@@ -186,14 +175,7 @@ function EditUserProfile() {
               defaultValue={profile.accountname}
             />
             <Warning>{userIdError}</Warning>
-            <CommonInput
-              label="소개"
-              type="text"
-              placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
-              name="aboutMe"
-              onChange={handleUserIntro}
-              defaultValue={profile.intro}
-            />
+            <CommonInput label="소개" type="text" placeholder="자신과 판매할 상품에 대해 소개해 주세요!" name="aboutMe" onChange={handleUserIntro} defaultValue={profile.intro} />
             <Warning>{userIntroError}</Warning>
           </InputContainer>
         </EditProfileContainer>
