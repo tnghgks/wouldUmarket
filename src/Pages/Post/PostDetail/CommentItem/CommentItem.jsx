@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../../Components/icon/IconMoreVerticalSmall";
 import { getCookie } from "../../../../cookie";
@@ -171,7 +172,9 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
   return (
     <Container>
       <InfoContainer>
-        <ProfileImg src={comment.author.image} />
+        <Link to={`/profile/${comment.author.accountname}`}>
+          <ProfileImg src={comment.author.image} />
+        </Link>
         <CommentInfo>
           <UserName>{comment.author.username}</UserName>
           <CommentTime>{elapsedTime(comment.createdAt)}</CommentTime>

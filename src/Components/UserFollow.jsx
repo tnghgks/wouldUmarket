@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import FollowButton from "../Components/button/CommonButton";
 import { getCookie } from "../cookie";
@@ -46,7 +47,9 @@ function UserFollow({ username, accountname, isfollow, image }) {
 
   return (
     <UserFollowContainer>
-      <ProfileImg src={image} />
+      <Link to={`/profile/${accountname}`}>
+        <ProfileImg src={image} />
+      </Link>
       <UserInfoContainer>
         <p>{username}</p>
         <UserFollowSmall>@ {accountname}</UserFollowSmall>
