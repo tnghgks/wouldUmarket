@@ -7,6 +7,7 @@ import PostDetailReducer from "./PostDetail";
 import SearchDataReducer from "./SearchData";
 import ModalInfoReducer from "./Modal";
 import FollowListReducer from "./Follow";
+import PostListReducer from "./PostList";
 
 export default configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
     searchData: SearchDataReducer,
     modalData: ModalInfoReducer,
     followList: FollowListReducer,
+    postList: PostListReducer,
   },
 });
