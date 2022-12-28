@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import tokenReducer from "./Auth";
 import UserInfoReducer from "./UserInfo";
 import ProfileReducer from "./Profile";
 import RegisteredReducer from "./Register";
@@ -9,10 +8,10 @@ import ModalInfoReducer from "./Modal";
 import FollowListReducer from "./Follow";
 import PostListReducer from "./PostList";
 import ProductReducer from "./Product";
+import ProductListReducer from "./ProductList";
 
 export default configureStore({
   reducer: {
-    auth: tokenReducer,
     userInfo: UserInfoReducer,
     profile: ProfileReducer,
     signUp: RegisteredReducer,
@@ -22,5 +21,6 @@ export default configureStore({
     followList: FollowListReducer,
     postList: PostListReducer,
     product: ProductReducer,
+    productList: ProductListReducer,
   },
 });
