@@ -13,6 +13,7 @@ export const ADD_PRODUCT = createAsyncThunk(
         body: JSON.stringify(productData),
       });
       const { product } = await res.json();
+      console.log(product);
       return product;
     } catch (error) {
       console.log(error);
@@ -22,10 +23,10 @@ export const ADD_PRODUCT = createAsyncThunk(
 
 export const MODIFY_PRODUCT = createAsyncThunk(
   "product/MODIFY_PRODUCT",
-  async ({ token, productData }) => {
+  async ({ token, productData, productId }) => {
     try {
       const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/product/:product_id`,
+        `https://mandarin.api.weniv.co.kr/product/${productId}`,
         {
           method: "PUT",
           headers: {
@@ -67,7 +68,15 @@ const productSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(ADD_PRODUCT.fulfilled, (state, action) => {
-      state.id = action.payload._id;
+      state.id = action.payload.id;
+      state.itemName = action.payload.itemName;
+      state.price = action.payload.price;
+      state.link = action.payload.link;
+      state.itemImage = action.payload.itemImage;
+      state.author = action.payload.author;
+    });
+    builder.addCase(MODIFY_PRODUCT.fulfilled, (state, action) => {
+      state.id = action.payload.id;
       state.itemName = action.payload.itemName;
       state.price = action.payload.price;
       state.link = action.payload.link;

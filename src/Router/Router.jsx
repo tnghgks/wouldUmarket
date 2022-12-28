@@ -15,6 +15,7 @@ import SplashScreen from "../Pages/SplashScreen/SplashScreen";
 import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
 import EditUserProfile from "../Pages/Profile/EditUserProfile/EditUserProfile";
 import EditProduct from "../Pages/Profile/Product/EditProduct/Editproduct";
+import AddProduct from "../Pages/Profile/Product/AddProduct";
 
 function Router() {
   return (
@@ -30,7 +31,8 @@ function Router() {
         <Route path="/profile/setProfile" element={<SetProfile />} />
         <Route path="/profile/myProfile" element={<Profile />} />
 
-        <Route path="/profile/editProduct" element={<EditProduct />} />
+        <Route path="/profile/addProduct" element={<AddProduct />} />
+        <Route path="/profile/editProduct/:id" element={<EditProduct />} />
         <Route path="/profile/editProfile" element={<EditUserProfile />} />
 
         <Route path="/profile/:accountname" element={<Profile />} />

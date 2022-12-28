@@ -8,7 +8,7 @@ import { useState } from "react";
 import { getCookie } from "../../../cookie";
 import { useNavigate } from "react-router-dom";
 
-function EditProduct() {
+function AddProduct() {
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -193,7 +193,7 @@ function EditProduct() {
   );
 }
 
-export default EditProduct;
+export default AddProduct;
 
 // 페이지 전체 컨테이너 컴퍼넌트
 const EditProfileContainer = styled.main`
