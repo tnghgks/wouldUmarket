@@ -98,7 +98,7 @@ function AddProduct() {
       );
       const imgData = await res.json();
       if (!imgData) return;
-      return `https://mandarin.api.weniv.co.kr/ ${imgData.filename}`;
+      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
     } catch (error) {
       console.log(error);
     }
