@@ -83,11 +83,7 @@ function UserPost({ setModalInfo, setSubModalData }) {
           {post.length && toggle ? (
             post.map((postItem, index) => <HomePost key={index} postItem={postItem} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />)
           ) : (
-            <AlbumContainer>
-              {post.map((postItem, index) => (
-                <img key={index} src={postItem.image} alt="POST 이미지" />
-              ))}
-            </AlbumContainer>
+            <AlbumContainer>{post.map((postItem, index) => postItem.image.split(",").map((img) => <img key={index} src={img} alt="POST 이미지" />))}</AlbumContainer>
           )}
         </PostContainer>
       </Container>
