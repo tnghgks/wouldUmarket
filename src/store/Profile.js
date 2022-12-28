@@ -99,6 +99,7 @@ const profileSlice = createSlice({
       state.follower = action.payload.follower;
       state.followerCount = action.payload.followerCount;
       state.followingCount = action.payload.followingCount;
+      state.intro = action.payload.intro;
     });
     builder.addCase(MODIFY_PROFILE.fulfilled, (state, action) => {
       state.username = action.payload.username;
