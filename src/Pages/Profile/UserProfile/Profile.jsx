@@ -29,7 +29,7 @@ function Profile() {
       <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
       <Container>
         <UserInfo />
-        <UserProducts />
+        <UserProducts setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
         <UserPost setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
       </Container>
       <TabMenu />
