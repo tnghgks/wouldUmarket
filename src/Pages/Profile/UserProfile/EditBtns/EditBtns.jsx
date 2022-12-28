@@ -10,7 +10,7 @@ function EditBtns() {
           프로필 수정
         </CommonButton>
       </Link>
-      <Link to="/profile/editProduct">
+      <Link to="/profile/addProduct">
         <CommonButton size="md" fontColor="#767676" bgColor="white">
           상품등록
         </CommonButton>
