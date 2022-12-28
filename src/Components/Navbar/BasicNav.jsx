@@ -1,9 +1,10 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { removeCookie } from "../../cookie";
+import { getCookie, removeCookie } from "../../cookie";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../../store/Modal";
+import { SET_PROFILE } from "../../store/Profile";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
 
@@ -48,8 +49,11 @@ const MoreIcon = styled(IconMoreVertical)`
 
 function BasicNav({ setModalInfo, setSubModalData }) {
   const navigate = useNavigate();
+  const token = getCookie("accessToken");
   const dispatch = useDispatch();
-
+  const {
+    userInfo: { accountname },
+  } = useSelector((state) => state);
   function handleModalClick() {
     setSubModalData((state) => {
       return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
@@ -58,8 +62,10 @@ function BasicNav({ setModalInfo, setSubModalData }) {
     setModalInfo([
       {
         text: "설정 및 개인정보",
-        handleFunc: function () {
-          console.log("hi");
+        handleFunc: () => {
+          dispatch(CLOSE_MODAL());
+          dispatch(SET_PROFILE({ accountname, token }));
+          window.location.href = `/profile/${accountname}`;
         },
       },
       {
