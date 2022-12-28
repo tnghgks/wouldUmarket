@@ -13,10 +13,6 @@ const Btn = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  &:hover {
-    scale: 1.1;
-    transition: scale 400ms;
-  }
 `;
 
 /**
