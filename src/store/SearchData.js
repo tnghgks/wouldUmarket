@@ -2,11 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   data: [],
-
   status: "",
 };
 
-export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFetch", async ({ searchInput, token, pageNum = 1 }) => {
+export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFetch", async ({ searchInput, token, pageNum = 1, signal = null }) => {
   try {
     const response = await fetch(`https://mandarin.api.weniv.co.kr/user/searchuser/?keyword=${searchInput}`, {
       method: "GET",
@@ -14,11 +13,15 @@ export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFet
         Authorization: `Bearer ${token}`,
         "Content-type": "application/json",
       },
+      signal,
     });
     const users = await response.json();
 
     return users.slice(0, pageNum * 100);
   } catch (error) {
+    if (error.name === "AbortError") {
+      return [];
+    }
     console.log(error);
   }
 });
