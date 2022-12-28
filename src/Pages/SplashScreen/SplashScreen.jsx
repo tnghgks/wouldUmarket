@@ -1,9 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import FullLogo from "../../Components/FullLogo";
 import TextLogo from "../../Components/TextLogo";
 import SplashLoader from "./SplashLoader/SplashLoader";
+import { getCookie } from "../../cookie/index";
 
 const splash = keyframes`
 0% {
@@ -38,9 +40,34 @@ const Logo = styled(FullLogo)`
 `;
 
 function SplashScreen() {
+  const token = getCookie("accessToken");
   const navigate = useNavigate();
-  setTimeout(() => {
-    navigate("/login");
+
+  async function getCheckToken() {
+    try {
+      const response = await fetch("https://mandarin.api.weniv.co.kr/user/checktoken", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-type": "application/json",
+        },
+      });
+      const { isValid } = await response.json();
+
+      return isValid;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  setTimeout(async () => {
+    const isValid = await getCheckToken();
+
+    if (isValid && token) {
+      navigate("/feed");
+    } else {
+      navigate("/login");
+    }
   }, 3000);
 
   return (
