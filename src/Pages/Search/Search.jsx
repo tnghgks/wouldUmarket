@@ -29,7 +29,8 @@ function Search() {
 
   useEffect(() => {
     let scrollTimer;
-    window.addEventListener("scroll", () => {
+
+    function handleScrollEvent() {
       if (scrollTimer) {
         clearTimeout(scrollTimer);
       }
@@ -38,7 +39,11 @@ function Search() {
           setPageNum((prev) => prev + 1);
         }
       }, 100);
-    });
+    }
+
+    window.addEventListener("scroll", handleScrollEvent);
+
+    return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
 
   return (
