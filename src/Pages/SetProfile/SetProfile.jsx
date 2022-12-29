@@ -20,6 +20,7 @@ function SetProfile() {
   const [registerError, setRegisterError] = useState("");
   const fileInput = useRef(null);
   const url = "https://mandarin.api.weniv.co.kr/";
+
   // 이메일, 비밀번호 가져오기
   const location = useLocation();
   const { email, password } = { ...location.state };
@@ -69,10 +70,8 @@ function SetProfile() {
     const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]{2,10}$/;
     if (!username) {
       setUsernameError("사용자 이름을 입력해주세요.");
-    } else if (username.length < 2 || username.length > 10) {
-      setUsernameError("2~10자 이내만 가능합니다.");
     } else if (!userNameRegex.test(username)) {
-      setUsernameError("한글,영문만 가능합니다.");
+      setUsernameError("2~10자 이내의 한글,영문만 가능합니다.");
     } else {
       setUsernameError("");
     }
@@ -223,6 +222,7 @@ function SetProfile() {
           />
         </ProfileImgContainer>
         <TextContainer>
+          <legend className="ir-hidden">프로필정보</legend>
           <div>
             <CommonInput
               name="username"
@@ -313,9 +313,9 @@ const UploadImgDiv = styled.div`
   cursor: pointer;
 `;
 
-const TextContainer = styled.div`
+const TextContainer = styled.fieldset`
   & > div {
-    :nth-child(2) {
+    :nth-child(3) {
       margin: 16px 0;
     }
     :last-child {
