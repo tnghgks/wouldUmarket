@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import fullLogo from "../assets/full-logo.png";
-
-const Img = styled.img`
-  width: 169px;
-  aspect-ratio: 169/105;
-`;
+import whiteLogo from "../assets/symbol-logo-W.png";
 
 function FullLogo({ className }) {
-  return <Img className={className} src={fullLogo} alt="로고" />;
+  return <Img className={className} src={whiteLogo} alt="로고" />;
 }
 export default FullLogo;
+
+const Img = styled.img`
+  width: 110px;
+  aspect-ratio: 1/1;
+  margin: 10px;
+`;
