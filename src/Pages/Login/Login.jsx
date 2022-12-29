@@ -51,9 +51,10 @@ const Container = styled.div`
   background-image: url(${background});
   overflow: hidden;
   & > .backGroundImage {
-    margin-top: 3%;
+    margin-top: 5%;
     width: 50%;
     max-width: 250px;
+    min-width: 200px;
     aspect-ratio: 3/5;
   }
 `;
