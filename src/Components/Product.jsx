@@ -6,29 +6,6 @@ import { getCookie } from "../cookie";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { SET_PRODUCT_LIST } from "../store/ProductList";
 
-const Container = styled.section`
-  width: 140px;
-  cursor: pointer;
-`;
-
-const ProductImg = styled.img`
-  width: 140px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 10%;
-`;
-
-const ProductName = styled.figcaption`
-  font-size: 1.4rem;
-  margin: 10px 5px;
-`;
-
-const ProductPrice = styled.figcaption`
-  font-size: 1.2rem;
-  margin: 0 5px;
-  color: var(--accentColor);
-`;
-
 function Product({ productData, setModalInfo, setSubModalData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -105,10 +82,33 @@ function Product({ productData, setModalInfo, setSubModalData }) {
       <figure>
         <ProductImg src={productData.itemImage || productImg} alt="" />
         <ProductName>{productData.itemName}</ProductName>
-        <ProductPrice>{productData.price.toLocaleString()}원</ProductPrice>
+        <ProductPrice>시간당 {productData.price.toLocaleString()}원</ProductPrice>
       </figure>
     </Container>
   );
 }
 
 export default Product;
+
+const Container = styled.section`
+  width: 140px;
+  cursor: pointer;
+`;
+
+const ProductImg = styled.img`
+  width: 140px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10%;
+`;
+
+const ProductName = styled.figcaption`
+  font-size: 1.4rem;
+  margin: 10px 5px;
+`;
+
+const ProductPrice = styled.figcaption`
+  font-size: 1.2rem;
+  margin: 0 5px;
+  color: var(--accentColor);
+`;

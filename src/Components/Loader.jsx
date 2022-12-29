@@ -31,11 +31,16 @@ const blink = keyframes`
 `;
 
 const LoaderContainer = styled.div`
-  width: 450px;
-  height: 450px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  max-width: 450px;
+  max-height: 450px;
+  min-width: 200px;
+  min-height: 200px;
   margin: 0 auto;
   position: relative;
   background-image: url(${bg});
+  background-size: cover;
   border-radius: 50%;
 `;
 const Title = styled.h2`
@@ -53,17 +58,26 @@ const Title = styled.h2`
 
 const Planet = styled.div`
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  max-width: 250px;
+  max-height: 250px;
+  min-width: 150px;
+  min-height: 150px;
   background-image: url(${planet});
+  background-size: cover;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   &::after {
     content: url(${human});
     display: block;
-    height: 200px;
-    width: 100px;
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+    max-width: 100px;
+    min-width: 150px;
+    min-height: 150px;
     position: absolute;
     bottom: 50%;
     left: 50%;

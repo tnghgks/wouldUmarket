@@ -82,6 +82,7 @@ const PostContainer = styled.section`
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  margin-bottom: 61px;
 `;
 const AlbumContainer = styled.ul`
   display: grid;
