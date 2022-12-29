@@ -2,8 +2,8 @@ import styled from "styled-components";
 import symbolLogoGray from "../assets/symbol-logo-gray.png";
 
 const Img = styled.img`
-  width: 100px;
-  aspect-ratio: 169/105;
+  width: 80px;
+  aspect-ratio: 1/1;
 `;
 
 function SymbolLogoGray({ className }) {
