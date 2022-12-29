@@ -3,8 +3,8 @@ import ImgButton from "../../../../assets/upload-file.png";
 import CommonInput from "../../../../Components/CommonInput";
 import BasicNav from "../../../../Components/Navbar/UploadNav";
 import { useDispatch, useSelector } from "react-redux";
-import { MODIFY_PRODUCT } from "../../../../store/Product";
-import { useState } from "react";
+import { MODIFY_PRODUCT, DETAIL_PRODUCT } from "../../../../store/Product";
+import { useState, useEffect } from "react";
 import { getCookie } from "../../../../cookie";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,13 +13,14 @@ function EditProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    profile: [accountname],
+    profile: { accountname },
+    product: { price, itemImage, itemName, link },
   } = useSelector((state) => state);
-  const { product } = useSelector((state) => state);
-  const productId = useParams();
+  const { id } = useParams();
 
   const [itemPrice, setItemPrice] = useState("");
   const [productImg, setProductImg] = useState("");
+  // const [priceData, setPriceData] = useState("");
 
   const [productNameError, setProductNameError] = useState(true);
   const [itemPriceError, setItemPriceError] = useState(true);
@@ -29,7 +30,13 @@ function EditProduct() {
   const Enabled =
     !productNameError && !itemPriceError && !addressError && !!productImg;
 
-  function nameVaildation(e) {
+  const priceData = itemPrice ? itemPrice : price;
+
+  useEffect(() => {
+    dispatch(DETAIL_PRODUCT({ token, id }));
+  }, []);
+
+  function nameValidation(e) {
     const nameValue = e.target.value;
 
     if (!nameValue) {
@@ -40,24 +47,24 @@ function EditProduct() {
       setProductNameError("");
     }
   }
-
-  function priceVaildation(e) {
-    const priceValue = e.target.value;
-
-    // priceValue 값이 입력되지 않았을때 product useSelector에 저장되 있는 값 사용
-    const price = priceValue ? priceValue : product.price;
-    // price 컴마 찍기
+  useEffect(() => {
     setItemPrice(() => {
-      const comma = (price) => {
-        price = String(price);
-        return price.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
+      const comma = (priceData) => {
+        priceData = String(priceData);
+        return priceData.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
       };
-      const uncomma = (price) => {
-        price = String(price);
-        return price.replace(/[^\d]+/g, "");
+      const unComma = (priceData) => {
+        priceData = String(priceData);
+        return priceData.replace(/[^\d]+/g, "");
       };
-      return comma(uncomma(price));
+      return comma(unComma(priceData));
     });
+  }, ["", priceValidation]);
+
+  function priceValidation(e) {
+    const priceValue = e.target.value;
+    setItemPrice(priceValue);
+
     // price 유효성 검사
     if (!priceValue) {
       setItemPriceError("가격을 입력해주세요.");
@@ -66,7 +73,7 @@ function EditProduct() {
     }
   }
 
-  function addressVaildation(e) {
+  function addressValidation(e) {
     const addressValue = e.target.value;
 
     const addressRegex =
@@ -101,33 +108,34 @@ function EditProduct() {
       );
       const imgData = await res.json();
       if (!imgData) return;
-      return `https://mandarin.api.weniv.co.kr/ ${imgData.filename}`;
+      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function handleformsubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (!Enabled) {
-      if (!!productNameError) {
-        setProductNameError("잘못된 상품명입니다.");
-      }
-      if (!!itemPriceError) {
-        setItemPriceError("잘못된 가격입니다.");
-      }
-      if (!!addressError) {
-        setAddressError("잘못된 팬매링크입니다.");
-      }
-      if (!productImg) {
-        setProductImgError("잘못된 이미지입니다.");
-      }
-      return false;
-    }
-    const { productName, Address, imgfile } = event.target;
+    // if (!Enabled) {
+    //   if (!!productNameError) {
+    //     return itemName ? true : setProductNameError("잘못된 상품명입니다.");
+    //   }
+    //   if (!!itemPriceError) {
+    //     return price ? true : setItemPriceError("잘못된 가격입니다.");
+    //   }
+    //   if (!!addressError) {
+    //     return link ? true : setAddressError("잘못된 팬매링크입니다.");
+    //   }
+    //   if (!productImg) {
+    //     return itemImage ? true : setProductImgError("잘못된 이미지입니다.");
+    //   }
+    //   return itemImage ? true : false;
+    // }
 
-    const imgData = imgfile ? imgfile.files[0] : product.itemImgage;
+    const { productName, Address, imgFile } = event.target;
+
+    const imgData = imgFile ? imgFile.files[0] : itemImage;
 
     const formData = new FormData();
     formData.append("image", imgData);
@@ -141,24 +149,28 @@ function EditProduct() {
       },
     };
 
-    dispatch(MODIFY_PRODUCT({ productData, token, productId }));
+    dispatch(MODIFY_PRODUCT({ productData, token, id }));
     navigate(`/profile/${accountname}`);
   }
 
   return (
-    <form onSubmit={handleformsubmit}>
-      <BasicNav children="저장" bgColor={!Enabled ? "light" : "accent"} />
+    <form onSubmit={handleFormSubmit}>
+      <BasicNav
+        children="저장"
+        bgColor={!Enabled ? "light" : "accent"}
+        btnDisabled={Enabled}
+      />
       <EditProfileContainer>
         <ProductContainer>
           <p>이미지 등록</p>
           <EditProductImgContainer>
-            <ProductItemImg src={productImg || product.itemImgage} alt="" />
+            <ProductItemImg src={productImg || itemImage} alt="" />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
             <UploadImgInput
               type="file"
-              name="imgfile"
+              name="imgFile"
               id="file"
               onChange={(e) => {
                 handleProductImg(e.currentTarget.files[0]);
@@ -173,8 +185,8 @@ function EditProduct() {
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
             label="상품명"
-            defaultValue={product.itemName}
-            onChange={nameVaildation}
+            defaultValue={itemName}
+            onChange={nameValidation}
           />
           <Warning>{productNameError}</Warning>
           <CommonInput
@@ -182,9 +194,9 @@ function EditProduct() {
             type="text"
             placeholder={"숫자만 입력 가능 합니다."}
             label="가격"
-            value={itemPrice}
-            defaultValue={itemPrice}
-            onChange={priceVaildation}
+            // value={itemPrice}
+            defaultValue={priceData}
+            onChange={priceValidation}
           />
           <Warning>{itemPriceError}</Warning>
           <CommonInput
@@ -192,8 +204,8 @@ function EditProduct() {
             type="text"
             placeholder={"URl을 입력해 주세요."}
             label="판매링크"
-            defaultValue={product.link}
-            onChange={addressVaildation}
+            defaultValue={link}
+            onChange={addressValidation}
           />
           <Warning>{addressError}</Warning>
         </InputContainer>
