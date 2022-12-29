@@ -4,7 +4,7 @@ import HomePost from "../../../../Components/HomePost";
 import IconPostList from "../../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../../Components/icon/IconPostAlbum.jsx";
 import { getCookie } from "../../../../cookie";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_USER_POSTS } from "../../../../store/PostList";
 
@@ -41,7 +41,15 @@ function UserPost({ setModalInfo, setSubModalData }) {
               />
             ))
           ) : (
-            <AlbumContainer>{posts.map((postItem, index) => postItem.image.split(",").map((img) => <img key={index} src={img} alt="POST 이미지" />))}</AlbumContainer>
+            <AlbumContainer>
+              {posts.map((postItem, index) =>
+                postItem.image.split(",").map((img) => (
+                  <Link to={`/post/${postItem.id}`}>
+                    <img key={index} src={img} alt="POST 이미지" />
+                  </Link>
+                ))
+              )}
+            </AlbumContainer>
           )}
         </PostContainer>
       </Container>
@@ -83,5 +91,6 @@ const AlbumContainer = styled.ul`
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 `;

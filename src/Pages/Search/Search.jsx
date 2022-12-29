@@ -14,13 +14,20 @@ function Search() {
   const { searchData } = useSelector((state) => state);
   const [pageNum, setPageNum] = useState(1);
   const [searchInput, setSearchInput] = useState("");
+  const [signal, setSignal] = useState(null);
 
   useEffect(() => {
     if (!searchInput) return;
+    if (signal) signal.abort();
+
     window.scrollTo(0, 0);
     setPageNum(1);
-    dispatch(asyncSearchFetch({ searchInput, token }));
+    let controller = new AbortController();
+    dispatch(asyncSearchFetch({ searchInput, token, signal: controller.signal }));
+    setSignal(controller);
   }, [searchInput]);
+
+  console.log(searchData);
 
   useEffect(() => {
     if (!searchInput) return;
@@ -29,7 +36,8 @@ function Search() {
 
   useEffect(() => {
     let scrollTimer;
-    window.addEventListener("scroll", () => {
+
+    function handleScrollEvent() {
       if (scrollTimer) {
         clearTimeout(scrollTimer);
       }
@@ -38,7 +46,11 @@ function Search() {
           setPageNum((prev) => prev + 1);
         }
       }, 100);
-    });
+    }
+
+    window.addEventListener("scroll", handleScrollEvent);
+
+    return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
 
   return (
