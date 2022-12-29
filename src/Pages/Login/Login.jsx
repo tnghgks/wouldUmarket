@@ -6,11 +6,12 @@ import FullLogo from "../../Components/FullLogo";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
 import backGroundImage from "../../assets/backgroundImage.png";
+import background from "../../assets/login_background.png";
 
 function Login() {
   return (
     <Container>
-      <FullLogo className={"fullLogo"} />
+      <Logo />
       <img className="backGroundImage" src={backGroundImage} alt="" />
       <LoginContainer>
         <BtnContainer>
@@ -47,14 +48,19 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  padding-top: 35vh;
-  background-color: var(--mainColor);
+  background-image: url(${background});
   overflow: hidden;
   & > .backGroundImage {
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-top: 3%;
+    width: 50%;
+    max-width: 250px;
+    aspect-ratio: 3/5;
   }
+`;
+const Logo = styled(FullLogo)`
+  position: absolute;
+  left: 0;
+  top: 0;
 `;
 const LoginContainer = styled.section`
   display: flex;
