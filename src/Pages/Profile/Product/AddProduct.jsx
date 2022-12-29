@@ -27,7 +27,7 @@ function AddProduct() {
   const Enabled =
     !productNameError && !itemPriceError && !addressError && !!productImg;
 
-  function nameVaildation(e) {
+  function nameValidation(e) {
     const nameValue = e.target.value;
     setProductName(nameValue);
 
@@ -40,7 +40,7 @@ function AddProduct() {
     }
   }
 
-  function priceVaildation(e) {
+  function priceValidation(e) {
     const priceValue = e.target.value;
 
     setItemPrice(() => {
@@ -48,11 +48,11 @@ function AddProduct() {
         priceValue = String(priceValue);
         return priceValue.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
       };
-      const uncomma = (priceValue) => {
+      const unComma = (priceValue) => {
         priceValue = String(priceValue);
         return priceValue.replace(/[^\d]+/g, "");
       };
-      return comma(uncomma(priceValue));
+      return comma(unComma(priceValue));
     });
 
     if (!priceValue) {
@@ -62,7 +62,7 @@ function AddProduct() {
     }
   }
 
-  function addressVaildation(e) {
+  function addressValidation(e) {
     const addressValue = e.target.value;
     setAddress(addressValue);
 
@@ -87,7 +87,7 @@ function AddProduct() {
     };
   }
 
-  async function UserProfileImg(formData) {
+  async function formatProductImg(formData) {
     try {
       const res = await fetch(
         `https://mandarin.api.weniv.co.kr/image/uploadfile`,
@@ -98,13 +98,13 @@ function AddProduct() {
       );
       const imgData = await res.json();
       if (!imgData) return;
-      return `https://mandarin.api.weniv.co.kr/ ${imgData.filename}`;
+      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function handleformsubmit(event) {
+  async function handleFormSubmit(event) {
     event.preventDefault();
 
     if (!Enabled) {
@@ -122,16 +122,16 @@ function AddProduct() {
       }
       return false;
     }
-    const { imgfile } = event.target;
+    const { imgFile } = event.target;
 
     const formData = new FormData();
-    formData.append("image", imgfile.files[0]);
+    formData.append("image", imgFile.files[0]);
     const productData = {
       product: {
         itemName: productName,
         price: Number(itemPrice.replaceAll(",", "")),
         link: address,
-        itemImage: await UserProfileImg(formData),
+        itemImage: await formatProductImg(formData),
       },
     };
 
@@ -140,7 +140,7 @@ function AddProduct() {
   }
 
   return (
-    <form onSubmit={handleformsubmit}>
+    <form onSubmit={handleFormSubmit}>
       <BasicNav children="저장" bgColor={!Enabled ? "light" : "accent"} />
       <EditProfileContainer>
         <ProductContainer>
@@ -152,7 +152,7 @@ function AddProduct() {
             </label>
             <UploadImgInput
               type="file"
-              name="imgfile"
+              name="imgFile"
               id="file"
               onChange={(e) => {
                 handleProductImg(e.currentTarget.files[0]);
@@ -167,7 +167,7 @@ function AddProduct() {
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
             label="상품명"
-            onChange={nameVaildation}
+            onChange={nameValidation}
           />
           <Warning>{productNameError}</Warning>
           <CommonInput
@@ -176,7 +176,7 @@ function AddProduct() {
             placeholder={"숫자만 입력 가능 합니다."}
             label="가격"
             value={itemPrice}
-            onChange={priceVaildation}
+            onChange={priceValidation}
           />
           <Warning>{itemPriceError}</Warning>
           <CommonInput
@@ -184,7 +184,7 @@ function AddProduct() {
             type="text"
             placeholder={"URl을 입력해 주세요."}
             label="판매링크"
-            onChange={addressVaildation}
+            onChange={addressValidation}
           />
           <Warning>{addressError}</Warning>
         </InputContainer>
