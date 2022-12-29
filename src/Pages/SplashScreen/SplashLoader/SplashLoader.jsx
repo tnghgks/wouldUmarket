@@ -2,6 +2,25 @@ import styled, { keyframes } from "styled-components";
 import spaceShipSvg from "../../../assets/spaceship.svg";
 import shadowSpaceShipSvg from "../../../assets/spaceship_shadow.svg";
 
+function SplashLoader() {
+  return (
+    <Anim>
+      <Loader>
+        <svg width="110" height="100">
+          <defs>
+            <filter id="f1" x="0" y="0">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            </filter>
+          </defs>
+          <image href={shadowSpaceShipSvg} x="20" y="20" width="90" height="90" filter="url(#f1)" />
+          <image href={spaceShipSvg} width="90" height="90" />
+        </svg>
+      </Loader>
+    </Anim>
+  );
+}
+export default SplashLoader;
+
 const loader = keyframes`
 0% {
   transform: translate(-50%,110%);
@@ -52,22 +71,3 @@ const Anim = styled.div`
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
 `;
-
-function SplashLoader() {
-  return (
-    <Anim>
-      <Loader>
-        <svg width="110" height="110">
-          <defs>
-            <filter id="f1" x="0" y="0">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
-            </filter>
-          </defs>
-          <image href={shadowSpaceShipSvg} x="20" y="20" width="90" height="90" filter="url(#f1)" />
-          <image href={spaceShipSvg} width="90" height="90" />
-        </svg>
-      </Loader>
-    </Anim>
-  );
-}
-export default SplashLoader;

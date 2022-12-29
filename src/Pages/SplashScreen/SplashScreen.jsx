@@ -1,43 +1,10 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import FullLogo from "../../Components/FullLogo";
+import FullLogoBig from "../../assets/symbol-logo-W-big.png";
 import TextLogo from "../../Components/TextLogo";
 import SplashLoader from "./SplashLoader/SplashLoader";
 import { getCookie } from "../../cookie/index";
-
-const splash = keyframes`
-0% {
-  transform: translate(0%,0%);
-}
-50% {
-  transform: translate(0%,0%);
-}
-100% {
-  transform: translate(0%,-100%);
-  display: none;
-}`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding-top: 35vh;
-  background-color: var(--mainColor);
-  overflow: hidden;
-  animation: ${splash} 3s ease-in;
-`;
-
-const Logo = styled(FullLogo)`
-  display: block;
-  margin-bottom: 41px;
-`;
 
 function SplashScreen() {
   const token = getCookie("accessToken");
@@ -68,11 +35,11 @@ function SplashScreen() {
     } else {
       navigate("/login");
     }
-  }, 3000);
+  }, 2600);
 
   return (
     <Container>
-      <Logo />
+      <Logo src={FullLogoBig} alt="우주마켓 로고" />
       <TextLogo />
       <SplashLoader />
     </Container>
@@ -80,3 +47,39 @@ function SplashScreen() {
 }
 
 export default SplashScreen;
+
+const splash = keyframes`
+0% {
+  transform: translate(0%,0%);
+}
+50% {
+  transform: translate(0%,0%);
+}
+100% {
+  transform: translate(0%,-100%);
+  display: none;
+}`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--mainColor);
+  overflow: hidden;
+  animation: ${splash} 3s ease-in;
+`;
+
+const Logo = styled.img`
+  display: block;
+  width: 80%;
+  max-width: 500px;
+  min-width: 300px;
+  aspect-ratio: 1/1;
+  margin-bottom: 41px;
+`;
