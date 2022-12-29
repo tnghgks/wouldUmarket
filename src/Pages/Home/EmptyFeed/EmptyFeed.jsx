@@ -31,7 +31,7 @@ function EmptyFeed() {
   return (
     <>
       <MainNav titleContent="우주쉐어 피드" />
-      <main>
+      <MainContainer>
         {!!posts.length ? (
           posts.map((postItem) => (
             <PostContainer key={postItem.id}>
@@ -47,7 +47,7 @@ function EmptyFeed() {
             </Link>
           </FeedContainer>
         )}
-      </main>
+      </MainContainer>
       <TabMenu />
       {isOpen && <Modal modalInfo={modalInfo} />}
       {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
@@ -56,6 +56,10 @@ function EmptyFeed() {
 }
 
 export default EmptyFeed;
+
+const MainContainer = styled.main`
+  padding-bottom: 100px;
+`;
 
 const FeedContainer = styled.div`
   display: flex;
