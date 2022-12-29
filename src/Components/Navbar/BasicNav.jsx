@@ -54,10 +54,8 @@ function BasicNav({ setModalInfo, setSubModalData }) {
   const {
     userInfo: { accountname },
   } = useSelector((state) => state);
+
   function handleModalClick() {
-    setSubModalData((state) => {
-      return { ...state, text: "로그아웃하시겠습니까?", rightText: "로그아웃", handleFunc: handleLogout };
-    });
     dispatch(SET_MAIN_MODAL());
     setModalInfo([
       {

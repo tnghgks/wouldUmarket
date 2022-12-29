@@ -15,6 +15,7 @@ function Search() {
   const [pageNum, setPageNum] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [signal, setSignal] = useState(null);
+
   useEffect(() => {
     if (!searchInput) return;
     if (signal) signal.abort();
