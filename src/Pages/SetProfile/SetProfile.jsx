@@ -12,13 +12,15 @@ function SetProfile() {
   const [username, setUsername] = useState("");
   const [accountname, setAccountname] = useState("");
   const [intro, setIntro] = useState("");
-  const [image, SetImage] = useState("");
+  const [image, setImage] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [accountnameError, setAccountnameError] = useState("");
   const [introError, setIntroError] = useState("");
   const [validationError, setValidationError] = useState("");
-  const [RegisterError, setRegisterError] = useState("");
+  const [registerError, setRegisterError] = useState("");
   const fileInput = useRef(null);
+  const url = "https://mandarin.api.weniv.co.kr/";
+
   // 이메일, 비밀번호 가져오기
   const location = useLocation();
   const { email, password } = { ...location.state };
@@ -30,18 +32,17 @@ function SetProfile() {
     formData.append("image", imgFile);
 
     try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/image/uploadfile`, {
+      const res = await fetch(url + "image/uploadfile", {
         method: "POST",
         body: formData,
       });
       const imgData = await res.json();
       if (!imgData) return;
-      SetImage("https://mandarin.api.weniv.co.kr/" + imgData.filename);
+      setImage(url + imgData.filename);
     } catch (error) {
       console.log(error);
     }
   }
-
   function handleUsernameChange(e) {
     const { value } = e.target;
     setUsername((prev) => {
@@ -69,10 +70,8 @@ function SetProfile() {
     const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]{2,10}$/;
     if (!username) {
       setUsernameError("사용자 이름을 입력해주세요.");
-    } else if (username.length < 2 || username.length > 10) {
-      setUsernameError("2~10자 이내만 가능합니다.");
     } else if (!userNameRegex.test(username)) {
-      setUsernameError("한글,영문만 가능합니다.");
+      setUsernameError("2~10자 이내의 한글,영문만 가능합니다.");
     } else {
       setUsernameError("");
     }
@@ -100,7 +99,7 @@ function SetProfile() {
     try {
       setValidationError("");
 
-      const response = await fetch("https://mandarin.api.weniv.co.kr/user/accountnamevalid", {
+      const response = await fetch(url + "user/accountnamevalid", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -127,7 +126,7 @@ function SetProfile() {
   // 회원가입 API
   async function getRegisteredData(inputData) {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/user`, {
+      const response = await fetch(url + "user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputData),
@@ -149,7 +148,7 @@ function SetProfile() {
   // 로그인 API
   async function getLogin() {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
+      const response = await fetch(url + "user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -187,8 +186,8 @@ function SetProfile() {
         username: username.value,
         accountname: accountname.value,
         intro: intro.value,
-        email,
-        password,
+        email: email,
+        password: password,
         image: image,
       },
     };
@@ -214,11 +213,25 @@ function SetProfile() {
           <label htmlFor="file">
             <UploadImgDiv></UploadImgDiv>
           </label>
-          <UploadImgInput type="file" name="profileImage" id="file" onChange={handleSetProfileImg} ref={fileInput} />
+          <UploadImgInput
+            type="file"
+            name="profileImage"
+            id="file"
+            onChange={handleSetProfileImg}
+            ref={fileInput}
+          />
         </ProfileImgContainer>
         <TextContainer>
+          <legend className="ir-hidden">프로필정보</legend>
           <div>
-            <CommonInput name="username" label="사용자 이름" type="text" placeholder="2~10자 이내여야 합니다." onChange={handleUsernameChange} required="required" />
+            <CommonInput
+              name="username"
+              label="사용자 이름"
+              type="text"
+              placeholder="2~10자 이내여야 합니다."
+              onChange={handleUsernameChange}
+              required="required"
+            />
             {usernameError && <Warning>*{usernameError}</Warning>}
           </div>
           <div>
@@ -233,13 +246,25 @@ function SetProfile() {
             {accountnameError && <Warning>*{accountnameError}</Warning>}
           </div>
           <div>
-            <CommonInput name="intro" label="소개" type="text" placeholder="자신과 쉐어할 상품에 대해 소개해주세요!" onChange={handleIntroChange} required="required" />
+            <CommonInput
+              name="intro"
+              label="소개"
+              type="text"
+              placeholder="자신과 쉐어할 상품에 대해 소개해주세요!"
+              onChange={handleIntroChange}
+              required="required"
+            />
             {introError && <Warning>*{introError}</Warning>}
           </div>
         </TextContainer>
         {validationError && <Warning>*{validationError}</Warning>}
-        <CommonButton size="lg" bgColor={!(username && accountname && intro) ? "light" : "accent"} children="우주쉐어 시작하기" disabled={!(username && accountname && intro)} />
-        {RegisterError && <Warning>*{RegisterError}</Warning>}
+        <CommonButton
+          size="lg"
+          bgColor={!(username && accountname && intro) ? "light" : "accent"}
+          children="우주쉐어 시작하기"
+          disabled={!(username && accountname && intro)}
+        />
+        {registerError && <Warning>*{registerError}</Warning>}
       </form>
     </Container>
   );
@@ -288,9 +313,9 @@ const UploadImgDiv = styled.div`
   cursor: pointer;
 `;
 
-const TextContainer = styled.div`
+const TextContainer = styled.fieldset`
   & > div {
-    :nth-child(2) {
+    :nth-child(3) {
       margin: 16px 0;
     }
     :last-child {
