@@ -9,6 +9,7 @@ import { getCookie } from "../cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
+import ImageSlider from "./ImageSlider";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
@@ -145,14 +146,15 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
         </TitleContainer>
         <ContContainer>
           <Cont>{content}</Cont>
-          <ImageContainer>
+          {!!image && <ImageSlider image={image} postId={postId} />}
+          {/* <ImageContainer>
             {!!image &&
               image.split(",").map((img) => (
                 <Link to={`/post/${postId}`} key={crypto.randomUUID()}>
                   <PostImg src={img} key={crypto.randomUUID()} />
                 </Link>
               ))}
-          </ImageContainer>
+          </ImageContainer> */}
           <ReactContainer>
             <IconContainer>
               <HeartIcon toggle={isHearted} onClick={isHearted ? handleUnHeartClick : handleHeartClick} />
@@ -215,20 +217,6 @@ const UserID = styled.span`
 const Cont = styled.p`
   font-size: 1.4rem;
   margin: 16px 0;
-`;
-const ImageContainer = styled.ul`
-  display: flex;
-  justify-content: flex-start;
-  gap: 5px;
-  overflow: auto hidden;
-  width: 304px;
-`;
-
-const PostImg = styled.img`
-  width: 304px;
-  height: 208px;
-  object-fit: cover;
-  border-radius: 10px;
 `;
 
 const ReactContainer = styled.div`
