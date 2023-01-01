@@ -23,10 +23,11 @@ export const ADD_PRODUCT = createAsyncThunk(
 
 export const MODIFY_PRODUCT = createAsyncThunk(
   "product/MODIFY_PRODUCT",
-  async ({ token, productData, productId }) => {
+  async ({ token, productData, id }) => {
+    console.log(productData);
     try {
       const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/product/${productId}`,
+        `https://mandarin.api.weniv.co.kr/product/${id}`,
         {
           method: "PUT",
           headers: {
@@ -44,11 +45,29 @@ export const MODIFY_PRODUCT = createAsyncThunk(
   }
 );
 
+export const MODIFY_PRODUCT_IMAGE = createAsyncThunk(
+  "product/MODIFY_PRODUCT_IMAGE",
+  async ({ formData }) => {
+    try {
+      const res = await fetch(
+        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const imgData = await res.json();
+      if (!imgData) return;
+      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const DETAIL_PRODUCT = createAsyncThunk(
   "product/DETAIL_PRODUCT",
   async ({ token, id }) => {
-    console.log(token);
-    console.log(id);
     try {
       const res = await fetch(
         `https://mandarin.api.weniv.co.kr/product/detail/${id}`,
