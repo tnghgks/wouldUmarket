@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasicProfileImg from "../Components/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
@@ -10,11 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 import ImageSlider from "./ImageSlider";
+import { SET_USER_POSTS } from "../store/PostList";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
-  const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
-  const [isHearted, setIsHearted] = useState(hearted);
-  const [countHeart, setCountHeart] = useState(heartCount);
+  const [postData, setPostData] = useState(postItem);
+  // const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const {
@@ -22,6 +22,10 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   } = useSelector((state) => state);
 
   const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
+
+  useEffect(() => {
+    setPostData(postItem);
+  }, [postItem]);
 
   async function handleDeletePost() {
     try {
@@ -64,7 +68,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   }
 
   function handleModalOpen() {
-    if (userId === author._id) {
+    if (userId === postData.author._id) {
       setModalInfo([
         {
           text: "삭제",
@@ -98,24 +102,23 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
 
   async function handleHeartClick() {
     try {
-      await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/heart`, {
+      await fetch(`https://mandarin.api.weniv.co.kr/post/${postData.id}/heart`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-type": "application/json",
         },
       });
+      setPostData((prev) => ({ ...prev, hearted: true, heartCount: postData.heartCount + 1 }));
 
-      setCountHeart((prev) => prev + 1);
-      setIsHearted(true);
-      dispatch(FETCH_POST_DATA({ id: postId, token }));
+      dispatch(FETCH_POST_DATA({ id: postData.id, token }));
     } catch (error) {
       console.log(error);
     }
   }
   async function handleUnHeartClick() {
     try {
-      await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/unheart`, {
+      await fetch(`https://mandarin.api.weniv.co.kr/post/${postData.id}/unheart`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -123,9 +126,9 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
         },
       });
 
-      setCountHeart((prev) => prev - 1);
-      setIsHearted(false);
-      dispatch(FETCH_POST_DATA({ id: postId, token }));
+      setPostData((prev) => ({ ...prev, hearted: false, heartCount: postData.heartCount + -1 }));
+
+      dispatch(FETCH_POST_DATA({ id: postData.id, token }));
     } catch (error) {
       console.log(error);
     }
@@ -135,18 +138,18 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
     <>
       <PostContainer>
         <TitleContainer>
-          <Link to={`/profile/${author.accountname}`}>
-            <ProfileImg src={author.image} />
+          <Link to={`/profile/${postData.author.accountname}`}>
+            <ProfileImg src={postData.author.image} />
           </Link>
-          <Link to={`/profile/${author.accountname}`}>
-            <UserName>{author.username}</UserName>
-            <UserID>@ {author.accountname}</UserID>
+          <Link to={`/profile/${postData.author.accountname}`}>
+            <UserName>{postData.author.username}</UserName>
+            <UserID>@ {postData.author.accountname}</UserID>
           </Link>
           <MoreIcon onClick={handleModalOpen} />
         </TitleContainer>
         <ContContainer>
-          <Cont>{content}</Cont>
-          {!!image && <ImageSlider image={image} postId={postId} />}
+          <Cont>{postData.content}</Cont>
+          {!!postData.image && <ImageSlider image={postData.image} postId={postData.id} />}
           {/* <ImageContainer>
             {!!image &&
               image.split(",").map((img) => (
@@ -157,13 +160,13 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
           </ImageContainer> */}
           <ReactContainer>
             <IconContainer>
-              <HeartIcon toggle={isHearted} onClick={isHearted ? handleUnHeartClick : handleHeartClick} />
-              {countHeart}
+              <HeartIcon toggle={postData.hearted} onClick={postData.hearted ? handleUnHeartClick : handleHeartClick} />
+              {postData.heartCount}
             </IconContainer>
-            <Link to={`/post/${postId}`}>
+            <Link to={`/post/${postData.id}`}>
               <IconContainer>
                 <CommentIcon />
-                {commentCount}
+                {postData.commentCount}
               </IconContainer>
             </Link>
           </ReactContainer>
