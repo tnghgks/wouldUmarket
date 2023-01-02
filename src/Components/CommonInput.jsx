@@ -35,6 +35,7 @@ function CommonInput({
   type,
   placeholder,
   onChange,
+  inputRef,
   required,
   defaultValue,
   value,
@@ -47,6 +48,7 @@ function CommonInput({
         placeholder={placeholder}
         name={name}
         onChange={onChange}
+        ref={inputRef}
         required={required}
         defaultValue={defaultValue}
         value={value}
