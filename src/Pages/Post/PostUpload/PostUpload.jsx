@@ -200,7 +200,7 @@ function PostUpload() {
       <UploadNav
         children="업로드"
         btnDisabled={!imageList.length}
-        bgColor={!imageList.length ? "accent" : "main"}
+        bgColor={!imageList.length ? "light" : "main"}
         onClickUpload={onClickUpload}
       />
       <UploadContainer>
