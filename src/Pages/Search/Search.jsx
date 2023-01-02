@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import SearchNav from "../../Components/Navbar/SearchNav";
+import NotFoundResult from "../../Components/NotFoundResult";
 import TabMenu from "../../Components/TabMenu";
 import UserSearch from "../../Components/UserSearch";
 import { getCookie } from "../../cookie";
@@ -57,7 +58,10 @@ function Search() {
       <Container>
         {searchData.status === "rejected" && <div>ERROR</div>}
         {!searchData.data.length && searchData.status === "pending" && <Loader />}
-        {!!searchData.data.length ? searchData.data.map((userData, index) => <UserSearch key={index} userData={userData} searchInput={searchInput} />) : null}
+        {!!searchData.data.length &&
+          searchData.status === "fulfilled" &&
+          searchData.data.map((userData, index) => <UserSearch key={index} userData={userData} searchInput={searchInput} />)}
+        {!searchData.data.length && searchData.status === "fulfilled" && <NotFoundResult />}
       </Container>
       <TabMenu />
     </>
