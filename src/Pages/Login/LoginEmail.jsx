@@ -210,7 +210,7 @@ function LoginEmail() {
             size="lg"
             bgColor={
               !formData.email.length && !formData.password.length
-                ? "accent"
+                ? "light"
                 : "main"
             }
             children="다음"
