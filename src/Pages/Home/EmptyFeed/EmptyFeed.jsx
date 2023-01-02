@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_USERINFO } from "../../../store/UserInfo";
 import Modal from "../../../Components/Modal";
 import DeleteAlert from "../../../Components/DeleteAlert";
-import { SET_FOLLOWERS_POSTS } from "../../../store/PostList";
+import { SET_FOLLOWERS_POSTS, INCREASE_PAGE_NUMBER, INITIAL_PAGE_NUMBER } from "../../../store/PostList";
 
 function EmptyFeed() {
   const [subModalData, setSubModalData] = useState({});
@@ -20,13 +20,35 @@ function EmptyFeed() {
   const token = getCookie("accessToken");
   const {
     modalData: { isOpen, subModal },
-    postList: { posts },
+    postList: { posts, pageNum },
   } = useSelector((state) => state);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(INITIAL_PAGE_NUMBER());
     dispatch(SET_USERINFO(token));
-    dispatch(SET_FOLLOWERS_POSTS({ token }));
+    dispatch(SET_FOLLOWERS_POSTS({ token, pageNum }));
+    let scrollTimer;
+
+    function handleScrollEvent() {
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+      }
+      scrollTimer = setTimeout(function () {
+        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
+          dispatch(INCREASE_PAGE_NUMBER());
+        }
+      }, 100);
+    }
+
+    window.addEventListener("scroll", handleScrollEvent);
+
+    return () => window.removeEventListener("scroll", handleScrollEvent);
   }, []);
+
+  useEffect(() => {
+    dispatch(SET_FOLLOWERS_POSTS({ token, pageNum }));
+  }, [pageNum]);
 
   return (
     <>

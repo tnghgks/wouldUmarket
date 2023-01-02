@@ -27,8 +27,6 @@ function Search() {
     setSignal(controller);
   }, [searchInput]);
 
-  console.log(searchData);
-
   useEffect(() => {
     if (!searchInput) return;
     dispatch(asyncSearchFetch({ searchInput, token, pageNum }));
