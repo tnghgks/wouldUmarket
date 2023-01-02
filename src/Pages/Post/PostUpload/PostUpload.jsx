@@ -6,6 +6,7 @@ import profileImg from "../../../assets/basic-profile-img.png";
 import FileUploadBtn from "../../../Components/button/FileUploadBtn";
 import IconDelete from "../../../Components/icon/IconDelete";
 import { getCookie } from "../../../cookie";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   padding-top: 48px;
@@ -120,6 +121,11 @@ function PostUpload() {
   //이미지 미리보기
   const onChangeImage = async (e) => {
     const { files } = e.target;
+    if (files && files[0].size > 10 * 1024 * 1024) {
+      alert("이미지 파일 사이즈는 10MB 이내로 등록 가능합니다.");
+      return;
+    }
+    //파일 업로드 용량 제한(10MB)
     if (files.length > 3 || imageList.length > 2) {
       alert("첨부 가능 이미지 수는 최대 3장입니다.");
       return;
