@@ -106,6 +106,7 @@ function PostUpload() {
   const [textContent, setTextContent] = useState("");
   const navigate = useNavigate();
   const token = getCookie("accessToken");
+  const { userInfo } = useSelector((state) => state);
 
   //자동 포커스
   useEffect(() => {
@@ -190,7 +191,7 @@ function PostUpload() {
         },
       });
 
-      navigate("/feed", { replace: true });
+      navigate(`/profile/${userInfo.accountname}`, { replace: true });
     } catch (error) {
       console.error(error);
     }
