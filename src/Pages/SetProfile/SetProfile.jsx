@@ -260,9 +260,9 @@ function SetProfile() {
         {validationError && <Warning>*{validationError}</Warning>}
         <CommonButton
           size="lg"
-          bgColor={!(username && accountname && intro) ? "light" : "accent"}
+          bgColor={!(username || accountname || intro) ? "light" : "accent"}
           children="우주쉐어 시작하기"
-          disabled={!(username && accountname && intro)}
+          disabled={!(username || accountname || intro)}
         />
         {registerError && <Warning>*{registerError}</Warning>}
       </form>
@@ -323,6 +323,7 @@ const TextContainer = styled.fieldset`
     }
   }
   & > div > div > input {
+    margin-bottom: 3px;
     &:focus {
       border-bottom-color: var(--subColor);
       transition: border-bottom-color 200ms;
