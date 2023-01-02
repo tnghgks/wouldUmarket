@@ -24,7 +24,7 @@ const InputContainer = styled.section`
   width: 100%;
 `;
 
-const ProfileImg = styled.img`
+const BasicProfileImg = styled.img`
   display: inline-block;
   width: 42px;
   height: 42px;
@@ -106,7 +106,7 @@ function PostUpload() {
   const [textContent, setTextContent] = useState("");
   const navigate = useNavigate();
   const token = getCookie("accessToken");
-  const { userInfo } = useSelector((state) => state);
+  const { userInfo, profile } = useSelector((state) => state);
 
   //자동 포커스
   useEffect(() => {
@@ -205,7 +205,7 @@ function PostUpload() {
         onClickUpload={onClickUpload}
       />
       <UploadContainer>
-        <ProfileImg src={profileImg} />
+        <BasicProfileImg src={profile.image} />
         <InputContainer>
           <Textarea
             value={textContent}
