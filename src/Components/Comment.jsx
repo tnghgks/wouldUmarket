@@ -10,7 +10,7 @@ import { ADD_COMMENT } from "../store/PostDetail";
  * @param {{img: null|"any" ; placeholder: "inputText" ; btn: "buttonText"}} param0
  * @returns
  */
-function Comment({ img, placeholder, btn, postId }) {
+function Comment({ img, placeholder, btn, postId, size }) {
   const [value, setValue] = useState();
   const dispatch = useDispatch();
   const token = getCookie("accessToken");
@@ -44,7 +44,7 @@ function Comment({ img, placeholder, btn, postId }) {
 
   return (
     <CommentContainer>
-      <FromContainer onSubmit={onSubmitComments}>
+      <FromContainer onSubmit={onSubmitComments} size={size}>
         <SmallProfileImg src={img} />
         <CommentInput type="text" value={value} onChange={onChange} placeholder={placeholder} />
         <CommentBtn value={!!value}>{btn}</CommentBtn>
@@ -66,7 +66,7 @@ const CommentContainer = styled.footer`
 `;
 
 const FromContainer = styled.form`
-  width: 358px;
+  width: ${(props) => ( props.size ? "100%": "358px")};
   height: 100%;
   display: flex;
   justify-content: flex-start;

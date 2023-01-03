@@ -15,6 +15,8 @@ const ChatRoomContainer = styled.section`
   flex-direction: column;
 `;
 
+
+
 function ChatRoom() {
   return (
     <>
@@ -31,7 +33,7 @@ function ChatRoom() {
           <ChatRoomChat chattext="네 말씀하세요." chattime="12:50" user="my" imges={profileImg} />
         </ul>
       </ChatRoomContainer>
-      <Comment img={"upload"} placeholder="메시지 입력하기..." btn="전송" />
+      <Comment size={true} img={"upload"} placeholder="메시지 입력하기..." btn="전송" />
     </>
   );
 }
