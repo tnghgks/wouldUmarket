@@ -81,6 +81,7 @@ export default EmptyFeed;
 
 const MainContainer = styled.main`
   padding-bottom: 100px;
+  padding: 8px;
 `;
 
 const FeedContainer = styled.div`

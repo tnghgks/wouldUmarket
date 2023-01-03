@@ -150,14 +150,6 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
         <ContContainer>
           <Cont>{postData.content}</Cont>
           {!!postData.image && <ImageSlider image={postData.image} postId={postData.id} />}
-          {/* <ImageContainer>
-            {!!image &&
-              image.split(",").map((img) => (
-                <Link to={`/post/${postId}`} key={crypto.randomUUID()}>
-                  <PostImg src={img} key={crypto.randomUUID()} />
-                </Link>
-              ))}
-          </ImageContainer> */}
           <ReactContainer>
             <IconContainer>
               <HeartIcon toggle={postData.hearted} onClick={postData.hearted ? handleUnHeartClick : handleHeartClick} />
@@ -182,13 +174,15 @@ export default HomePost;
 const PostContainer = styled.section`
   display: flex;
   flex-direction: column;
-  width: 358px;
+  width: 100%;
+  max-width: 358px;
   background-color: #ffffff;
 `;
 const TitleContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
   gap: 12px;
 `;
 const ProfileImg = styled(BasicProfileImg)`
@@ -205,6 +199,7 @@ const MoreIcon = styled(IconMoreVerticalSmall)`
 
 const ContContainer = styled.div`
   margin-left: 55px;
+  overflow: hidden;
 `;
 
 const UserName = styled.h3`

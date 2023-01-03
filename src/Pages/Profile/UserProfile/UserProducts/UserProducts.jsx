@@ -11,7 +11,7 @@ function UserProducts({ setModalInfo, setSubModalData }) {
     !!products.length && (
       <Container>
         <ProductContainer>
-          <Title>판매 중인 상품</Title>
+          <Title>대여 중인 상품</Title>
           <ProductsList>
             {!!products.length &&
               products.map((productData, index) => <Product key={index} productData={productData} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />)}

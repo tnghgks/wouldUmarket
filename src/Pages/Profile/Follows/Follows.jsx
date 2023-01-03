@@ -66,7 +66,8 @@ const Container = styled.main`
   margin-bottom: 61px;
 `;
 const FollowContainer = styled.section`
-  width: 358px;
+  width: 100%;
+  max-width: 358px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
