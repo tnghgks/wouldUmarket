@@ -86,8 +86,10 @@ const PostContainer = styled.section`
 `;
 const AlbumContainer = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 114px);
-  grid-template-rows: repeat(3, 114px);
+  padding: 8px;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, minmax(100px, 114px));
+  grid-template-rows: repeat(3, minmax(100px, 114px));
   gap: 8px;
   img {
     width: 100%;
