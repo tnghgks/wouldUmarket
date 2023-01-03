@@ -2,34 +2,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import profileImg from "../assets/Ellipse-1.png";
 
-const Img = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const UserSearchContainer = styled.li`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 1.4rem;
-  font-family: "Godo", sans-serif;
-  background-color: #ffffff;
-`;
-
-const UserFollowSmall = styled.small`
-  font-size: 1.2rem;
-  font-family: "LINESeedKR", sans-serif;
-  display: inline-block;
-  margin-top: 6px;
-`;
-
-const ColorKeyword = styled.span`
-  color: var(--accentColor);
-`;
-
 function UserSearch({ userData, searchInput }) {
   function MatchingData({ children }) {
     let targetString = children;
@@ -51,8 +23,17 @@ function UserSearch({ userData, searchInput }) {
     return <div>{children}</div>;
   }
 
+  function handleClick() {
+    const prevCookie = JSON.parse(localStorage.getItem("recentSearched"));
+    if (prevCookie) {
+      localStorage.setItem("recentSearched", JSON.stringify([userData, ...prevCookie]));
+    } else {
+      localStorage.setItem("recentSearched", JSON.stringify([userData]));
+    }
+  }
+
   return (
-    <Link to={`/profile/${userData.accountname}`}>
+    <Link to={`/profile/${userData.accountname}`} onClick={handleClick}>
       <UserSearchContainer>
         <Img src={userData.image ? userData.image : profileImg} onError={(e) => (e.target.src = profileImg)} />
         <div>
@@ -67,3 +48,31 @@ function UserSearch({ userData, searchInput }) {
 }
 
 export default UserSearch;
+
+const Img = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const UserSearchContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.4rem;
+  font-family: "Godo", sans-serif;
+  background-color: #ffffff;
+`;
+
+const UserFollowSmall = styled.small`
+  font-size: 1.2rem;
+  font-family: "LINESeedKR", sans-serif;
+  display: inline-block;
+  margin-top: 6px;
+`;
+
+const ColorKeyword = styled.span`
+  color: var(--accentColor);
+`;
