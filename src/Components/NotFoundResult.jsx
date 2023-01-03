@@ -8,7 +8,11 @@ export default NotFoundResult;
 
 const Img = styled.img`
   width: 100%;
-  max-width: 500px;
   aspect-ratio: 1/1;
+  max-width: 450px;
+  max-height: 450px;
+  min-width: 200px;
+  min-height: 200px;
   border-radius: 50%;
+  margin: 0 auto;
 `;
