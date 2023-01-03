@@ -13,7 +13,6 @@ export const ADD_PRODUCT = createAsyncThunk(
         body: JSON.stringify(productData),
       });
       const { product } = await res.json();
-      console.log(product);
       return product;
     } catch (error) {
       console.log(error);
@@ -24,7 +23,6 @@ export const ADD_PRODUCT = createAsyncThunk(
 export const MODIFY_PRODUCT = createAsyncThunk(
   "product/MODIFY_PRODUCT",
   async ({ token, productData, id }) => {
-    console.log(productData);
     try {
       const res = await fetch(
         `https://mandarin.api.weniv.co.kr/product/${id}`,
