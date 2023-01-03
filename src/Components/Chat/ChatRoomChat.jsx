@@ -6,6 +6,7 @@ const Img = styled.img`
   width: 42px;
   height: 42px;
   margin-right: 12px;
+  border-radius: 50%;
 `;
 
 const UserChatItem = styled.li`
