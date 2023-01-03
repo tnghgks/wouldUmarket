@@ -27,6 +27,7 @@ export default ChatListProfile;
 const Img = styled.img`
   width: 42px;
   height: 42px;
+  border-radius: 50%;
 `;
 
 const CheckOnline = styled.div`
