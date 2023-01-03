@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MessageCircle from "../../assets/message-circle.png";
-import FullLogo from "../../Components/FullLogo";
+import FullLogoBig from "../../assets/symbol-logo-W-big.png";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
-import backGroundImage from "../../assets/backgroundImage.png";
 import background from "../../assets/login_background.png";
 import { getCookie } from "../../cookie";
 
@@ -45,8 +44,7 @@ function Login() {
 
   return (
     <Container>
-      <Logo />
-      <img className="backGroundImage" src={backGroundImage} alt="" />
+      <Logo src={FullLogoBig} alt="우주마켓 로고" />
       <LoginContainer>
         <BtnContainer>
           <BtnKakao>
@@ -92,10 +90,10 @@ const Container = styled.div`
     aspect-ratio: 3/5;
   }
 `;
-const Logo = styled(FullLogo)`
+const Logo = styled.img`
   position: absolute;
-  left: 0;
-  top: 0;
+  top: 20%;
+  width: 200px;
 `;
 const LoginContainer = styled.section`
   display: flex;

@@ -78,8 +78,7 @@ const Container = styled.div`
 const Logo = styled.img`
   display: block;
   width: 80%;
-  max-width: 500px;
-  min-width: 300px;
+  max-width: 250px;
+  min-width: 200px;
   aspect-ratio: 1/1;
-  margin-bottom: 41px;
 `;
