@@ -32,9 +32,9 @@ function ImageSlider({ image, postId }) {
     <ImageContainer>
       {!!imageList.length &&
         imageList.map((img) => (
-          <Link to={`/post/${postId}`} key={crypto.randomUUID()}>
+          <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
             <PostImg imageCount={imageCount} src={img} key={crypto.randomUUID()} />
-          </Link>
+          </PostLink>
         ))}
       {imageList.length > 1 && (
         <>
@@ -56,11 +56,16 @@ const ImageContainer = styled.ul`
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  width: 304px;
+  width: 100%;
+  max-width: 304px;
+`;
+const PostLink = styled(Link)`
+  width: 100%;
 `;
 
 const PostImg = styled.img`
-  width: 304px;
+  width: 100%;
+  max-width: 304px;
   height: 208px;
   flex-shrink: 0;
   object-fit: cover;
