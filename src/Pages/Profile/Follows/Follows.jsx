@@ -32,10 +32,12 @@ function Followers() {
         }
       }, 100);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getFollowData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [limit]);
 
   function getFollowData() {

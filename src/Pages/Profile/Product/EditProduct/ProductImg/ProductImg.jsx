@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import ImgButton from "../../../../../assets/upload-file.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 function ProductImg() {
   const [imgData, setImgData] = useState("");
-  const [errorMassage, setErrorMassage] = useState("");
   const {
     product: { itemImage },
   } = useSelector((state) => state);
@@ -13,7 +12,6 @@ function ProductImg() {
   const productImg = imgData ? imgData : itemImage;
 
   function handleProductImg(imgFile) {
-    // setProductImgError("");
     const reader = new FileReader();
     reader.readAsDataURL(imgFile);
     reader.onloadend = () => {
@@ -21,11 +19,6 @@ function ProductImg() {
     };
   }
 
-  // useEffect(() => {
-  //   if (!productImg) {
-  //     setErrorMassage("이미지를 넣어주세요.");
-  //   }
-  // }, []);
   return (
     <ProductContainer>
       <p>이미지 등록</p>
@@ -43,7 +36,6 @@ function ProductImg() {
           }}
         />
       </EditProductImgContainer>
-      <Warning>{errorMassage}</Warning>
     </ProductContainer>
   );
 }

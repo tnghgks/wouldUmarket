@@ -47,16 +47,19 @@ function Profile() {
       dispatch(INITIAL_PAGE_NUMBER());
       window.removeEventListener("scroll", handleScrollEvent);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     dispatch(SET_USER_POSTS({ accountname, token, pageNum }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNum]);
 
   useEffect(() => {
     dispatch(SET_PROFILE({ accountname, token }));
     dispatch(SET_PRODUCT_LIST({ accountname, token }));
     dispatch(SET_USER_POSTS({ accountname, token }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountname]);
 
   return (

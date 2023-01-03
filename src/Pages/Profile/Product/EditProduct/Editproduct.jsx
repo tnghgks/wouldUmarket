@@ -3,11 +3,7 @@ import BasicNav from "../../../../Components/Navbar/UploadNav";
 import ProductImg from "./ProductImg/ProductImg";
 import EditProductInput from "./EditProductInput/EditProductInput";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  MODIFY_PRODUCT,
-  DETAIL_PRODUCT,
-  MODIFY_PRODUCT_IMAGE,
-} from "../../../../store/Product";
+import { MODIFY_PRODUCT, DETAIL_PRODUCT, MODIFY_PRODUCT_IMAGE } from "../../../../store/Product";
 import { useEffect } from "react";
 import { getCookie } from "../../../../cookie";
 import { useNavigate, useParams } from "react-router-dom";
@@ -24,6 +20,7 @@ function EditProduct() {
 
   useEffect(() => {
     dispatch(DETAIL_PRODUCT({ token, id }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function productImg(imgFile) {
@@ -45,9 +42,7 @@ function EditProduct() {
     } = event.target;
 
     const submitValidation = nameValue && priceValue && addressValue;
-    const imgData = imgFile.files[0]
-      ? await productImg(imgFile.files[0])
-      : itemImage;
+    const imgData = imgFile.files[0] ? await productImg(imgFile.files[0]) : itemImage;
 
     if (!submitValidation) {
       return false;

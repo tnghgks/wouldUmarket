@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UploadNav from "../../../Components/Navbar/UploadNav";
-import profileImg from "../../../assets/basic-profile-img.png";
 import FileUploadBtn from "../../../Components/button/FileUploadBtn";
 import IconDelete from "../../../Components/icon/IconDelete";
 import { getCookie } from "../../../cookie";
@@ -149,8 +148,7 @@ function PostUpload() {
 
   // 서버로 이미지 보내기
   const getImageUrls = async () => {
-    if (imageList.length === 0)
-      throw new Error("등록된 미리보기 이미지가 없습니다");
+    if (imageList.length === 0) throw new Error("등록된 미리보기 이미지가 없습니다");
     const formData = new FormData();
     for (const image of imageList) {
       formData.append("image", dataURLtoFile(image.result, image.filename));
@@ -166,9 +164,7 @@ function PostUpload() {
     const isArray = Array.isArray(data);
     if (!isArray) throw new Error(data.message);
 
-    const imgURLtoString = data
-      .map((d) => `${baseURL}/${d.filename}`)
-      .join(",");
+    const imgURLtoString = data.map((d) => `${baseURL}/${d.filename}`).join(",");
 
     return imgURLtoString;
   };
@@ -182,7 +178,7 @@ function PostUpload() {
           image: await getImageUrls(),
         },
       };
-      const res = await fetch(`${baseURL}/post`, {
+      await fetch(`${baseURL}/post`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -198,22 +194,11 @@ function PostUpload() {
   };
   return (
     <Container>
-      <UploadNav
-        children="업로드"
-        btnDisabled={!imageList.length}
-        bgColor={!imageList.length ? "light" : "main"}
-        onClickUpload={onClickUpload}
-      />
+      <UploadNav children="업로드" btnDisabled={!imageList.length} bgColor={!imageList.length ? "light" : "main"} onClickUpload={onClickUpload} />
       <UploadContainer>
         <BasicProfileImg src={profile.image} />
         <InputContainer>
-          <Textarea
-            value={textContent}
-            rows={1}
-            ref={textareaRef}
-            onChange={handleResizeHeight}
-            placeholder="게시글 입력하기..."
-          />
+          <Textarea value={textContent} rows={1} ref={textareaRef} onChange={handleResizeHeight} placeholder="게시글 입력하기..." />
 
           <ImageList>
             {imageList.map((img) => (
@@ -234,13 +219,7 @@ function PostUpload() {
                           }
                     }
                   />
-                  <DeleteBtn
-                    onClick={() =>
-                      setImageList((prev) =>
-                        prev.filter((a) => a.id !== img.id)
-                      )
-                    }
-                  >
+                  <DeleteBtn onClick={() => setImageList((prev) => prev.filter((a) => a.id !== img.id))}>
                     <IconDelete />
                   </DeleteBtn>
                 </ImageContainer>

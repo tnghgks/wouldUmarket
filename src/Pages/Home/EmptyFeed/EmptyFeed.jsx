@@ -44,10 +44,12 @@ function EmptyFeed() {
     window.addEventListener("scroll", handleScrollEvent);
 
     return () => window.removeEventListener("scroll", handleScrollEvent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     dispatch(SET_FOLLOWERS_POSTS({ token, pageNum }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNum]);
 
   return (

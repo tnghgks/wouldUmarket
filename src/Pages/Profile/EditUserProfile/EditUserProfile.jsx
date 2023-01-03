@@ -32,6 +32,7 @@ function EditUserProfile() {
     setProfileName(profile.username);
     setProfileId(profile.accountname);
     setProfileIntro(profile.intro);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // NAME 유효성검사

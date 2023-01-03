@@ -53,12 +53,14 @@ function Search() {
     let controller = new AbortController();
     dispatch(asyncSearchFetch({ searchInput, token, signal: controller.signal }));
     setSignal(controller);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
 
   useEffect(() => {
     if (!searchInput) return;
 
     dispatch(asyncSearchFetch({ searchInput, token, pageNum }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNum]);
 
   function handleDeleteBtn(targetIndex) {

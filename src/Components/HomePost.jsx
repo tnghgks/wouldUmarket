@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 import ImageSlider from "./ImageSlider";
-import { SET_USER_POSTS } from "../store/PostList";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   const [postData, setPostData] = useState(postItem);
