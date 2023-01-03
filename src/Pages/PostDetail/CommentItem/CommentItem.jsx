@@ -137,6 +137,7 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
       } else {
         alert("신고가 정상적으로 되지 않았습니다.");
       }
+      dispatch(CLOSE_MODAL());
     } catch (error) {
       console.log(error);
     }
