@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 
 // 판매링크 유효성 정규표현식
 // eslint-disable-next-line no-useless-escape
-const addressRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
+const addressRegex =
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
 
 function EditProductInput() {
   const {
@@ -122,6 +123,12 @@ const InputContainer = styled.section`
   flex-direction: column;
   gap: 16px;
   margin-top: 30px;
+  & > div > input {
+    &:focus {
+      border-bottom-color: #f26e22;
+      transition: border-bottom-color 200ms;
+    }
+  }
 `;
 
 const Warning = styled.p`

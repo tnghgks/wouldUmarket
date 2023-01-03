@@ -256,6 +256,12 @@ const InputContainer = styled.section`
   flex-direction: column;
   gap: 16px;
   margin-top: 30px;
+  & > div > input {
+    &:focus {
+      border-bottom-color: #f26e22;
+      transition: border-bottom-color 200ms;
+    }
+  }
 `;
 
 const UploadImgInput = styled.input`
