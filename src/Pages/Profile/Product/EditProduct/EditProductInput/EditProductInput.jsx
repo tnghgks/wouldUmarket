@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 // 판매링크 유효성 정규표현식
-const addressRegex =
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
+// eslint-disable-next-line no-useless-escape
+const addressRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
 
 function EditProductInput() {
   const {

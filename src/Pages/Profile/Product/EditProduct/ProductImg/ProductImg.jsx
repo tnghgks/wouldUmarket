@@ -81,7 +81,3 @@ const UploadImgDiv = styled.div`
 const UploadImgInput = styled.input`
   display: none;
 `;
-const Warning = styled.p`
-  font-size: 1.2rem;
-  color: #eb5757;
-`;

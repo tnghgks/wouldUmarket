@@ -26,6 +26,7 @@ function PostDetail() {
   useEffect(() => {
     dispatch(FETCH_POST_DATA({ id, token }));
     dispatch(FETCH_COMMENT_DATA({ id, token }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
