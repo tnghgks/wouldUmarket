@@ -7,116 +7,142 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { MODIFY_PROFILE } from "../../store/Profile";
+import { MODIFY_PRODUCT_IMAGE } from "../../store/Product";
 import { getCookie } from "../../cookie";
 import { SET_USERINFO } from "../../store/UserInfo";
+
+// 한글,영어 표현식
+const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]*$/;
+
+// 영문,숫자,특수문자 표현식
+const Regex = /^[a-zA-Z0-9._]*$/;
 
 function EditUserProfile() {
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
-
-  const [profileName, setProfileName] = useState("");
-  const [profileId, setProfileId] = useState("");
-  const [profileIntro, setProfileIntro] = useState("");
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    id: "",
+    intro: "",
+  });
+  const [errorMessage, setErrorMessage] = useState({
+    name: "",
+    id: "",
+    intro: "",
+  });
   const [myProfileImg, setMyProfileImg] = useState("");
-
-  const [userNameError, setUserNameError] = useState("");
-  const [userIdError, setUserIdError] = useState("");
-  const [userIntroError, setUserIntroError] = useState("");
-
   const { profile } = useSelector((state) => state);
   const navigate = useNavigate();
 
-  const btnDisabled = !(profileName || profileId) || !(profileIntro || myProfileImg);
+  const errorDisabled = !(
+    errorMessage.name ||
+    errorMessage.id ||
+    errorMessage.intro
+  );
+  const disabled = !(inputValue.name && inputValue.id && inputValue.intro);
 
+  // 프로필 설정값 가져오기
   useEffect(() => {
-    setProfileName(profile.username);
-    setProfileId(profile.accountname);
-    setProfileIntro(profile.intro);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setInputValue((prev) => ({
+      ...prev,
+      name: profile.username,
+      id: profile.accountname,
+      intro: profile.intro,
+    }));
+  }, [profile]);
 
   // NAME 유효성검사
   function handleUserName(e) {
     const userName = e.target.value;
-    setProfileName(userName);
-
-    // 한글,영어 표현식
-    const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]*$/;
+    setInputValue((prev) => ({ ...prev, name: userName }));
 
     if (!userName) {
-      setUserNameError("사용자 이름을 입력해주세요.");
+      setErrorMessage((prev) => ({
+        ...prev,
+        name: "사용자 이름을 입력해주세요.",
+      }));
     } else if (userName.length < 2 || userName.length > 10) {
-      setUserNameError("2~10자 이내만 가능합니다.");
+      setErrorMessage((prev) => ({
+        ...prev,
+        name: "2~10자 이내만 가능합니다.",
+      }));
     } else if (!userNameRegex.test(userName)) {
-      setUserNameError("한글,영문만 가능합니다.");
+      setErrorMessage((prev) => ({ ...prev, name: "한글,영문만 가능합니다." }));
     } else {
-      setUserNameError("");
+      setErrorMessage((prev) => ({ ...prev, name: "" }));
     }
   }
 
   // ID 유효성검사
   function handleUserId(e) {
     const userId = e.target.value;
-    setProfileId(userId);
-
-    // 영문,숫자,특수문자 표현식
-    const Regex = /^[a-zA-Z0-9._]*$/;
+    setInputValue((prev) => ({ ...prev, id: userId }));
 
     if (!userId) {
-      setUserIdError("계정 ID를 입력해주세요.");
+      setErrorMessage((prev) => ({ ...prev, id: "계정 ID를 입력해주세요." }));
     } else if (!Regex.test(userId)) {
-      setUserIdError("영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.");
+      setErrorMessage((prev) => ({
+        ...prev,
+        id: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
+      }));
     } else {
-      setUserIdError("");
+      setErrorMessage((prev) => ({ ...prev, id: "" }));
     }
   }
   // intro 유효성검사
   function handleUserIntro(e) {
     const userIntro = e.target.value;
-    setProfileIntro(userIntro);
+    setInputValue((prev) => ({ ...prev, intro: userIntro }));
 
     if (!userIntro) {
-      setUserIntroError("소개를 입력해주세요.");
+      setErrorMessage((prev) => ({ ...prev, intro: "소개를 입력해주세요." }));
     } else {
-      setUserIntroError("");
+      setErrorMessage((prev) => ({ ...prev, intro: "" }));
     }
   }
 
-  // 서버의 url 변환 요청
-  async function UserProfileImg(e) {
-    const imgfile = e.target;
+  // 이미지 미리보기
+  function UserProfileImg(e) {
+    const imgFile = e.currentTarget.files[0];
 
+    const reader = new FileReader();
+    reader.readAsDataURL(imgFile);
+    reader.onloadend = () => {
+      setMyProfileImg(reader.result);
+    };
+  }
+
+  // 한개의 이미지 API 로직
+  async function productImg(imgFile) {
     const formData = new FormData();
-    formData.append("image", imgfile.files[0]);
+    formData.append("image", imgFile);
 
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/image/uploadfile`, {
-        method: "POST",
-        body: formData,
-      });
-      const imgData = await res.json();
-      if (!imgData) return;
-      setMyProfileImg("https://mandarin.api.weniv.co.kr/" + imgData.filename);
-    } catch (error) {
-      console.log(error);
-    }
+    const productSeverImg = await dispatch(MODIFY_PRODUCT_IMAGE({ formData }));
+    return productSeverImg.payload;
   }
 
   // 유저입력 데이터 핸들러
   async function handleSubmit(e) {
     e.preventDefault();
-    const { userName, userID, aboutMe, imgfile } = e.target;
+    const { userName, userID, aboutMe, imgFile } = e.target;
+
+    const imgData = imgFile.files[0]
+      ? await productImg(imgFile.files[0])
+      : profile.image;
 
     // 유효성 검사 및 disabled
-    if (btnDisabled) {
-      if (!userName.value) {
-        setUserNameError("사용자 이름을 입력해주세요.");
+    if (!errorDisabled) {
+      if (!!errorMessage.name) {
+        setErrorMessage((prev) => ({
+          ...prev,
+          name: "잘못된 이름 입니다",
+        }));
       }
-      if (!userID.value) {
-        setUserIdError("계정 ID를 입력해주세요.");
+      if (!!errorMessage.id) {
+        setErrorMessage((prev) => ({ ...prev, id: "잘못된 ID 입니다." }));
       }
-      if (!aboutMe.value) {
-        setUserIntroError("소개를 입력해주세요.");
+      if (!!errorMessage.intro) {
+        setErrorMessage((prev) => ({ ...prev, intro: "소개를 작성해주세요." }));
       }
       return false;
     }
@@ -126,7 +152,7 @@ function EditUserProfile() {
         username: userName.value,
         accountname: userID.value,
         intro: aboutMe.value,
-        image: imgfile.files[0] ? myProfileImg : profile.image,
+        image: imgData,
       },
     };
 
@@ -142,17 +168,24 @@ function EditUserProfile() {
       <form onSubmit={handleSubmit}>
         <BasicNav
           children="저장"
-          // btnDisabled={btnDisabled}
-          bgColor={btnDisabled || false ? "light" : "accent"}
+          btnDisabled={!disabled || false ? false : true}
+          bgColor={disabled || false ? "light" : "accent"}
         />
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
+              <BasicProfileImg
+                src={myProfileImg ? myProfileImg : profile.image}
+              />
               <label htmlFor="file">
                 <UploadImgDiv></UploadImgDiv>
               </label>
-              <UploadImgInput type="file" name="imgfile" id="file" onChange={UserProfileImg} />
+              <UploadImgInput
+                type="file"
+                name="imgFile"
+                id="file"
+                onChange={UserProfileImg}
+              />
             </EditImgContainer>
           </ProfileContainer>
           <InputContainer>
@@ -163,9 +196,9 @@ function EditUserProfile() {
               name="userName"
               onChange={handleUserName}
               // required={true}
-              defaultValue={profile.username}
+              value={inputValue.name}
             />
-            <Warning>{userNameError}</Warning>
+            <Warning>{errorMessage.name}</Warning>
             <CommonInput
               label="계정 ID"
               type="text"
@@ -173,11 +206,18 @@ function EditUserProfile() {
               name="userID"
               onChange={handleUserId}
               // required={true}
-              defaultValue={profile.accountname}
+              value={inputValue.id}
             />
-            <Warning>{userIdError}</Warning>
-            <CommonInput label="소개" type="text" placeholder="자신과 판매할 상품에 대해 소개해 주세요!" name="aboutMe" onChange={handleUserIntro} defaultValue={profile.intro} />
-            <Warning>{userIntroError}</Warning>
+            <Warning>{errorMessage.id}</Warning>
+            <CommonInput
+              label="소개"
+              type="text"
+              placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
+              name="aboutMe"
+              onChange={handleUserIntro}
+              value={inputValue.intro}
+            />
+            <Warning>{errorMessage.intro}</Warning>
           </InputContainer>
         </EditProfileContainer>
       </form>
