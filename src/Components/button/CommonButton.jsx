@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+/**
+ *
+ * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white";  onClick: "eventprops" ; disabled: "false"|"true" ; children: "buttonText"}} param0
+ * @returns
+ */
+function CommonButton({ size, fontColor, bgColor, onClick, disabled, children }) {
+  return (
+    <ButtonContainer size={size} fontColor={fontColor} bgColor={bgColor} onClick={onClick} disabled={disabled}>
+      {children}
+    </ButtonContainer>
+  );
+}
+
+export default CommonButton;
+
 const ButtonContainer = styled.button`
   width: ${(props) => {
     switch (props.size) {
@@ -82,17 +97,3 @@ const ButtonContainer = styled.button`
   line-height: 20px;
   flex-shrink: 0;
 `;
-/**
- *
- * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white";  onClick: "eventprops" ; disabled: "false"|"true" ; children: "buttonText"}} param0
- * @returns
- */
-function CommonButton({ size, fontColor, bgColor, onClick, disabled, children }) {
-  return (
-    <ButtonContainer size={size} fontColor={fontColor} bgColor={bgColor} onClick={onClick} disabled={disabled}>
-      {children}
-    </ButtonContainer>
-  );
-}
-
-export default CommonButton;

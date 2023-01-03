@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ChatNav from "../../../Components/Navbar/ChatNav";
 import Comment from "../../../Components/Comment";
-import ChatRoomChat from "../../../Components/ChatRoomChat";
+import ChatRoomChat from "../../../Components/Chat/ChatRoomChat";
 import profileImg from "../../../assets/chat-exapmle.png";
 
 const ChatRoomContainer = styled.section`
@@ -26,18 +26,9 @@ function ChatRoom() {
             chattime="12:39"
             user="friend"
           />
-          <ChatRoomChat
-            chattext="안녕하세요. 감귤 사고싶어요요요요요"
-            chattime="12:41"
-            user="friend"
-          />
+          <ChatRoomChat chattext="안녕하세요. 감귤 사고싶어요요요요요" chattime="12:41" user="friend" />
           <ChatRoomChat chattext="네 말씀하세요." chattime="12:50" user="my" />
-          <ChatRoomChat
-            chattext="네 말씀하세요."
-            chattime="12:50"
-            user="my"
-            imges={profileImg}
-          />
+          <ChatRoomChat chattext="네 말씀하세요." chattime="12:50" user="my" imges={profileImg} />
         </ul>
       </ChatRoomContainer>
       <Comment img={"upload"} placeholder="메시지 입력하기..." btn="전송" />

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import FollowButton from "../Components/button/CommonButton";
+import FollowButton from "./Button/CommonButton";
 import { getCookie } from "../cookie";
-import BasicProfileImg from "./BasicProfileImg";
+import BasicProfileImg from "./ImageComponents/BasicProfileImg";
 
 function UserFollow({ username, accountname, isfollow, image }) {
   const [toggle, setToggle] = useState(isfollow);

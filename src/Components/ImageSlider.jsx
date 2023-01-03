@@ -30,12 +30,9 @@ function ImageSlider({ image, postId }) {
 
   return (
     <ImageContainer>
-      {!!imageList.length &&
-        imageList.map((img) => (
-          <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
-            <PostImg imageCount={imageCount} src={img} key={crypto.randomUUID()} />
-          </PostLink>
-        ))}
+      <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
+        {!!imageList.length && imageList.map((img) => <PostImg imageCount={imageCount} src={img} key={crypto.randomUUID()} />)}
+      </PostLink>
       {imageList.length > 1 && (
         <>
           <LeftBtn onClick={handleLeftBtn}>
@@ -55,12 +52,15 @@ const ImageContainer = styled.ul`
   display: flex;
   justify-content: flex-start;
   position: relative;
-  overflow: hidden;
+
   width: 100%;
   max-width: 304px;
 `;
 const PostLink = styled(Link)`
   width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  overflow: hidden;
 `;
 
 const PostImg = styled.img`

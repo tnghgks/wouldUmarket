@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import FullLogoBig from "../../assets/symbol-logo-W-big.png";
-import TextLogo from "../../Components/TextLogo";
+import TextLogo from "../../Components/Logo/TextLogo";
 import SplashLoader from "./SplashLoader/SplashLoader";
 import { getCookie } from "../../cookie/index";
 

@@ -1,21 +1,21 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ChatList from "../Pages/Chat/ChatList/ChatList";
 import ChatRoom from "../Pages/Chat/ChatRoom/ChatRoom";
-import PostDetail from "../Pages/Post/PostDetail/PostDetail";
-import PostUpload from "../Pages/Post/PostUpload/PostUpload";
-import Profile from "../Pages/Profile/UserProfile/Profile";
+import PostDetail from "../Pages/PostDetail/PostDetail";
+import PostUpload from "../Pages/PostUpload/PostUpload";
+import Profile from "../Pages/UserProfile/Profile";
 import Register from "../Pages/Register/Register";
 import Search from "../Pages/Search/Search";
 import SetProfile from "../Pages/SetProfile/SetProfile";
 import Page404 from "../Pages/Page404/Page404";
-import Follows from "../Pages/Profile/Follows/Follows";
+import Follows from "../Pages/Follows/Follows";
 import Login from "../Pages/Login/Login";
-import LoginEmail from "../Pages/Login/LoginEmail";
+import LoginEmail from "../Pages/LoginEmail/LoginEmail";
 import SplashScreen from "../Pages/SplashScreen/SplashScreen";
-import EmptyFeed from "../Pages/Home/EmptyFeed/EmptyFeed";
-import EditUserProfile from "../Pages/Profile/EditUserProfile/EditUserProfile";
-import EditProduct from "../Pages/Profile/Product/EditProduct/Editproduct";
-import AddProduct from "../Pages/Profile/Product/AddProduct";
+import Feed from "../Pages/Home/Feed";
+import EditUserProfile from "../Pages/EditUserProfile/EditUserProfile";
+import EditProduct from "../Pages/EditProduct/Editproduct";
+import AddProduct from "../Pages/AddProduct/AddProduct";
 
 function Router() {
   return (
@@ -26,7 +26,7 @@ function Router() {
         <Route path="/login/loginEmail" element={<LoginEmail />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/feed" element={<EmptyFeed />} />
+        <Route path="/feed" element={<Feed />} />
 
         <Route path="/profile/setProfile" element={<SetProfile />} />
         <Route path="/profile/myProfile" element={<Profile />} />

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NotFoundImg from "../../assets/notFound404.png";
-import CommonButton from "../../Components/button/CommonButton";
+import CommonButton from "../../Components/Button/CommonButton";
 
 function Page404() {
   const navigate = useNavigate();

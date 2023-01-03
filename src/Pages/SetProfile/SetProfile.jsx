@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState, useRef } from "react";
-import BasicProfileImg from "../../Components/BasicProfileImg";
-import CommonInput from "../../Components/CommonInput";
-import CommonButton from "../../Components/button/CommonButton";
+import BasicProfileImg from "../../Components/ImageComponents/BasicProfileImg";
+import CommonInput from "../../Components/Input/CommonInput";
+import CommonButton from "../../Components/Button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
 import { setCookie } from "../../cookie";
 import ImgButton from "../../assets/upload-file.png";
@@ -213,25 +213,12 @@ function SetProfile() {
           <label htmlFor="file">
             <UploadImgDiv></UploadImgDiv>
           </label>
-          <UploadImgInput
-            type="file"
-            name="profileImage"
-            id="file"
-            onChange={handleSetProfileImg}
-            ref={fileInput}
-          />
+          <UploadImgInput type="file" name="profileImage" id="file" onChange={handleSetProfileImg} ref={fileInput} />
         </ProfileImgContainer>
         <TextContainer>
           <legend className="ir-hidden">프로필정보</legend>
           <div>
-            <CommonInput
-              name="username"
-              label="사용자 이름"
-              type="text"
-              placeholder="2~10자 이내여야 합니다."
-              onChange={handleUsernameChange}
-              required="required"
-            />
+            <CommonInput name="username" label="사용자 이름" type="text" placeholder="2~10자 이내여야 합니다." onChange={handleUsernameChange} required="required" />
             {usernameError && <Warning>*{usernameError}</Warning>}
           </div>
           <div>
@@ -246,24 +233,12 @@ function SetProfile() {
             {accountnameError && <Warning>*{accountnameError}</Warning>}
           </div>
           <div>
-            <CommonInput
-              name="intro"
-              label="소개"
-              type="text"
-              placeholder="자신과 쉐어할 상품에 대해 소개해주세요!"
-              onChange={handleIntroChange}
-              required="required"
-            />
+            <CommonInput name="intro" label="소개" type="text" placeholder="자신과 쉐어할 상품에 대해 소개해주세요!" onChange={handleIntroChange} required="required" />
             {introError && <Warning>*{introError}</Warning>}
           </div>
         </TextContainer>
         {validationError && <Warning>*{validationError}</Warning>}
-        <CommonButton
-          size="lg"
-          bgColor={!(username || accountname || intro) ? "light" : "accent"}
-          children="우주쉐어 시작하기"
-          disabled={!(username || accountname || intro)}
-        />
+        <CommonButton size="lg" bgColor={!(username || accountname || intro) ? "light" : "accent"} children="우주쉐어 시작하기" disabled={!(username || accountname || intro)} />
         {registerError && <Warning>*{registerError}</Warning>}
       </form>
     </Container>

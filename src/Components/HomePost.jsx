@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import BasicProfileImg from "../Components/BasicProfileImg";
+import BasicProfileImg from "./ImageComponents/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
@@ -13,7 +13,6 @@ import ImageSlider from "./ImageSlider";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   const [postData, setPostData] = useState(postItem);
-  // const { author, content, image, hearted, id: postId, heartCount, commentCount } = postItem;
   const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const {

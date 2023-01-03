@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CommonButton from "../button/CommonButton";
+import CommonButton from "../Button/CommonButton";
 import IconArrowLeft from "../icon/IconArrowLeft";
 
 const Container = styled.div`
@@ -43,13 +43,7 @@ function UploadNav({ children, btnDisabled, onClickUpload, bgColor }) {
       >
         <BackBtnIcon />
       </Back>
-      <CommonButton
-        size="ms"
-        bgColor={bgColor}
-        children={children}
-        disabled={btnDisabled}
-        onClick={onClickUpload}
-      />
+      <CommonButton size="ms" bgColor={bgColor} children={children} disabled={btnDisabled} onClick={onClickUpload} />
     </Container>
   );
 }
