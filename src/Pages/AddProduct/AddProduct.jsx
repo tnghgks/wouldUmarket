@@ -147,7 +147,7 @@ function AddProduct() {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <BasicNav children="저장" bgColor={!Enabled ? "light" : "accent"} />
+      <BasicNav children="저장" bgColor={!Enabled ? "light" : "main"} />
       <EditProfileContainer>
         <ProductContainer>
           <p>이미지 등록</p>

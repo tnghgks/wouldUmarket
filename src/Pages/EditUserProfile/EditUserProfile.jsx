@@ -169,7 +169,7 @@ function EditUserProfile() {
         <BasicNav
           children="저장"
           btnDisabled={!disabled || false ? false : true}
-          bgColor={disabled || false ? "light" : "accent"}
+          bgColor={disabled || false ? "light" : "main"}
         />
         <EditProfileContainer>
           <ProfileContainer>
