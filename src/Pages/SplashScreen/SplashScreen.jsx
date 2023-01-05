@@ -10,7 +10,7 @@ function SplashScreen() {
   const token = getCookie("accessToken");
   const navigate = useNavigate();
 
-  async function getCheckToken() {
+  async function getCheckToken(token) {
     try {
       const response = await fetch("https://mandarin.api.weniv.co.kr/user/checktoken", {
         method: "GET",
@@ -28,13 +28,13 @@ function SplashScreen() {
   }
 
   setTimeout(async () => {
-    const isValid = await getCheckToken();
+    if (token) {
+      const isValid = await getCheckToken(token);
 
-    if (isValid && token) {
-      navigate("/feed");
-    } else {
-      navigate("/login");
+      if (isValid) return navigate("/feed");
     }
+
+    navigate("/login");
   }, 2600);
 
   return (
