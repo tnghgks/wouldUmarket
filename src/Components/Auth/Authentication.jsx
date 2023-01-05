@@ -12,6 +12,9 @@ function Authentication() {
     if (!userInfo.accountname) {
       if (token) {
         dispatch(SET_USERINFO(token));
+      } else if (window.location.pathname !== "/login") {
+        alert("로그인하셔야 합니다.");
+        window.location.href = "/login";
       }
     }
   });
