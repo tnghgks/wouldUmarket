@@ -1,47 +1,13 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import MessageCircle from "../../assets/message-circle.png";
 import FullLogoBig from "../../assets/symbol-logo-W-big.png";
 import GoogleIcon from "../../assets/google.png";
 import FacebookIcon from "../../assets/facebook.png";
 import background from "../../assets/login_background.png";
-import { getCookie } from "../../cookie";
 
 function Login() {
-  const token = getCookie("accessToken");
-  const navigate = useNavigate();
-
-  async function getCheckToken() {
-    try {
-      const response = await fetch("https://mandarin.api.weniv.co.kr/user/checktoken", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { isValid } = await response.json();
-
-      return isValid;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function checkValidToken() {
-    const isValid = await getCheckToken();
-
-    if (isValid && token) {
-      navigate("/feed");
-    }
-  }
-
-  useEffect(() => {
-    checkValidToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Container>
       <Logo src={FullLogoBig} alt="우주마켓 로고" />
