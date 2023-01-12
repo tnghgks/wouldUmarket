@@ -2,46 +2,23 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import FollowButton from "./Button/CommonButton";
-import { getCookie } from "../cookie";
 import BasicProfileImg from "./ImageComponents/BasicProfileImg";
+import { follow, unFollow } from "../api/profile";
 
 function UserFollow({ username, accountname, isfollow, image }) {
   const [toggle, setToggle] = useState(isfollow);
-  const token = getCookie("accessToken");
 
   async function handleFollowing() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/follow`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile, message } = await res.json();
-      if (!profile) return alert(message);
-
+    const isSuccess = await follow(accountname);
+    if (isSuccess) {
       setToggle(true);
-    } catch (error) {
-      console.log(error);
     }
   }
 
   async function handleUnFollowing() {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/unfollow`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile, message } = await res.json();
-      if (!profile) return alert(message);
-
+    const isSuccess = await unFollow(accountname);
+    if (isSuccess) {
       setToggle(false);
-    } catch (error) {
-      console.log(error);
     }
   }
 

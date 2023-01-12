@@ -6,6 +6,8 @@ import CommonInput from "../../Components/Input/CommonInput";
 import { useDispatch } from "react-redux";
 import { SET_USERINFO } from "../../store/UserInfo";
 import { setCookie } from "../../cookie";
+import { login } from "../../api/auth";
+import { getUserProfile } from "../../api/profile";
 
 const Container = styled.main`
   display: flex;
@@ -106,13 +108,8 @@ function LoginEmail() {
 
   async function getLoginData(inputData) {
     try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/user/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputData),
-      });
+      const { user, message } = await login(inputData);
 
-      const { user, message } = await response.json();
       setFormError((prev) => {
         return { ...prev, form: message };
       });
@@ -142,19 +139,11 @@ function LoginEmail() {
     }
   }
 
-  async function getUserData(accountname, token) {
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { profile } = await res.json();
+  async function getUserData(accountname) {
+    const { isSuccess, profile } = await getUserProfile(accountname);
+
+    if (isSuccess) {
       dispatch(SET_USERINFO(profile));
-    } catch (error) {
-      console.log(error);
     }
   }
 

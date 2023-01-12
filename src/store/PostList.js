@@ -1,38 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getFollowersPosts, getPostsByAccountName } from "../api/post";
 
-const SET_FOLLOWERS_POSTS = createAsyncThunk("postList/SET_FOLLOWERS_POSTS", async ({ token, pageNum = 1 }) => {
-  try {
-    const res = await fetch(`https://mandarin.api.weniv.co.kr/post/feed/?limit=${pageNum * 5}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const { posts } = await res.json();
+const SET_FOLLOWERS_POSTS = createAsyncThunk("postList/SET_FOLLOWERS_POSTS", getFollowersPosts);
 
-    return posts;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-const SET_USER_POSTS = createAsyncThunk("postList/SET_USER_POSTS", async ({ accountname, token, pageNum = 1 }) => {
-  try {
-    const res = await fetch(`https://mandarin.api.weniv.co.kr/post/${accountname}/userpost/?limit=${pageNum * 5}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const { post } = await res.json();
-
-    return post;
-  } catch (error) {
-    console.log(error);
-  }
-});
+const SET_USER_POSTS = createAsyncThunk("postList/SET_USER_POSTS", getPostsByAccountName);
 
 const initialState = {
   posts: [],
