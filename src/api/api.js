@@ -1,6 +1,4 @@
-import { valueToNode } from "@babel/types";
 import axios from "axios";
-import { async } from "q";
 import { getCookie } from "../cookie";
 
 const BASE_URL = "https://mandarin.api.weniv.co.kr";
@@ -16,13 +14,18 @@ export const authInstance = axios.create({
   },
 });
 
+export const formDataInstance = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "Content-type": "multipart/form-data",
+  },
+});
+
 authInstance.interceptors.request.use(
   (config) => {
     const token = getCookie("accessToken");
 
-    if (!config.headers["Authorization"]) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
+    config.headers["Authorization"] = `Bearer ${token}`;
 
     return config;
   },
