@@ -1,38 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getFollowers, getFollowings } from "../api/profile";
 
-export const SET_FOLLOWER_LIST = createAsyncThunk("profile/SET_FOLLOWER_LIST", async ({ accountname, token, limit }) => {
-  try {
-    const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/follower?limit=${limit}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const followerData = await res.json();
+export const SET_FOLLOWER_LIST = createAsyncThunk("profile/SET_FOLLOWER_LIST", getFollowers);
 
-    return followerData;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-export const SET_FOLLOWING_LIST = createAsyncThunk("profile/SET_FOLLOWING_LIST", async ({ accountname, token, limit }) => {
-  try {
-    const res = await fetch(`https://mandarin.api.weniv.co.kr/profile/${accountname}/following?limit=${limit}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const followingData = await res.json();
-    console.log(followingData);
-    return followingData;
-  } catch (error) {
-    console.log(error);
-  }
-});
+export const SET_FOLLOWING_LIST = createAsyncThunk("profile/SET_FOLLOWING_LIST", getFollowings);
 
 const initialState = {
   users: [],

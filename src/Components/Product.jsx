@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { deleteProduct } from "../api/product";
 import productImg from "../assets/product-img-example.png";
 import { getCookie } from "../cookie";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
@@ -16,21 +17,11 @@ function Product({ productData, setModalInfo, setSubModalData }) {
   } = useSelector((state) => state);
 
   async function handleDeleteProduct() {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/product/${productData.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      alert(data.message);
+    const isSuccess = await deleteProduct(productData.id);
 
+    if (isSuccess) {
       dispatch(SET_PRODUCT_LIST({ accountname, token }));
       dispatch(CLOSE_MODAL());
-    } catch (error) {
-      console.log(error);
     }
   }
 
