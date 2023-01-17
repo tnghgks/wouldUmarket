@@ -5,31 +5,16 @@ import FullLogoBig from "../../assets/symbol-logo-W-big.png";
 import TextLogo from "../../Components/Logo/TextLogo";
 import SplashLoader from "./SplashLoader/SplashLoader";
 import { getCookie } from "../../cookie/index";
+import { getCheckToken } from "../../api/splashscreen";
 
 function SplashScreen() {
   const token = getCookie("accessToken");
   const navigate = useNavigate();
 
-  async function getCheckToken(token) {
-    try {
-      const response = await fetch("https://mandarin.api.weniv.co.kr/user/checktoken", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      const { isValid } = await response.json();
-
-      return isValid;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   setTimeout(async () => {
     if (token) {
-      const isValid = await getCheckToken(token);
+      const isValid = await getCheckToken();
+      console.log(isValid);
 
       if (isValid) return navigate("/feed");
     }
