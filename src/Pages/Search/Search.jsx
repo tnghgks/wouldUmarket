@@ -6,13 +6,13 @@ import SearchNav from "../../Components/Navbar/SearchNav";
 import NotFoundResult from "../../Components/NotFoundResult";
 import TabMenu from "../../Components/TabMenu";
 import UserSearch from "../../Components/UserSearch";
-import { getCookie } from "../../cookie";
+// import { getCookie } from "../../cookie";
 import { asyncSearchFetch } from "../../store/SearchData";
 import iconDelete from "../../assets/icon/icon-delete.svg";
 
 function Search() {
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
+  // const token = getCookie("accessToken");
   const { searchData } = useSelector((state) => state);
   const [pageNum, setPageNum] = useState(1);
   const [searchInput, setSearchInput] = useState("");
@@ -51,7 +51,7 @@ function Search() {
     window.scrollTo(0, 0);
     setPageNum(1);
     let controller = new AbortController();
-    dispatch(asyncSearchFetch({ searchInput, token, signal: controller.signal }));
+    dispatch(asyncSearchFetch({ searchInput, signal: controller.signal }));
     setSignal(controller);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
@@ -59,7 +59,7 @@ function Search() {
   useEffect(() => {
     if (!searchInput) return;
 
-    dispatch(asyncSearchFetch({ searchInput, token, pageNum }));
+    dispatch(asyncSearchFetch({ searchInput, pageNum }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNum]);
 
