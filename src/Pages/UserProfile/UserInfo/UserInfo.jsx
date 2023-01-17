@@ -2,7 +2,6 @@ import styled from "styled-components";
 import BasicProfileImg from "../../../Components/ImageComponents/BasicProfileImg";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCookie } from "../../../cookie";
 import { FOLLOW, UN_FOLLOW } from "../../../store/Profile";
 import FollowBtns from "../FollowBtns/FollowBtns";
 import EditBtns from "../EditBtns/EditBtns";
@@ -11,15 +10,14 @@ function UserInfo() {
   const dispatch = useDispatch();
   const { accountname } = useParams();
   const { userInfo, profile } = useSelector((state) => state);
-  const token = getCookie("accessToken");
 
   const ownUser = userInfo.userId === profile.userId;
 
   async function handleFollowBtn() {
-    dispatch(FOLLOW({ dispatch, accountname, token }));
+    dispatch(FOLLOW(accountname));
   }
   async function handleUnFollowBtn() {
-    dispatch(UN_FOLLOW({ dispatch, accountname, token }));
+    dispatch(UN_FOLLOW(accountname));
   }
 
   return (
@@ -43,7 +41,15 @@ function UserInfo() {
         <UserNicname>{profile.username}</UserNicname>
         <UserId>@ {profile.accountname}</UserId>
         <UserDescription>{profile.intro}</UserDescription>
-        {ownUser ? <EditBtns /> : <FollowBtns isFollow={profile.isfollow} handleFollow={handleFollowBtn} handleUnFollow={handleUnFollowBtn} />}
+        {ownUser ? (
+          <EditBtns />
+        ) : (
+          <FollowBtns
+            isFollow={profile.isfollow}
+            handleFollow={handleFollowBtn}
+            handleUnFollow={handleUnFollowBtn}
+          />
+        )}
       </Container>
     )
   );

@@ -1,88 +1,26 @@
+import {
+  addProduct,
+  modifyProduct,
+  getDetailProduct,
+  modifyProductImage,
+} from "../api/product";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const ADD_PRODUCT = createAsyncThunk(
-  "product/ADD_PRODUCT",
-  async ({ productData, token }) => {
-    try {
-      const res = await fetch("https://mandarin.api.weniv.co.kr/product", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
-      const { product } = await res.json();
-      return product;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
+export const ADD_PRODUCT = createAsyncThunk("product/ADD_PRODUCT", addProduct);
 
 export const MODIFY_PRODUCT = createAsyncThunk(
   "product/MODIFY_PRODUCT",
-  async ({ token, productData, id }) => {
-    try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/product/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(productData),
-        }
-      );
-      const { product } = await res.json();
-      return product;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  modifyProduct
 );
 
 export const MODIFY_PRODUCT_IMAGE = createAsyncThunk(
   "product/MODIFY_PRODUCT_IMAGE",
-  async ({ formData }) => {
-    try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/image/uploadfile`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const imgData = await res.json();
-      if (!imgData) return;
-      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  modifyProductImage
 );
 
 export const DETAIL_PRODUCT = createAsyncThunk(
   "product/DETAIL_PRODUCT",
-  async ({ token, id }) => {
-    try {
-      const res = await fetch(
-        `https://mandarin.api.weniv.co.kr/product/detail/${id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
-      const { product } = await res.json();
-      return product;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  getDetailProduct
 );
 
 const initialState = {

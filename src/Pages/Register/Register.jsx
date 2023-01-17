@@ -3,34 +3,7 @@ import CommonInput from "../../Components/Input/CommonInput";
 import CommonButton from "../../Components/Button/CommonButton";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-
-const Container = styled.section`
-  width: 390px;
-  margin: 20px auto;
-  padding: 30px 30px;
-`;
-
-const Title = styled.h1`
-  font-size: 2.4rem;
-  text-align: center;
-  margin-bottom: 40px;
-`;
-
-const TextContainer = styled.div`
-  & > div {
-    :nth-child(2) {
-      margin: 16px 0;
-    }
-    :last-child {
-      margin-bottom: 30px;
-    }
-  }
-`;
-
-const Warning = styled.p`
-  font-size: 1.2rem;
-  color: #eb5757;
-`;
+import { emailValidate } from "../../api/auth";
 
 function Register() {
   const navigate = useNavigate();
@@ -65,7 +38,8 @@ function Register() {
   //이메일 검사 함수
   function emailValidation(email) {
     //이메일 정규 표현식
-    const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+    const emailRegex =
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
     // 이메일 값이 정규표현식과 매칭되지 않는다면
     if (!emailRegex.test(email)) {
@@ -83,11 +57,14 @@ function Register() {
 
   function passwordValidation(password) {
     // A-Z, a-z, 0-9 특수문자가 포함되어 있는지, 8자 이상
-    const passRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{8,}$/;
+    const passRegex =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{8,}$/;
 
     // 패스워드 값이 정규표현식과 매칭되지 않는다면
     if (!passRegex.test(password)) {
-      setPasswordError("대문자, 소문자, 숫자, 특수문자가 포함된 8자 이상이어야 합니다.");
+      setPasswordError(
+        "대문자, 소문자, 숫자, 특수문자가 포함된 8자 이상이어야 합니다."
+      );
 
       // 25자 보다 크다면
     } else if (password.length > 25) {
@@ -106,17 +83,12 @@ function Register() {
       setValidationError("");
 
       //백엔드 이메일 검증
-      const response = await fetch("https://mandarin.api.weniv.co.kr/user/emailvalid", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user: {
-            email: emailValue,
-          },
-        }),
-      });
-
-      const { message } = await response.json();
+      const userEmail = {
+        user: {
+          email: emailValue,
+        },
+      };
+      const message = await emailValidate(userEmail);
 
       if (message !== "사용 가능한 이메일 입니다.") {
         setValidationError(message);
@@ -152,19 +124,64 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <TextContainer>
           <div>
-            <CommonInput name="email" type="text" placeholder="이메일 주소를 입력해주세요" onChange={handleEmailChange} required={true} />
+            <CommonInput
+              name="email"
+              type="text"
+              placeholder="이메일 주소를 입력해주세요"
+              onChange={handleEmailChange}
+              required={true}
+            />
             {emailError && <Warning>*{emailError}</Warning>}
           </div>
           <div>
-            <CommonInput name="password" type="password" placeholder="비밀번호를 설정해주세요" onChange={handlePasswordChange} required={true} />
+            <CommonInput
+              name="password"
+              type="password"
+              placeholder="비밀번호를 설정해주세요"
+              onChange={handlePasswordChange}
+              required={true}
+            />
             {passwordError && <Warning>*{passwordError}</Warning>}
           </div>
         </TextContainer>
         <p>{validationError}</p>
-        <CommonButton size="lg" bgColor={!(email || password) ? "light" : "accent"} children="다음" disabled={!(email || password)} />
+        <CommonButton
+          size="lg"
+          bgColor={!(email || password) ? "light" : "accent"}
+          children="다음"
+          disabled={!(email || password)}
+        />
       </form>
     </Container>
   );
 }
 
 export default Register;
+
+const Container = styled.section`
+  width: 390px;
+  margin: 20px auto;
+  padding: 30px 30px;
+`;
+
+const Title = styled.h1`
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 40px;
+`;
+
+const TextContainer = styled.div`
+  & > div {
+    :nth-child(2) {
+      margin: 16px 0;
+    }
+    :last-child {
+      margin-bottom: 30px;
+    }
+  }
+`;
+
+const Warning = styled.p`
+  font-size: 1.2rem;
+  color: #eb5757;
+`;

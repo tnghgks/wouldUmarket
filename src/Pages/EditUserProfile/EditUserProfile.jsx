@@ -156,7 +156,7 @@ function EditUserProfile() {
       },
     };
 
-    await dispatch(MODIFY_PROFILE({ editUserData, token }));
+    await dispatch(MODIFY_PROFILE({ editUserData }));
 
     //변경된 UserInfo 다시 불러오기
     await dispatch(SET_USERINFO(token));
