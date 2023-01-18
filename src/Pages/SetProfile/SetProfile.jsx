@@ -6,6 +6,12 @@ import CommonButton from "../../Components/Button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
 import { setCookie } from "../../cookie";
 import ImgButton from "../../assets/upload-file.png";
+import {
+  SetProfileImg,
+  IdValidation,
+  GetLogin,
+  RegisteredData,
+} from "../../api/setprofile";
 
 function SetProfile() {
   const navigate = useNavigate();
@@ -31,18 +37,11 @@ function SetProfile() {
     const formData = new FormData();
     formData.append("image", imgFile);
 
-    try {
-      const res = await fetch(url + "image/uploadfile", {
-        method: "POST",
-        body: formData,
-      });
-      const imgData = await res.json();
-      if (!imgData) return;
-      setImage(url + imgData.filename);
-    } catch (error) {
-      console.log(error);
-    }
+    const imgData = await SetProfileImg(formData);
+    if (!imgData) return;
+    setImage(url + imgData);
   }
+
   function handleUsernameChange(e) {
     const { value } = e.target;
     setUsername((prev) => {
@@ -50,6 +49,7 @@ function SetProfile() {
       return value;
     });
   }
+
   function handleAccountnameChange(e) {
     const { value } = e.target;
     setAccountname((prev) => {
@@ -57,6 +57,7 @@ function SetProfile() {
       return value;
     });
   }
+
   function handleIntroChange(e) {
     const { value } = e.target;
     setIntro((prev) => {
@@ -96,79 +97,36 @@ function SetProfile() {
 
   // 계정ID 유효성 검사
   async function getAccountnameValidation(accountnameValue) {
-    try {
-      setValidationError("");
-
-      const response = await fetch(url + "user/accountnamevalid", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user: {
-            accountname: accountnameValue,
-          },
-        }),
-      });
-
-      const { message } = await response.json();
-      if (usernameError || accountnameError || introError) {
-        setValidationError("올바른 양식이 아닙니다.");
-        return false;
-      } else if (message !== "사용 가능한 계정ID 입니다.") {
-        setValidationError(message);
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.log(error);
+    setValidationError("");
+    const message = await IdValidation(accountnameValue);
+    if (usernameError || accountnameError || introError) {
+      setValidationError("올바른 양식이 아닙니다.");
+      return false;
+    } else if (message !== "사용 가능한 계정ID 입니다.") {
+      setValidationError(message);
+      return false;
     }
+    return true;
   }
 
   // 회원가입 API
   async function getRegisteredData(inputData) {
-    try {
-      const response = await fetch(url + "user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputData),
-      });
-
-      const { user, message } = await response.json();
-
-      if (message !== "회원가입 성공") {
-        setRegisterError(message);
-        return false;
-      }
-
-      return user;
-    } catch (error) {
-      console.log(error);
+    const data = await RegisteredData(inputData);
+    if (data.message !== "회원가입 성공") {
+      setRegisterError(data.message);
+      return false;
     }
+    return data.user;
   }
 
   // 로그인 API
   async function getLogin() {
-    try {
-      const response = await fetch(url + "user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user: {
-            email,
-            password,
-          },
-        }),
-      });
-
-      const { user } = await response.json();
-
-      setCookie("accessToken", user.token, {
-        path: "/",
-        secure: true,
-        sameSite: "strict",
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const user = await GetLogin(email, password);
+    setCookie("accessToken", user.token, {
+      path: "/",
+      secure: true,
+      sameSite: "strict",
+    });
   }
 
   async function handleSubmit(e) {
@@ -213,12 +171,25 @@ function SetProfile() {
           <label htmlFor="file">
             <UploadImgDiv></UploadImgDiv>
           </label>
-          <UploadImgInput type="file" name="profileImage" id="file" onChange={handleSetProfileImg} ref={fileInput} />
+          <UploadImgInput
+            type="file"
+            name="profileImage"
+            id="file"
+            onChange={handleSetProfileImg}
+            ref={fileInput}
+          />
         </ProfileImgContainer>
         <TextContainer>
           <legend className="ir-hidden">프로필정보</legend>
           <div>
-            <CommonInput name="username" label="사용자 이름" type="text" placeholder="2~10자 이내여야 합니다." onChange={handleUsernameChange} required="required" />
+            <CommonInput
+              name="username"
+              label="사용자 이름"
+              type="text"
+              placeholder="2~10자 이내여야 합니다."
+              onChange={handleUsernameChange}
+              required="required"
+            />
             {usernameError && <Warning>*{usernameError}</Warning>}
           </div>
           <div>
@@ -233,12 +204,24 @@ function SetProfile() {
             {accountnameError && <Warning>*{accountnameError}</Warning>}
           </div>
           <div>
-            <CommonInput name="intro" label="소개" type="text" placeholder="자신과 쉐어할 상품에 대해 소개해주세요!" onChange={handleIntroChange} required="required" />
+            <CommonInput
+              name="intro"
+              label="소개"
+              type="text"
+              placeholder="자신과 쉐어할 상품에 대해 소개해주세요!"
+              onChange={handleIntroChange}
+              required="required"
+            />
             {introError && <Warning>*{introError}</Warning>}
           </div>
         </TextContainer>
         {validationError && <Warning>*{validationError}</Warning>}
-        <CommonButton size="lg" bgColor={!(username || accountname || intro) ? "light" : "accent"} children="우주쉐어 시작하기" disabled={!(username || accountname || intro)} />
+        <CommonButton
+          size="lg"
+          bgColor={!(username || accountname || intro) ? "light" : "accent"}
+          children="우주쉐어 시작하기"
+          disabled={!(username || accountname || intro)}
+        />
         {registerError && <Warning>*{registerError}</Warning>}
       </form>
     </Container>
