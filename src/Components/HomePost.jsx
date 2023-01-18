@@ -5,64 +5,49 @@ import BasicProfileImg from "./ImageComponents/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
-import { getCookie } from "../cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 import ImageSlider from "./ImageSlider";
+import {
+  PostDelete,
+  PostReport,
+  ClickHeart,
+  ClickUnHeart,
+} from "../api/homepost";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   const [postData, setPostData] = useState(postItem);
-  const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const {
     userInfo: { userId },
   } = useSelector((state) => state);
 
-  const createdAt = postItem.createdAt.slice(0, 11).replace("-", "년 ").replace("-", "월 ").replace("T", "일");
+  const createdAt = postItem.createdAt
+    .slice(0, 11)
+    .replace("-", "년 ")
+    .replace("-", "월 ")
+    .replace("T", "일");
 
   useEffect(() => {
     setPostData(postItem);
   }, [postItem]);
 
   async function handleDeletePost() {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      alert(data.message);
-
-      getPostList();
-      dispatch(CLOSE_MODAL());
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await PostDelete(postItem.id);
+    alert(data.message);
+    getPostList();
+    dispatch(CLOSE_MODAL());
   }
 
   async function handleReportPost() {
-    try {
-      const response = await fetch(`https://mandarin.api.weniv.co.kr/post/${postItem.id}/report`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const { report } = await response.json();
-      if (report) {
-        alert("게시물이 신고 되었습니다.");
-      } else {
-        alert("신고가 정상적으로 되지 않았습니다.");
-      }
-      dispatch(CLOSE_MODAL());
-    } catch (error) {
-      console.log(error);
+    const report = await PostReport(postItem.id);
+    if (report) {
+      alert("게시물이 신고 되었습니다.");
+    } else {
+      alert("신고가 정상적으로 되지 않았습니다.");
     }
+    dispatch(CLOSE_MODAL());
   }
 
   function handleModalOpen() {
@@ -99,37 +84,23 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   }
 
   async function handleHeartClick() {
-    try {
-      await fetch(`https://mandarin.api.weniv.co.kr/post/${postData.id}/heart`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-      setPostData((prev) => ({ ...prev, hearted: true, heartCount: postData.heartCount + 1 }));
-
-      dispatch(FETCH_POST_DATA({ id: postData.id, token }));
-    } catch (error) {
-      console.log(error);
-    }
+    await ClickHeart(postData.id);
+    setPostData((prev) => ({
+      ...prev,
+      hearted: true,
+      heartCount: postData.heartCount + 1,
+    }));
+    dispatch(FETCH_POST_DATA({ id: postData.id }));
   }
+
   async function handleUnHeartClick() {
-    try {
-      await fetch(`https://mandarin.api.weniv.co.kr/post/${postData.id}/unheart`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
-
-      setPostData((prev) => ({ ...prev, hearted: false, heartCount: postData.heartCount + -1 }));
-
-      dispatch(FETCH_POST_DATA({ id: postData.id, token }));
-    } catch (error) {
-      console.log(error);
-    }
+    await ClickUnHeart(postData.id);
+    setPostData((prev) => ({
+      ...prev,
+      hearted: false,
+      heartCount: postData.heartCount + -1,
+    }));
+    dispatch(FETCH_POST_DATA({ id: postData.id }));
   }
 
   return (
@@ -147,10 +118,17 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
         </TitleContainer>
         <ContContainer>
           <Cont>{postData.content}</Cont>
-          {!!postData.image && <ImageSlider image={postData.image} postId={postData.id} />}
+          {!!postData.image && (
+            <ImageSlider image={postData.image} postId={postData.id} />
+          )}
           <ReactContainer>
             <IconContainer>
-              <HeartIcon toggle={postData.hearted} onClick={postData.hearted ? handleUnHeartClick : handleHeartClick} />
+              <HeartIcon
+                toggle={postData.hearted}
+                onClick={
+                  postData.hearted ? handleUnHeartClick : handleHeartClick
+                }
+              />
               {postData.heartCount}
             </IconContainer>
             <Link to={`/post/${postData.id}`}>

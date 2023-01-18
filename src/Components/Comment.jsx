@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import SmallProfileImg from "./ImageComponents/SmallBasicProfile";
-import { getCookie } from "../cookie";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ADD_COMMENT } from "../store/PostDetail";
+import AddComment from "../api/comment";
 
 /**
  *
@@ -13,30 +13,12 @@ import { ADD_COMMENT } from "../store/PostDetail";
 function Comment({ img, placeholder, btn, postId, size }) {
   const [value, setValue] = useState();
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
 
   async function onSubmitComments(e) {
     e.preventDefault();
-    try {
-      const res = await fetch(`https://mandarin.api.weniv.co.kr/post/${postId}/comments`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          comment: {
-            content: value,
-          },
-        }),
-      });
-      const { comment } = await res.json();
 
-      dispatch(ADD_COMMENT(comment));
-      setValue("");
-    } catch (error) {
-      console.log(error);
-    }
+    const { data: {comment} } = await AddComment({ postId, value }).then(setValue(""));
+    dispatch(ADD_COMMENT(comment));
   }
   function onChange(e) {
     setValue(e.target.value);
@@ -46,7 +28,12 @@ function Comment({ img, placeholder, btn, postId, size }) {
     <CommentContainer>
       <FromContainer onSubmit={onSubmitComments} size={size}>
         <SmallProfileImg src={img} />
-        <CommentInput type="text" value={value} onChange={onChange} placeholder={placeholder} />
+        <CommentInput
+          type="text"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
         <CommentBtn value={!!value}>{btn}</CommentBtn>
       </FromContainer>
     </CommentContainer>
@@ -66,7 +53,7 @@ const CommentContainer = styled.footer`
 `;
 
 const FromContainer = styled.form`
-  width: ${(props) => ( props.size ? "100%": "358px")};
+  width: ${(props) => (props.size ? "100%" : "358px")};
   height: 100%;
   display: flex;
   justify-content: flex-start;
