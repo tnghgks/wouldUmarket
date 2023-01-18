@@ -10,107 +10,51 @@ import { MODIFY_PROFILE } from "../../store/Profile";
 import { MODIFY_PRODUCT_IMAGE } from "../../store/Product";
 import { getCookie } from "../../cookie";
 import { SET_USERINFO } from "../../store/UserInfo";
-
-// 한글,영어 표현식
-const userNameRegex = /^[ㄱ-ㅎ가-힣a-zA-Z]*$/;
-
-// 영문,숫자,특수문자 표현식
-const Regex = /^[a-zA-Z0-9._]*$/;
+import { USER_ID_PATTEN, USER_NAME_PATTEN } from "../../constant/regex";
+import { useForm } from "react-hook-form";
+import backProfileImg from "../../assets/Ellipse-1.png";
+import { accountnameValidate } from "../../api/auth";
 
 function EditUserProfile() {
-  const token = getCookie("accessToken");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState({
-    name: "",
-    id: "",
-    intro: "",
-  });
-  const [errorMessage, setErrorMessage] = useState({
-    name: "",
-    id: "",
-    intro: "",
-  });
+  const token = getCookie("accessToken");
+  const [disabled, setDisable] = useState(true);
   const [myProfileImg, setMyProfileImg] = useState("");
   const { profile } = useSelector((state) => state);
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      userName: profile.username,
+      userID: profile.accountname,
+      aboutMe: profile.intro,
+      imgFile: profile.image ?? backProfileImg,
+    },
+  });
+  const profileFile = watch("imgFile");
+  const inputData = watch();
 
-  const errorDisabled = !(
-    errorMessage.name ||
-    errorMessage.id ||
-    errorMessage.intro
-  );
-  const disabled = !(inputValue.name && inputValue.id && inputValue.intro);
-
-  // 프로필 설정값 가져오기
   useEffect(() => {
-    setInputValue((prev) => ({
-      ...prev,
-      name: profile.username,
-      id: profile.accountname,
-      intro: profile.intro,
-    }));
-  }, [profile]);
-
-  // NAME 유효성검사
-  function handleUserName(e) {
-    const userName = e.target.value;
-    setInputValue((prev) => ({ ...prev, name: userName }));
-
-    if (!userName) {
-      setErrorMessage((prev) => ({
-        ...prev,
-        name: "사용자 이름을 입력해주세요.",
-      }));
-    } else if (userName.length < 2 || userName.length > 10) {
-      setErrorMessage((prev) => ({
-        ...prev,
-        name: "2~10자 이내만 가능합니다.",
-      }));
-    } else if (!userNameRegex.test(userName)) {
-      setErrorMessage((prev) => ({ ...prev, name: "한글,영문만 가능합니다." }));
-    } else {
-      setErrorMessage((prev) => ({ ...prev, name: "" }));
+    let file;
+    if (profileFile instanceof FileList && profileFile.length > 0) {
+      file = profileFile[0];
+      setMyProfileImg(URL.createObjectURL(file));
     }
-  }
+    return () => URL.revokeObjectURL(file);
+  }, [profileFile]);
 
-  // ID 유효성검사
-  function handleUserId(e) {
-    const userId = e.target.value;
-    setInputValue((prev) => ({ ...prev, id: userId }));
-
-    if (!userId) {
-      setErrorMessage((prev) => ({ ...prev, id: "계정 ID를 입력해주세요." }));
-    } else if (!Regex.test(userId)) {
-      setErrorMessage((prev) => ({
-        ...prev,
-        id: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
-      }));
-    } else {
-      setErrorMessage((prev) => ({ ...prev, id: "" }));
+  useEffect(() => {
+    const { userName, userID, aboutMe, imgFile } = inputData;
+    if (userName && userID && aboutMe && imgFile) {
+      return setDisable(false);
     }
-  }
-  // intro 유효성검사
-  function handleUserIntro(e) {
-    const userIntro = e.target.value;
-    setInputValue((prev) => ({ ...prev, intro: userIntro }));
-
-    if (!userIntro) {
-      setErrorMessage((prev) => ({ ...prev, intro: "소개를 입력해주세요." }));
-    } else {
-      setErrorMessage((prev) => ({ ...prev, intro: "" }));
-    }
-  }
-
-  // 이미지 미리보기
-  function UserProfileImg(e) {
-    const imgFile = e.currentTarget.files[0];
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imgFile);
-    reader.onloadend = () => {
-      setMyProfileImg(reader.result);
-    };
-  }
+    setDisable(true);
+  }, [inputData]);
 
   // 한개의 이미지 API 로직
   async function productImg(imgFile) {
@@ -122,102 +66,92 @@ function EditUserProfile() {
   }
 
   // 유저입력 데이터 핸들러
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const { userName, userID, aboutMe, imgFile } = e.target;
+  async function isValid({ userName, userID, aboutMe, imgFile }) {
+    if (!(profile.accountname === userID)) {
+      const message = await accountnameValidate({ user: { accountname: userID } });
 
-    const imgData = imgFile.files[0]
-      ? await productImg(imgFile.files[0])
-      : profile.image;
-
-    // 유효성 검사 및 disabled
-    if (!errorDisabled) {
-      if (!!errorMessage.name) {
-        setErrorMessage((prev) => ({
-          ...prev,
-          name: "잘못된 이름 입니다",
-        }));
-      }
-      if (!!errorMessage.id) {
-        setErrorMessage((prev) => ({ ...prev, id: "잘못된 ID 입니다." }));
-      }
-      if (!!errorMessage.intro) {
-        setErrorMessage((prev) => ({ ...prev, intro: "소개를 작성해주세요." }));
-      }
-      return false;
+      if (!(message === "사용 가능한 계정ID 입니다.")) return setError("userID", { message });
     }
+
+    const imgData = imgFile[0] ? await productImg(imgFile[0]) : profile.image;
 
     const editUserData = {
       user: {
-        username: userName.value,
-        accountname: userID.value,
-        intro: aboutMe.value,
+        username: userName,
+        accountname: userID,
+        intro: aboutMe,
         image: imgData,
       },
     };
 
+    // 프로필 수정
     await dispatch(MODIFY_PROFILE({ editUserData }));
 
-    //변경된 UserInfo 다시 불러오기
+    // 변경된 UserInfo 다시 불러오기
     await dispatch(SET_USERINFO(token));
 
-    navigate(`/profile/${userID.value}`);
+    navigate(`/profile/${userID}`);
   }
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <BasicNav
-          children="저장"
-          btnDisabled={!disabled || false ? false : true}
-          bgColor={disabled || false ? "light" : "main"}
-        />
+      <form onSubmit={handleSubmit(isValid)}>
+        <BasicNav children="저장" btnDisabled={disabled} bgColor={disabled ? "light" : "main"} />
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg
-                src={myProfileImg ? myProfileImg : profile.image}
-              />
+              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
               <label htmlFor="file">
-                <UploadImgDiv></UploadImgDiv>
+                <UploadImgDiv />
               </label>
-              <UploadImgInput
-                type="file"
-                name="imgFile"
-                id="file"
-                onChange={UserProfileImg}
-              />
+              <UploadImgInput type="file" id="file" {...register("imgFile")} />
             </EditImgContainer>
           </ProfileContainer>
           <InputContainer>
             <CommonInput
               label="사용자 이름"
-              type="text"
               placeholder="2~10자 이내여야 합니다."
-              name="userName"
-              onChange={handleUserName}
-              // required={true}
-              value={inputValue.name}
+              register={register("userName", {
+                required: "사용자 이름을 입력해주세요.",
+                pattern: {
+                  value: USER_NAME_PATTEN,
+                  message: "한글,영문만 가능합니다.",
+                },
+                minLength: {
+                  value: 2,
+                  message: "2자 이상이어야 합니다.",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "10자 이내여야 합니다.",
+                },
+              })}
             />
-            <Warning>{errorMessage.name}</Warning>
+            <Warning>{errors?.userName?.message}</Warning>
             <CommonInput
               label="계정 ID"
-              type="text"
               placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
-              name="userID"
-              onChange={handleUserId}
-              // required={true}
-              value={inputValue.id}
+              register={register("userID", {
+                required: "계정 ID를 입력해주세요.",
+                pattern: {
+                  value: USER_ID_PATTEN,
+                  message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
+                },
+                maxLength: {
+                  value: 30,
+                  message: "30자 이내여야 합니다.",
+                },
+              })}
             />
-            <Warning>{errorMessage.id}</Warning>
+            <Warning>{errors?.userID?.message}</Warning>
             <CommonInput
               label="소개"
-              type="text"
               placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
-              name="aboutMe"
-              onChange={handleUserIntro}
-              value={inputValue.intro}
+              register={register("aboutMe", {
+                required: "소개를 입력해주세요.",
+              })}
             />
-            <Warning>{errorMessage.intro}</Warning>
+            <Warning>{errors?.aboutMe?.message}</Warning>
           </InputContainer>
         </EditProfileContainer>
       </form>
