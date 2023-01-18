@@ -3,14 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { deleteProduct } from "../api/product";
 import productImg from "../assets/product-img-example.png";
-import { getCookie } from "../cookie";
 import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { SET_PRODUCT_LIST } from "../store/ProductList";
 
 function Product({ productData, setModalInfo, setSubModalData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
   const { accountname } = useParams();
   const {
     userInfo: { userId },
@@ -20,7 +18,7 @@ function Product({ productData, setModalInfo, setSubModalData }) {
     const isSuccess = await deleteProduct(productData.id);
 
     if (isSuccess) {
-      dispatch(SET_PRODUCT_LIST({ accountname, token }));
+      dispatch(SET_PRODUCT_LIST(accountname));
       dispatch(CLOSE_MODAL());
     }
   }
@@ -73,7 +71,9 @@ function Product({ productData, setModalInfo, setSubModalData }) {
       <figure>
         <ProductImg src={productData.itemImage || productImg} alt="" />
         <ProductName>{productData.itemName}</ProductName>
-        <ProductPrice>시간당 {productData.price.toLocaleString()}원</ProductPrice>
+        <ProductPrice>
+          시간당 {productData.price.toLocaleString()}원
+        </ProductPrice>
       </figure>
     </Container>
   );

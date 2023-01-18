@@ -12,7 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../Components/Modal";
 import DeleteAlert from "../../Components/Button/DeleteAlert";
 import { SET_PRODUCT_LIST } from "../../store/ProductList";
-import { INCREASE_PAGE_NUMBER, INITIAL_PAGE_NUMBER, SET_USER_POSTS } from "../../store/PostList";
+import {
+  INCREASE_PAGE_NUMBER,
+  INITIAL_PAGE_NUMBER,
+  SET_USER_POSTS,
+} from "../../store/PostList";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -35,7 +39,11 @@ function Profile() {
         clearTimeout(scrollTimer);
       }
       scrollTimer = setTimeout(function () {
-        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
+        if (
+          document.body.scrollHeight -
+            (window.pageYOffset + window.innerHeight) <
+          0
+        ) {
           dispatch(INCREASE_PAGE_NUMBER());
         }
       }, 100);
@@ -56,8 +64,8 @@ function Profile() {
   }, [pageNum]);
 
   useEffect(() => {
-    dispatch(SET_PROFILE({ accountname, token }));
-    dispatch(SET_PRODUCT_LIST({ accountname, token }));
+    dispatch(SET_PROFILE(accountname));
+    dispatch(SET_PRODUCT_LIST(accountname));
     dispatch(SET_USER_POSTS({ accountname, token }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountname]);
@@ -67,12 +75,24 @@ function Profile() {
       <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
       <Container>
         <UserInfo />
-        <UserProducts setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
-        <UserPost setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+        <UserProducts
+          setModalInfo={setModalInfo}
+          setSubModalData={setSubModalData}
+        />
+        <UserPost
+          setModalInfo={setModalInfo}
+          setSubModalData={setSubModalData}
+        />
       </Container>
       <TabMenu />
       {modalData.isOpen && <Modal modalInfo={modalInfo} />}
-      {modalData.subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
+      {modalData.subModal.isOpen && (
+        <DeleteAlert
+          mainText={subModalData.text}
+          rightText={subModalData.rightText}
+          handleAccept={subModalData.handleFunc}
+        />
+      )}
     </>
   );
 }

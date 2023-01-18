@@ -3,9 +3,12 @@ import BasicNav from "../../Components/Navbar/UploadNav";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../Components/Input/CommonInput";
 import { useDispatch, useSelector } from "react-redux";
-import { MODIFY_PRODUCT, DETAIL_PRODUCT, MODIFY_PRODUCT_IMAGE } from "../../store/Product";
+import {
+  MODIFY_PRODUCT,
+  DETAIL_PRODUCT,
+  MODIFY_PRODUCT_IMAGE,
+} from "../../store/Product";
 import { useEffect, useState } from "react";
-import { getCookie } from "../../cookie";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 판매링크 유효성 정규표현식
@@ -14,7 +17,6 @@ const addressRegex =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
 
 function EditProduct() {
-  const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,12 +32,13 @@ function EditProduct() {
     address: "",
   });
 
-  const validation = errorMassage.name || errorMassage.price || errorMassage.address;
+  const validation =
+    errorMassage.name || errorMassage.price || errorMassage.address;
   const disabled = inputData.name && inputData.price && inputData.address;
   const productImg = imgData ? imgData : itemImage;
 
   useEffect(() => {
-    dispatch(DETAIL_PRODUCT({ token, id }));
+    dispatch(DETAIL_PRODUCT(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,7 +67,6 @@ function EditProduct() {
   async function productImgView(imgFile) {
     const formData = new FormData();
     formData.append("image", imgFile);
-
     const productSeverImg = await dispatch(MODIFY_PRODUCT_IMAGE({ formData }));
     return productSeverImg.payload;
   }
@@ -141,7 +143,9 @@ function EditProduct() {
       imgFile,
     } = event.target;
 
-    const imgData = imgFile.files[0] ? await productImgView(imgFile.files[0]) : itemImage;
+    const imgData = imgFile.files[0]
+      ? await productImgView(imgFile.files[0])
+      : itemImage;
 
     if (!!validation) {
       if (!!errorMassage.name) {
@@ -164,14 +168,17 @@ function EditProduct() {
         itemImage: imgData,
       },
     };
-
-    dispatch(MODIFY_PRODUCT({ token, productData, id }));
+    dispatch(MODIFY_PRODUCT({ productData, id }));
     navigate(`/profile/${accountname}`);
   }
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <BasicNav children="저장" bgColor={!disabled ? "light" : "main"} btnDisabled={!disabled ? true : false} />
+      <BasicNav
+        children="저장"
+        bgColor={!disabled ? "light" : "main"}
+        btnDisabled={!disabled ? true : false}
+      />
       <EditProfileContainer>
         <ProductContainer>
           <p>이미지 등록</p>
@@ -191,11 +198,32 @@ function EditProduct() {
           </EditProductImgContainer>
         </ProductContainer>
         <InputContainer>
-          <CommonInput name="productName" type="text" placeholder={"2~15자 이내여야 합니다."} label="상품명" value={inputData.name} onChange={handleName} />
+          <CommonInput
+            name="productName"
+            type="text"
+            placeholder={"2~15자 이내여야 합니다."}
+            label="상품명"
+            value={inputData.name}
+            onChange={handleName}
+          />
           <Warning>{errorMassage.name}</Warning>
-          <CommonInput name="productPrice" type="text" placeholder={"숫자만 입력 가능 합니다."} label="가격" value={inputData.price} onChange={handlePrice} />
+          <CommonInput
+            name="productPrice"
+            type="text"
+            placeholder={"숫자만 입력 가능 합니다."}
+            label="가격"
+            value={inputData.price}
+            onChange={handlePrice}
+          />
           <Warning>{errorMassage.price}</Warning>
-          <CommonInput name="Address" type="text" placeholder={"URl을 입력해 주세요."} label="판매링크" value={inputData.address} onChange={handleAddress} />
+          <CommonInput
+            name="Address"
+            type="text"
+            placeholder={"URl을 입력해 주세요."}
+            label="판매링크"
+            value={inputData.address}
+            onChange={handleAddress}
+          />
           <Warning>{errorMassage.address}</Warning>
         </InputContainer>
       </EditProfileContainer>

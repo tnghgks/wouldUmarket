@@ -5,13 +5,11 @@ import BasicNav from "../../Components/Navbar/UploadNav";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_PRODUCT } from "../../store/Product";
 import { useState } from "react";
-import { getCookie } from "../../cookie";
 import { useNavigate } from "react-router-dom";
 import UploadImage from "../../assets/UploadImage.png";
 import { uploadImage } from "../../api/util";
 
 function AddProduct() {
-  const token = getCookie("accessToken");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile } = useSelector((state) => state);
@@ -26,7 +24,12 @@ function AddProduct() {
   const [addressError, setAddressError] = useState(true);
   const [productImgError, setProductImgError] = useState("");
 
-  const Enabled = !productNameError && !itemPriceError && !addressError && !!productImg && productImg !== UploadImage;
+  const Enabled =
+    !productNameError &&
+    !itemPriceError &&
+    !addressError &&
+    !!productImg &&
+    productImg !== UploadImage;
 
   function nameValidation(e) {
     const nameValue = e.target.value;
@@ -127,8 +130,7 @@ function AddProduct() {
         itemImage: await formatProductImg(formData),
       },
     };
-
-    dispatch(ADD_PRODUCT({ productData, token }));
+    dispatch(ADD_PRODUCT({ productData }));
     navigate(`/profile/${profile.accountname}`);
   }
 
@@ -155,11 +157,30 @@ function AddProduct() {
           <Warning>{productImgError}</Warning>
         </ProductContainer>
         <InputContainer>
-          <CommonInput name="productName" type="text" placeholder={"2~15자 이내여야 합니다."} label="상품명" onChange={nameValidation} />
+          <CommonInput
+            name="productName"
+            type="text"
+            placeholder={"2~15자 이내여야 합니다."}
+            label="상품명"
+            onChange={nameValidation}
+          />
           <Warning>{productNameError}</Warning>
-          <CommonInput name="itemPrice" type="text" placeholder={"숫자만 입력 가능 합니다."} label="가격" value={itemPrice} onChange={priceValidation} />
+          <CommonInput
+            name="itemPrice"
+            type="text"
+            placeholder={"숫자만 입력 가능 합니다."}
+            label="가격"
+            value={itemPrice}
+            onChange={priceValidation}
+          />
           <Warning>{itemPriceError}</Warning>
-          <CommonInput name="saleAddress" type="text" placeholder={"URl을 입력해 주세요."} label="판매링크" onChange={addressValidation} />
+          <CommonInput
+            name="saleAddress"
+            type="text"
+            placeholder={"URl을 입력해 주세요."}
+            label="판매링크"
+            onChange={addressValidation}
+          />
           <Warning>{addressError}</Warning>
         </InputContainer>
       </EditProfileContainer>

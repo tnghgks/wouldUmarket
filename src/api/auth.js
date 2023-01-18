@@ -11,3 +11,14 @@ export async function login(userData) {
     console.log(error);
   }
 }
+
+export async function emailValidate(userEmail) {
+  try {
+    const {
+      data: { message },
+    } = await authInstance.post("/user/emailvalid", userEmail);
+    return message;
+  } catch (error) {
+    console.log(error);
+  }
+}

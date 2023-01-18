@@ -1,21 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getProductList } from "../api/product";
 
-const SET_PRODUCT_LIST = createAsyncThunk("productList/SET_PRODUCT_LIST", async ({ accountname, token }) => {
-  try {
-    const res = await fetch(`https://mandarin.api.weniv.co.kr/product/${accountname}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-type": "application/json",
-      },
-    });
-    const { product } = await res.json();
-
-    return product;
-  } catch (error) {
-    console.log(error);
-  }
-});
+const SET_PRODUCT_LIST = createAsyncThunk(
+  "productList/SET_PRODUCT_LIST",
+  getProductList
+);
 
 const initialState = {
   products: [],
