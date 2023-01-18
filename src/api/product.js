@@ -41,7 +41,6 @@ export async function modifyProductImage({ formData }) {
       "/image/uploadfile",
       formData
     );
-    console.log(imgData);
     if (!imgData) return;
     return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
   } catch (error) {

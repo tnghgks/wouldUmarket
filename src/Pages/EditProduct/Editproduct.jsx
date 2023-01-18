@@ -68,7 +68,6 @@ function EditProduct() {
     const formData = new FormData();
     formData.append("image", imgFile);
     const productSeverImg = await dispatch(MODIFY_PRODUCT_IMAGE({ formData }));
-    console.log(productSeverImg);
     return productSeverImg.payload;
   }
 
