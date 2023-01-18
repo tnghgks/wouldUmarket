@@ -22,3 +22,14 @@ export async function emailValidate(userEmail) {
     console.log(error);
   }
 }
+
+export async function accountnameValidate(accountname) {
+  try {
+    const {
+      data: { message },
+    } = await authInstance.post("/user/accountnamevalid", accountname);
+    return message;
+  } catch (error) {
+    console.log(error);
+  }
+}
