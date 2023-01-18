@@ -14,9 +14,7 @@ export async function getUserProfile(accountname) {
 
 export async function getFollowers({ accountname, limit }) {
   try {
-    const { data: followerData } = await authInstance.get(
-      `/profile/${accountname}/follower?limit=${limit}`
-    );
+    const { data: followerData } = await authInstance.get(`/profile/${accountname}/follower?limit=${limit}`);
     return followerData;
   } catch (error) {
     console.log(error);
@@ -24,9 +22,7 @@ export async function getFollowers({ accountname, limit }) {
 }
 export async function getFollowings({ accountname, limit }) {
   try {
-    const { data: followingData } = await authInstance.get(
-      `/profile/${accountname}/following?limit=${limit}`
-    );
+    const { data: followingData } = await authInstance.get(`/profile/${accountname}/following?limit=${limit}`);
     return followingData;
   } catch (error) {
     console.log(error);
@@ -65,8 +61,10 @@ export async function unFollow(accountname) {
 export async function modifyProfile({ editUserData }) {
   try {
     const { data: user } = await authInstance.put("/user", editUserData);
+
     return user;
   } catch (error) {
     console.log(error);
+    return error.response.data.message;
   }
 }

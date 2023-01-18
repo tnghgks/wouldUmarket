@@ -1,10 +1,22 @@
 import styled from "styled-components";
 
-function CommonInput({ label, name, type, placeholder, onChange, inputRef, required, defaultValue, value }) {
+function CommonInput(props) {
+  const { label, name, type, placeholder, onChange, inputRef, required, defaultValue, value, register } = props;
+
   return (
     <TextActiveInputContainer>
       <TextActiveInputLabel htmlFor={name}>{label}</TextActiveInputLabel>
-      <ActiveTextInput type={type} placeholder={placeholder} name={name} onChange={onChange} ref={inputRef} required={required} defaultValue={defaultValue} value={value} />
+      <ActiveTextInput
+        type={type}
+        placeholder={placeholder}
+        name={name}
+        onChange={onChange}
+        ref={inputRef}
+        required={required}
+        defaultValue={defaultValue}
+        value={value}
+        {...register}
+      />
     </TextActiveInputContainer>
   );
 }

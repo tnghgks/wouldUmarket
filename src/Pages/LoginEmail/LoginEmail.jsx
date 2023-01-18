@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CommonButton from "../../Components/Button/CommonButton";
@@ -7,7 +7,105 @@ import { useDispatch } from "react-redux";
 import { SET_USERINFO } from "../../store/UserInfo";
 import { setCookie } from "../../cookie";
 import { login } from "../../api/auth";
-import { getUserProfile } from "../../api/profile";
+import { LOGIN_EMAIL_PATTEN } from "../../constant/regex";
+import { useForm } from "react-hook-form";
+
+function LoginEmail() {
+  const [disable, setDisable] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    setError,
+    clearErrors,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const inputData = watch();
+
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
+
+  useEffect(() => {
+    const { email, password } = inputData;
+    if (email && password) {
+      return setDisable(false);
+    }
+    setDisable(true);
+  }, [inputData]);
+
+  async function handleLogin({ email, password }) {
+    const inputData = {
+      user: {
+        email,
+        password,
+      },
+    };
+    const { user, message } = await login(inputData);
+
+    if (message) return setError("form", { message });
+
+    if (user.token)
+      setCookie("accessToken", user.token, {
+        path: "/",
+        secure: true,
+        sameSite: "strict",
+      });
+
+    dispatch(
+      SET_USERINFO({
+        userId: user._id,
+        username: user.username,
+        email: user.email,
+        accountname: user.accountname,
+        image: user.image,
+      })
+    );
+
+    navigate("/feed");
+  }
+
+  return (
+    <Container>
+      <Title>로그인</Title>
+      <LoginForm onSubmit={handleSubmit(handleLogin)}>
+        <InputContainer>
+          <CommonInput
+            label="이메일"
+            register={register("email", {
+              required: "Email을 작성해주십시오.",
+              pattern: {
+                value: LOGIN_EMAIL_PATTEN,
+                message: "올바른 이메일 형식 아닙니다.",
+              },
+            })}
+          />
+          <Warning>{errors?.email?.message}</Warning>
+          <CommonInput
+            label="비밀번호"
+            type="password"
+            register={register("password", {
+              required: "Password를 작성해주십시오.",
+            })}
+          />
+          <Warning>{errors?.password?.message}</Warning>
+        </InputContainer>
+        <Warning>{errors?.form?.message}</Warning>
+        <ButtonContainer>
+          <CommonButton size="lg" bgColor={disable ? "light" : "main"} children="다음" disabled={disable} onClick={() => clearErrors("form")} />
+        </ButtonContainer>
+      </LoginForm>
+      <SignUpLink to="/register">
+        <p className="linkText">이메일로 회원가입</p>
+      </SignUpLink>
+    </Container>
+  );
+}
+
+export default LoginEmail;
 
 const Container = styled.main`
   display: flex;
@@ -67,128 +165,3 @@ const SignUpLink = styled(Link)`
     color: #767676;
   }
 `;
-
-function LoginEmail() {
-  const inputRef = useRef();
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [formError, setFormError] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  //auto focus
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
-    });
-  }
-
-  useEffect(() => {
-    validate(formData);
-  }, [formData]);
-
-  function validate(formData) {
-    // eslint-disable-next-line no-useless-escape
-    const regex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (formData.email === "") {
-      return setFormError("");
-    } else if (!regex.test(formData.email)) {
-      setFormError((prev) => {
-        return { ...prev, email: "올바른 이메일 형식 아닙니다." };
-      });
-    } else {
-      setFormError("");
-    }
-  }
-
-  async function getLoginData(inputData) {
-    try {
-      const { user, message } = await login(inputData);
-
-      setFormError((prev) => {
-        return { ...prev, form: message };
-      });
-
-      if (!user) return;
-
-      dispatch(
-        SET_USERINFO({
-          userId: user._id,
-          username: user.username,
-          email: user.email,
-          accountname: user.accountname,
-          image: user.image,
-        })
-      );
-      getUserData(user.accountname, user.token);
-      if (user.token) {
-        setCookie("accessToken", user.token, {
-          path: "/",
-          secure: true,
-          sameSite: "strict",
-        });
-      }
-      navigate("/feed");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getUserData(accountname) {
-    const { isSuccess, profile } = await getUserProfile(accountname);
-
-    if (isSuccess) {
-      dispatch(SET_USERINFO(profile));
-    }
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const { email, password } = e.target;
-
-    const inputData = {
-      user: {
-        email: email.value,
-        password: password.value,
-      },
-    };
-
-    if (!formError) {
-      getLoginData(inputData);
-    } else {
-      setFormError({ email: "Email을 작성해주십시오." });
-    }
-  }
-
-  return (
-    <Container>
-      <Title>로그인</Title>
-      <LoginForm onSubmit={handleSubmit}>
-        <InputContainer>
-          <CommonInput label="이메일" type="email" name="email" onChange={handleChange} inputRef={inputRef} required />
-          {formError.email && <Warning>*{formError.email}</Warning>}
-          <CommonInput label="비밀번호" type="password" name="password" onChange={handleChange} required />
-        </InputContainer>
-        {formError.form && <Warning>*{formError.form}</Warning>}
-        <ButtonContainer>
-          <CommonButton
-            size="lg"
-            bgColor={!formData.email.length && !formData.password.length ? "light" : "main"}
-            children="다음"
-            disabled={!formData.email.length && !formData.password.length}
-          />
-        </ButtonContainer>
-      </LoginForm>
-      <SignUpLink to="/register">
-        <p className="linkText">이메일로 회원가입</p>
-      </SignUpLink>
-    </Container>
-  );
-}
-
-export default LoginEmail;
