@@ -14,7 +14,6 @@ function SplashScreen() {
   setTimeout(async () => {
     if (token) {
       const isValid = await getCheckToken();
-      console.log(isValid);
 
       if (isValid) return navigate("/feed");
     }

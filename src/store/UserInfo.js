@@ -9,7 +9,6 @@ export const SET_USERINFO = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
     return data.user;
   }
 );

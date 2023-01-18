@@ -98,8 +98,6 @@ function SetProfile() {
   // 계정ID 유효성 검사
   async function getAccountnameValidation(accountnameValue) {
     setValidationError("");
-    // try {
-    console.log(accountnameValue);
     const message = await IdValidation(accountnameValue);
     if (usernameError || accountnameError || introError) {
       setValidationError("올바른 양식이 아닙니다.");

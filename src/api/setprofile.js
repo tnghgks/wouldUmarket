@@ -17,7 +17,6 @@ export async function IdValidation(accountnameValue) {
         accountname: accountnameValue,
       },
     });
-    console.log(data);
     return data.message;
   } catch (error) {
     console.log(error);
@@ -25,7 +24,6 @@ export async function IdValidation(accountnameValue) {
 }
 
 export async function RegisteredData(inputData) {
-  console.log(inputData);
   try {
     const { data } = await authInstance.post("/user", inputData);
     return data;

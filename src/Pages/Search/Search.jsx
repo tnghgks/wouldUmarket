@@ -6,13 +6,11 @@ import SearchNav from "../../Components/Navbar/SearchNav";
 import NotFoundResult from "../../Components/NotFoundResult";
 import TabMenu from "../../Components/TabMenu";
 import UserSearch from "../../Components/UserSearch";
-// import { getCookie } from "../../cookie";
 import { asyncSearchFetch } from "../../store/SearchData";
 import iconDelete from "../../assets/icon/icon-delete.svg";
 
 function Search() {
   const dispatch = useDispatch();
-  // const token = getCookie("accessToken");
   const { searchData } = useSelector((state) => state);
   const [pageNum, setPageNum] = useState(1);
   const [searchInput, setSearchInput] = useState("");
@@ -64,8 +62,15 @@ function Search() {
   }, [pageNum]);
 
   function handleDeleteBtn(targetIndex) {
-    setRecentSearched(recentSearched.filter((_, index) => !(index === targetIndex)));
-    window.localStorage.setItem("recentSearched", JSON.stringify(recentSearched.filter((_, index) => !(index === targetIndex))));
+    setRecentSearched(
+      recentSearched.filter((_, index) => !(index === targetIndex))
+    );
+    window.localStorage.setItem(
+      "recentSearched",
+      JSON.stringify(
+        recentSearched.filter((_, index) => !(index === targetIndex))
+      )
+    );
   }
 
   return (
@@ -77,7 +82,11 @@ function Search() {
             <Item>최근 검색 결과</Item>
             {recentSearched?.map((userData, index) => (
               <Item>
-                <UserSearch key={index} userData={userData} searchInput={searchInput} />
+                <UserSearch
+                  key={index}
+                  userData={userData}
+                  searchInput={searchInput}
+                />
                 <DeleteBtn onClick={() => handleDeleteBtn(index)}>
                   <img src={iconDelete} alt="삭제 버튼" />
                 </DeleteBtn>
@@ -86,15 +95,23 @@ function Search() {
           </RecentList>
         )}
         {searchData.status === "rejected" && <div>ERROR</div>}
-        {!searchData.data.length && searchData.status === "pending" && <Loader />}
+        {!searchData.data.length && searchData.status === "pending" && (
+          <Loader />
+        )}
         {!!searchData.data.length &&
           searchInput &&
           searchData.data.map((userData, index) => (
             <Item key={crypto.randomUUID()}>
-              <UserSearch key={crypto.randomUUID()} userData={userData} searchInput={searchInput} />
+              <UserSearch
+                key={crypto.randomUUID()}
+                userData={userData}
+                searchInput={searchInput}
+              />
             </Item>
           ))}
-        {!searchData.data.length && searchData.status === "fulfilled" && <NotFoundResult />}
+        {!searchData.data.length && searchData.status === "fulfilled" && (
+          <NotFoundResult />
+        )}
         <div ref={setBottom} />
       </Container>
       <TabMenu />
