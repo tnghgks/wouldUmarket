@@ -10,10 +10,10 @@ import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 import ImageSlider from "./ImageSlider";
 import {
-  PostDelete,
-  PostReport,
-  ClickHeart,
-  ClickUnHeart,
+  postDelete,
+  postReport,
+  clickHeart,
+  clickUnHeart,
 } from "../api/homepost";
 
 function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
@@ -34,14 +34,14 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   }, [postItem]);
 
   async function handleDeletePost() {
-    const data = await PostDelete(postItem.id);
+    const data = await postDelete(postItem.id);
     alert(data.message);
     getPostList();
     dispatch(CLOSE_MODAL());
   }
 
   async function handleReportPost() {
-    const report = await PostReport(postItem.id);
+    const report = await postReport(postItem.id);
     if (report) {
       alert("게시물이 신고 되었습니다.");
     } else {
@@ -84,7 +84,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   }
 
   async function handleHeartClick() {
-    await ClickHeart(postData.id);
+    await clickHeart(postData.id);
     setPostData((prev) => ({
       ...prev,
       hearted: true,
@@ -94,7 +94,7 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   }
 
   async function handleUnHeartClick() {
-    await ClickUnHeart(postData.id);
+    await clickUnHeart(postData.id);
     setPostData((prev) => ({
       ...prev,
       hearted: false,
