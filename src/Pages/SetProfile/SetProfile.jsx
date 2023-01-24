@@ -26,6 +26,7 @@ function SetProfile() {
     watch,
     setError,
     clearErrors,
+    setFocus,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -37,6 +38,10 @@ function SetProfile() {
   });
   const profileImg = watch("userImg");
   const inputData = watch();
+
+  useEffect(() => {
+    setFocus("userName");
+  }, [setFocus]);
 
   useEffect(() => {
     let file;
