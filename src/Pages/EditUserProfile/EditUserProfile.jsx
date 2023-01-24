@@ -68,9 +68,12 @@ function EditUserProfile() {
   // 유저입력 데이터 핸들러
   async function isValid({ userName, userID, aboutMe, imgFile }) {
     if (!(profile.accountname === userID)) {
-      const message = await accountnameValidate({ user: { accountname: userID } });
+      const message = await accountnameValidate({
+        user: { accountname: userID },
+      });
 
-      if (!(message === "사용 가능한 계정ID 입니다.")) return setError("userID", { message });
+      if (!(message === "사용 가능한 계정ID 입니다."))
+        return setError("userID", { message });
     }
 
     const imgData = imgFile[0] ? await productImg(imgFile[0]) : profile.image;
@@ -88,7 +91,7 @@ function EditUserProfile() {
     await dispatch(MODIFY_PROFILE({ editUserData }));
 
     // 변경된 UserInfo 다시 불러오기
-    await dispatch(SET_USERINFO(token));
+    await dispatch(SET_USERINFO());
 
     navigate(`/profile/${userID}`);
   }
@@ -96,11 +99,17 @@ function EditUserProfile() {
   return (
     <>
       <form onSubmit={handleSubmit(isValid)}>
-        <BasicNav children="저장" btnDisabled={disabled} bgColor={disabled ? "light" : "main"} />
+        <BasicNav
+          children="저장"
+          btnDisabled={disabled}
+          bgColor={disabled ? "light" : "main"}
+        />
         <EditProfileContainer>
           <ProfileContainer>
             <EditImgContainer>
-              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
+              <BasicProfileImg
+                src={myProfileImg ? myProfileImg : profile.image}
+              />
               <label htmlFor="file">
                 <UploadImgDiv />
               </label>

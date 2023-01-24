@@ -11,7 +11,7 @@ function Authentication() {
   useEffect(() => {
     if (!userInfo.accountname) {
       if (token) {
-        dispatch(SET_USERINFO(token));
+        dispatch(SET_USERINFO());
       } else if (window.location.pathname === "/") {
         return;
       } else if (window.location.pathname !== "/login") {

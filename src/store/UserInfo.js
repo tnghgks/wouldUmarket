@@ -1,17 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { defaultInstance } from "../api/api";
+import { userInfo } from "../api/userinfo";
 
-export const SET_USERINFO = createAsyncThunk(
-  "userInfo/SET_USERINFO",
-  async (token) => {
-    const { data } = await defaultInstance.get("/user/myinfo", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data.user;
-  }
-);
+export const SET_USERINFO = createAsyncThunk("userInfo/SET_USERINFO", userInfo);
 
 const initialState = {
   userId: "",
@@ -25,7 +15,6 @@ const userInfoSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(SET_USERINFO.fulfilled, (state, action) => {
-      console.log(action);
       state.userId = action.payload._id;
       state.username = action.payload.username;
       state.accountname = action.payload.accountname;
