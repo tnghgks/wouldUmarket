@@ -200,7 +200,7 @@ function SetProfile() {
           bgColor={disable ? "light" : "main"}
           children="우주쉐어 시작하기"
           disabled={disable}
-          onClick={() => clearErrors("form")}
+          onClick={() => clearErrors()}
         />
       </form>
     </Container>

@@ -118,7 +118,7 @@ function Register() {
           bgColor={disable ? "light" : "main"}
           children="다음"
           disabled={disable}
-          onClick={() => clearErrors("form")}
+          onClick={() => clearErrors()}
         />
       </form>
     </Container>
