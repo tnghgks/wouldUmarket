@@ -5,6 +5,29 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { emailValidate } from "../../api/auth";
 import { useForm } from "react-hook-form";
+import {
+  REGISTER_EMAIL_PATTERN,
+  REGISTER_PASSWORD_PATTERN,
+} from "../../constant/regex";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// 유효성 검사
+const registerValidation = yup.object().shape({
+  email: yup
+    .string()
+    .required("이메일 주소를 입력해주세요.")
+    .matches(REGISTER_EMAIL_PATTERN, "올바른 이메일 형식이 아닙니다.")
+    .max(25, "글자수가 25자를 초과하였습니다."),
+  password: yup
+    .string()
+    .required("비밀번호를 설정해주세요.")
+    .matches(
+      REGISTER_PASSWORD_PATTERN,
+      "대문자, 소문자, 숫자, 특수문자가 포함된 8자 이상이어야 합니다."
+    )
+    .max(25, "비밀번호는 25자 이하여야 합니다."),
+});
 
 function Register() {
   const navigate = useNavigate();
@@ -16,7 +39,7 @@ function Register() {
     clearErrors,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(registerValidation) });
   const inputData = watch();
 
   useEffect(() => {
