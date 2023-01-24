@@ -38,9 +38,14 @@ function Register() {
     setError,
     clearErrors,
     watch,
+    setFocus,
     formState: { errors },
   } = useForm({ resolver: yupResolver(registerValidation) });
   const inputData = watch();
+
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
 
   useEffect(() => {
     const { email, password } = inputData;
