@@ -1,6 +1,6 @@
 import { authInstance, formDataInstance } from "./api";
 
-export async function SetProfileImg(formData) {
+export async function setProfileImg(formData) {
   try {
     const { data } = await formDataInstance.post("/image/uploadfile", formData);
     return data.filename;
@@ -9,7 +9,7 @@ export async function SetProfileImg(formData) {
   }
 }
 
-export async function IdValidation(accountnameValue) {
+export async function idValidation(accountnameValue) {
   console.log(accountnameValue);
   try {
     const { data } = await authInstance.post("/user/accountnamevalid", {
@@ -23,7 +23,7 @@ export async function IdValidation(accountnameValue) {
   }
 }
 
-export async function RegisteredData(inputData) {
+export async function registeredData(inputData) {
   try {
     const { data } = await authInstance.post("/user", inputData);
     return data;
@@ -32,7 +32,7 @@ export async function RegisteredData(inputData) {
   }
 }
 
-export async function GetLogin(email, password) {
+export async function loginGet(email, password) {
   try {
     const { data } = await authInstance.post("/user/login", {
       user: {

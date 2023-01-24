@@ -7,10 +7,10 @@ import { useNavigate, useLocation } from "react-router";
 import { setCookie } from "../../cookie";
 import ImgButton from "../../assets/upload-file.png";
 import {
-  SetProfileImg,
-  IdValidation,
-  GetLogin,
-  RegisteredData,
+  setProfileImg,
+  idValidation,
+  loginGet,
+  registeredData,
 } from "../../api/setprofile";
 
 function SetProfile() {
@@ -37,7 +37,7 @@ function SetProfile() {
     const formData = new FormData();
     formData.append("image", imgFile);
 
-    const imgData = await SetProfileImg(formData);
+    const imgData = await setProfileImg(formData);
     if (!imgData) return;
     setImage(url + imgData);
   }
@@ -98,7 +98,7 @@ function SetProfile() {
   // 계정ID 유효성 검사
   async function getAccountnameValidation(accountnameValue) {
     setValidationError("");
-    const message = await IdValidation(accountnameValue);
+    const message = await idValidation(accountnameValue);
     if (usernameError || accountnameError || introError) {
       setValidationError("올바른 양식이 아닙니다.");
       return false;
@@ -111,7 +111,7 @@ function SetProfile() {
 
   // 회원가입 API
   async function getRegisteredData(inputData) {
-    const data = await RegisteredData(inputData);
+    const data = await registeredData(inputData);
     if (data.message !== "회원가입 성공") {
       setRegisterError(data.message);
       return false;
@@ -121,7 +121,7 @@ function SetProfile() {
 
   // 로그인 API
   async function getLogin() {
-    const user = await GetLogin(email, password);
+    const user = await loginGet(email, password);
     setCookie("accessToken", user.token, {
       path: "/",
       secure: true,
