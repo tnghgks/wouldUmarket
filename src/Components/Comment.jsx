@@ -3,7 +3,7 @@ import SmallProfileImg from "./ImageComponents/SmallBasicProfile";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ADD_COMMENT } from "../store/PostDetail";
-import AddComment from "../api/comment";
+import addComment from "../api/comment";
 
 /**
  *
@@ -17,7 +17,9 @@ function Comment({ img, placeholder, btn, postId, size }) {
   async function onSubmitComments(e) {
     e.preventDefault();
 
-    const { data: {comment} } = await AddComment({ postId, value }).then(setValue(""));
+    const {
+      data: { comment },
+    } = await addComment({ postId, value }).then(setValue(""));
     dispatch(ADD_COMMENT(comment));
   }
   function onChange(e) {

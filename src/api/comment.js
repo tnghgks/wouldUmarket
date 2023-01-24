@@ -1,6 +1,6 @@
 import { authInstance } from "./api";
 
-export default async function AddComment({ postId, value }) {
+export default async function addComment({ postId, value }) {
   try {
     const { data } = await authInstance.post(`/post/${postId}/comments`, {
       comment: {
