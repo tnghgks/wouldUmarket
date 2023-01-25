@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { SET_USERINFO } from "../../store/UserInfo";
 import { setCookie } from "../../cookie";
 import { login } from "../../api/auth";
-import { LOGIN_EMAIL_PATTEN } from "../../constant/regex";
+import { LOGIN_EMAIL_PATTERN } from "../../constant/regex";
 import { useForm } from "react-hook-form";
 
 function LoginEmail() {
@@ -78,7 +78,7 @@ function LoginEmail() {
             register={register("email", {
               required: "Email을 작성해주십시오.",
               pattern: {
-                value: LOGIN_EMAIL_PATTEN,
+                value: LOGIN_EMAIL_PATTERN,
                 message: "올바른 이메일 형식 아닙니다.",
               },
             })}

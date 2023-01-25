@@ -10,7 +10,7 @@ import { MODIFY_PROFILE } from "../../store/Profile";
 import { MODIFY_PRODUCT_IMAGE } from "../../store/Product";
 import { getCookie } from "../../cookie";
 import { SET_USERINFO } from "../../store/UserInfo";
-import { USER_ID_PATTEN, USER_NAME_PATTEN } from "../../constant/regex";
+import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
 import { useForm } from "react-hook-form";
 import backProfileImg from "../../assets/Ellipse-1.png";
 import { accountnameValidate } from "../../api/auth";
@@ -36,17 +36,16 @@ function EditUserProfile() {
       imgFile: profile.image ?? backProfileImg,
     },
   });
-  const profileFile = watch("imgFile");
   const inputData = watch();
 
   useEffect(() => {
     let file;
-    if (profileFile instanceof FileList && profileFile.length > 0) {
-      file = profileFile[0];
+    if (inputData.imgFile instanceof FileList && inputData.imgFile.length > 0) {
+      file = inputData.imgFile[0];
       setMyProfileImg(URL.createObjectURL(file));
     }
     return () => URL.revokeObjectURL(file);
-  }, [profileFile]);
+  }, [inputData.imgFile]);
 
   useEffect(() => {
     const { userName, userID, aboutMe, imgFile } = inputData;
@@ -114,7 +113,7 @@ function EditUserProfile() {
               register={register("userName", {
                 required: "사용자 이름을 입력해주세요.",
                 pattern: {
-                  value: USER_NAME_PATTEN,
+                  value: USER_NAME_PATTERN,
                   message: "한글,영문만 가능합니다.",
                 },
                 minLength: {
@@ -134,7 +133,7 @@ function EditUserProfile() {
               register={register("userID", {
                 required: "계정 ID를 입력해주세요.",
                 pattern: {
-                  value: USER_ID_PATTEN,
+                  value: USER_ID_PATTERN,
                   message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
                 },
                 maxLength: {
