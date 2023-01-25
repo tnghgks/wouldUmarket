@@ -10,7 +10,6 @@ export async function SetProfileImg(formData) {
 }
 
 export async function IdValidation(accountnameValue) {
-  console.log(accountnameValue);
   try {
     const { data } = await authInstance.post("/user/accountnamevalid", {
       user: {
