@@ -6,14 +6,9 @@ import CommonButton from "../../Components/Button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
 import { setCookie } from "../../cookie";
 import ImgButton from "../../assets/upload-file.png";
-import {
-  SetProfileImg,
-  IdValidation,
-  GetLogin,
-  RegisteredData,
-} from "../../api/setprofile";
+import { SetProfileImg, IdValidation, GetLogin, RegisteredData } from "../../api/setprofile";
 import { useForm } from "react-hook-form";
-import { USER_ID_PATTEN, USER_NAME_PATTEN } from "../../constant/regex";
+import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
 
 function SetProfile() {
   const navigate = useNavigate();
@@ -151,7 +146,7 @@ function SetProfile() {
               register={register("userName", {
                 required: "사용자 이름을 입력해주세요.",
                 pattern: {
-                  value: USER_NAME_PATTEN,
+                  value: USER_NAME_PATTERN,
                   message: "한글,영문만 가능합니다.",
                 },
                 minLength: {
@@ -173,7 +168,7 @@ function SetProfile() {
               register={register("userID", {
                 required: "계정 ID를 입력해주세요.",
                 pattern: {
-                  value: USER_ID_PATTEN,
+                  value: USER_ID_PATTERN,
                   message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
                 },
                 maxLength: {
@@ -195,13 +190,7 @@ function SetProfile() {
             <Warning>{errors?.intro?.message}</Warning>
           </div>
         </TextContainer>
-        <CommonButton
-          size="lg"
-          bgColor={disable ? "light" : "main"}
-          children="우주쉐어 시작하기"
-          disabled={disable}
-          onClick={() => clearErrors()}
-        />
+        <CommonButton size="lg" bgColor={disable ? "light" : "main"} children="우주쉐어 시작하기" disabled={disable} onClick={() => clearErrors()} />
       </form>
     </Container>
   );
