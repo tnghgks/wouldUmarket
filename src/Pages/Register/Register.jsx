@@ -1,161 +1,129 @@
 import styled from "styled-components";
 import CommonInput from "../../Components/Input/CommonInput";
 import CommonButton from "../../Components/Button/CommonButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { emailValidate } from "../../api/auth";
+import { useForm } from "react-hook-form";
+import {
+  REGISTER_EMAIL_PATTERN,
+  REGISTER_PASSWORD_PATTERN,
+} from "../../constant/regex";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// 유효성 검사
+const registerValidation = yup.object().shape({
+  email: yup
+    .string()
+    .required("이메일 주소를 입력해주세요.")
+    .matches(REGISTER_EMAIL_PATTERN, "올바른 이메일 형식이 아닙니다.")
+    .max(25, "글자수가 25자를 초과하였습니다."),
+  password: yup
+    .string()
+    .required("비밀번호를 설정해주세요.")
+    .matches(
+      REGISTER_PASSWORD_PATTERN,
+      "대문자, 소문자, 숫자, 특수문자가 포함된 8자 이상이어야 합니다."
+    )
+    .max(25, "비밀번호는 25자 이하여야 합니다."),
+});
 
 function Register() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [validationError, setValidationError] = useState("");
+  const [disable, setDisable] = useState(true);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    watch,
+    setFocus,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(registerValidation) });
+  const inputData = watch();
 
-  //이메일 Input이 변경되었을때
-  function handleEmailChange(e) {
-    const { value } = e.target;
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
 
-    //현재 Input value를 State에 저장하고 검사함
-    setEmail((prev) => {
-      emailValidation(value);
-      return value;
-    });
-  }
-
-  //패스워드 Input이 변경되었을때
-  function handlePasswordChange(e) {
-    const { value } = e.target;
-
-    //현재 Input value를 State에 저장하고 검사함
-    setPassword((prev) => {
-      passwordValidation(value);
-      return value;
-    });
-  }
-
-  //이메일 검사 함수
-  function emailValidation(email) {
-    //이메일 정규 표현식
-    const emailRegex =
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
-
-    // 이메일 값이 정규표현식과 매칭되지 않는다면
-    if (!emailRegex.test(email)) {
-      setEmailError("올바른 이메일 형식이 아닙니다.");
-
-      // 25자 보다 크다면
-    } else if (email.length > 25) {
-      setEmailError("글자수가 25자를 초과하였습니다.");
-
-      //모든 검사를 통과 했다면
-    } else {
-      setEmailError("");
+  useEffect(() => {
+    const { email, password } = inputData;
+    if (email || password) {
+      return setDisable(false);
     }
-  }
-
-  function passwordValidation(password) {
-    // A-Z, a-z, 0-9 특수문자가 포함되어 있는지, 8자 이상
-    const passRegex =
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{8,}$/;
-
-    // 패스워드 값이 정규표현식과 매칭되지 않는다면
-    if (!passRegex.test(password)) {
-      setPasswordError(
-        "대문자, 소문자, 숫자, 특수문자가 포함된 8자 이상이어야 합니다."
-      );
-
-      // 25자 보다 크다면
-    } else if (password.length > 25) {
-      setPasswordError("패스워드가 25자를 초과하였습니다.");
-
-      //모든 검사를 통과 했다면
-    } else {
-      setPasswordError("");
-    }
-  }
+    setDisable(true);
+  }, [inputData]);
 
   // 서브밋 이 후 백엔드 이메일 검증
-  async function getEmailValidate(emailValue) {
+  async function getEmailValidate(inputData) {
     try {
-      //검증 오류 초기화
-      setValidationError("");
-
       //백엔드 이메일 검증
       const userEmail = {
         user: {
-          email: emailValue,
+          email: inputData.user.email,
         },
       };
       const message = await emailValidate(userEmail);
-
       if (message !== "사용 가능한 이메일 입니다.") {
-        setValidationError(message);
+        return setError("form", { message });
       } else {
-        //이메일 에러도 없고 패스워드 에러도 없다면
-        if (!emailError && !passwordError) {
-          // 다음 페이지로 이동
-          navigate("/profile/setProfile", {
-            state: {
-              email: email,
-              password: password,
-            },
-          });
-        }
+        // 다음 페이지로 이동
+        navigate("/profile/setProfile", {
+          state: {
+            email: inputData.user.email,
+            password: inputData.user.password,
+          },
+        });
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const {
-      email: { value: emailValue },
-    } = e.target;
-
-    getEmailValidate(emailValue);
+  async function handleRegister({ email, password }) {
+    const inputData = {
+      user: {
+        email,
+        password,
+      },
+    };
+    getEmailValidate(inputData);
   }
 
   return (
     <Container>
       <Title>이메일로 회원가입</Title>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleRegister)}>
         <TextContainer>
           <div>
             <CommonInput
-              name="email"
+              label="이메일"
               type="text"
-              placeholder="이메일 주소를 입력해주세요"
-              onChange={handleEmailChange}
-              required={true}
+              register={register("email")}
             />
-            {emailError && <Warning>*{emailError}</Warning>}
+            <Warning>{errors?.email?.message}</Warning>
           </div>
           <div>
             <CommonInput
-              name="password"
+              label="비밀번호"
               type="password"
-              placeholder="비밀번호를 설정해주세요"
-              onChange={handlePasswordChange}
-              required={true}
+              register={register("password")}
             />
-            {passwordError && <Warning>*{passwordError}</Warning>}
+            <Warning>{errors?.password?.message}</Warning>
           </div>
         </TextContainer>
-        <p>{validationError}</p>
         <CommonButton
           size="lg"
-          bgColor={!(email || password) ? "light" : "accent"}
+          bgColor={disable ? "light" : "main"}
           children="다음"
-          disabled={!(email || password)}
+          disabled={disable}
+          onClick={() => clearErrors()}
         />
       </form>
     </Container>
   );
 }
-
 export default Register;
 
 const Container = styled.section`
