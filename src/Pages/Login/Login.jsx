@@ -10,23 +10,26 @@ import background from "../../assets/login_background.png";
 function Login() {
   return (
     <Container>
+      <h1 className="ir-hidden">로그인 페이지</h1>
       <Logo src={FullLogoBig} alt="우주마켓 로고" />
       <LoginContainer>
         <BtnContainer>
+          <h2 className="ir-hidden">소셜 로그인 버튼</h2>
           <BtnKakao>
-            <SNSLogo src={MessageCircle} />
+            <SNSLogo src={MessageCircle} alt="카카오 메세지 아이콘" />
             <BtnText>카카오톡 계정으로 로그인</BtnText>
           </BtnKakao>
           <BtnGoogle>
-            <SNSLogo src={GoogleIcon} />
+            <SNSLogo src={GoogleIcon} alt="구글 아이콘" />
             <BtnText>구글 계정으로 로그인</BtnText>
           </BtnGoogle>
           <BtnFacebook>
-            <SNSLogo src={FacebookIcon} />
+            <SNSLogo src={FacebookIcon} alt="페이스북 아이콘" />
             <BtnText>페이스북 계정으로 로그인</BtnText>
           </BtnFacebook>
         </BtnContainer>
         <LinkContainer>
+          <h2 className="ir-hidden">로그인 및 회원가입 버튼</h2>
           <LoginLink to="/login/loginEmail">이메일로 로그인</LoginLink>
           <Link to="/register">회원가입</Link>
         </LinkContainer>
@@ -37,7 +40,7 @@ function Login() {
 
 export default Login;
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
