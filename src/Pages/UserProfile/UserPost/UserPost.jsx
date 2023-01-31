@@ -25,6 +25,7 @@ function UserPost({ setModalInfo, setSubModalData }) {
   return (
     !!posts.length && (
       <Container>
+        <h3 className="ir-hidden">유저가 올린 포스트</h3>
         <ViewModeContainer>
           <IconPostList toggle={toggle} onClick={handleClick} />
           <IconPostAlbum toggle={!toggle} onClick={handleClick} />
@@ -76,7 +77,7 @@ const ViewModeContainer = styled.div`
   padding-right: 16px;
   border-bottom: 0.5px solid #dbdbdb;
 `;
-const PostContainer = styled.section`
+const PostContainer = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
