@@ -32,9 +32,9 @@ function ImageSlider({ image, postId }) {
     <ImageContainer>
       {!!imageList.length &&
         imageList.map((img, index) => (
-          <ItemContainer imageCount={imageCount}>
-            <PostLink to={`/post/${postId}`} key={index}>
-              <PostImg src={img} key={index} alt="포스트 이미지" />
+          <ItemContainer imageCount={imageCount} key={index}>
+            <PostLink to={`/post/${postId}`}>
+              <PostImg src={img} alt="포스트 이미지" />
             </PostLink>
           </ItemContainer>
         ))}
