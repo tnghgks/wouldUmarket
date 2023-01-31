@@ -136,6 +136,7 @@ function SetProfile() {
       <TitleDesc>나중에 언제든지 변경할 수 있습니다.</TitleDesc>
       <form onSubmit={handleSubmit(isValid)}>
         <ProfileImgContainer>
+          <h2 className="ir-hidden">프로필 이미지 설정</h2>
           <BasicProfileImg src={image ? image : ""} />
           <label htmlFor="file">
             <UploadImgDiv></UploadImgDiv>
