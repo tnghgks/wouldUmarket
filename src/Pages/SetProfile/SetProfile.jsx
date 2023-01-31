@@ -6,7 +6,12 @@ import CommonButton from "../../Components/Button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
 import { setCookie } from "../../cookie";
 import ImgButton from "../../assets/upload-file.png";
-import { SetProfileImg, IdValidation, GetLogin, RegisteredData } from "../../api/setprofile";
+import {
+  SetProfileImg,
+  IdValidation,
+  GetLogin,
+  RegisteredData,
+} from "../../api/setprofile";
 import { useForm } from "react-hook-form";
 import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
 
@@ -139,58 +144,61 @@ function SetProfile() {
         </ProfileImgContainer>
         <TextContainer>
           <legend className="ir-hidden">프로필정보</legend>
-          <div>
-            <CommonInput
-              label="사용자 이름"
-              placeholder="2~10자 이내여야 합니다."
-              register={register("userName", {
-                required: "사용자 이름을 입력해주세요.",
-                pattern: {
-                  value: USER_NAME_PATTERN,
-                  message: "한글,영문만 가능합니다.",
-                },
-                minLength: {
-                  value: 2,
-                  message: "2자 이상이어야 합니다.",
-                },
-                maxLength: {
-                  value: 10,
-                  message: "10자 이내여야 합니다.",
-                },
-              })}
-            />
-            <Warning>{errors?.userName?.message}</Warning>
-          </div>
-          <div>
-            <CommonInput
-              label="계정 ID"
-              placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
-              register={register("userID", {
-                required: "계정 ID를 입력해주세요.",
-                pattern: {
-                  value: USER_ID_PATTERN,
-                  message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
-                },
-                maxLength: {
-                  value: 30,
-                  message: "30자 이내여야 합니다.",
-                },
-              })}
-            />
-            <Warning>{errors?.userID?.message}</Warning>
-          </div>
-          <div>
-            <CommonInput
-              label="소개"
-              placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
-              register={register("intro", {
-                required: "소개를 입력해주세요.",
-              })}
-            />
-            <Warning>{errors?.intro?.message}</Warning>
-          </div>
+          <CommonInput
+            id="userName"
+            label="사용자 이름"
+            placeholder="2~10자 이내여야 합니다."
+            register={register("userName", {
+              required: "사용자 이름을 입력해주세요.",
+              pattern: {
+                value: USER_NAME_PATTERN,
+                message: "한글,영문만 가능합니다.",
+              },
+              minLength: {
+                value: 2,
+                message: "2자 이상이어야 합니다.",
+              },
+              maxLength: {
+                value: 10,
+                message: "10자 이내여야 합니다.",
+              },
+            })}
+          />
+          <Warning>{errors?.userName?.message}</Warning>
+          <CommonInput
+            id="userID"
+            label="계정 ID"
+            placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
+            register={register("userID", {
+              required: "계정 ID를 입력해주세요.",
+              pattern: {
+                value: USER_ID_PATTERN,
+                message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
+              },
+              maxLength: {
+                value: 30,
+                message: "30자 이내여야 합니다.",
+              },
+            })}
+          />
+          <Warning>{errors?.userID?.message}</Warning>
+          <CommonInput
+            id="intro"
+            label="소개"
+            placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
+            register={register("intro", {
+              required: "소개를 입력해주세요.",
+            })}
+          />
+          <Warning>{errors?.intro?.message}</Warning>
         </TextContainer>
-        <CommonButton size="lg" bgColor={disable ? "light" : "main"} children="우주쉐어 시작하기" disabled={disable} onClick={() => clearErrors()} />
+        <CommonButton
+          size="lg"
+          bgColor={disable ? "light" : "main"}
+          children="우주쉐어 시작하기"
+          disabled={disable}
+          onClick={() => clearErrors()}
+        />
       </form>
     </Container>
   );
@@ -216,7 +224,7 @@ const TitleDesc = styled.p`
   color: #767676;
 `;
 
-const ProfileImgContainer = styled.div`
+const ProfileImgContainer = styled.section`
   position: relative;
   width: 110px;
   height: 110px;
@@ -240,7 +248,11 @@ const UploadImgDiv = styled.div`
 `;
 
 const TextContainer = styled.fieldset`
-  & > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+  /* & > div {
     :nth-child(3) {
       margin: 16px 0;
     }
@@ -254,7 +266,7 @@ const TextContainer = styled.fieldset`
       border-bottom-color: var(--subColor);
       transition: border-bottom-color 200ms;
     }
-  }
+  } */
 `;
 
 const Warning = styled.p`
