@@ -185,7 +185,7 @@ function SetProfile() {
           <CommonInput
             id="intro"
             label="소개"
-            placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
+            placeholder="자신과 쉐어할 상품에 대해 소개해 주세요!"
             register={register("intro", {
               required: "소개를 입력해주세요.",
             })}
