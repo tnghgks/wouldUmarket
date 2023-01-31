@@ -23,6 +23,7 @@ function UserInfo() {
   return (
     !!profile && (
       <Container>
+        <h3 className="ir-hidden">유저 정보</h3>
         <RowContainer>
           <Link to={`/profile/${accountname}/followers`}>
             <FollowerInfo>
@@ -41,15 +42,7 @@ function UserInfo() {
         <UserNicname>{profile.username}</UserNicname>
         <UserId>@ {profile.accountname}</UserId>
         <UserDescription>{profile.intro}</UserDescription>
-        {ownUser ? (
-          <EditBtns />
-        ) : (
-          <FollowBtns
-            isFollow={profile.isfollow}
-            handleFollow={handleFollowBtn}
-            handleUnFollow={handleUnFollowBtn}
-          />
-        )}
+        {ownUser ? <EditBtns /> : <FollowBtns isFollow={profile.isfollow} handleFollow={handleFollowBtn} handleUnFollow={handleUnFollowBtn} />}
       </Container>
     )
   );
