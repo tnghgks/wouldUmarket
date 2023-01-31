@@ -67,13 +67,11 @@ function Product({ productData, setModalInfo, setSubModalData }) {
   }
 
   return (
-    <Container onClick={handleModalOpen}>
+    <Container onClick={handleModalOpen} tabIndex={0}>
       <figure>
         <ProductImg src={productData.itemImage || productImg} alt="" />
         <ProductName>{productData.itemName}</ProductName>
-        <ProductPrice>
-          시간당 {productData.price.toLocaleString()}원
-        </ProductPrice>
+        <ProductPrice>시간당 {productData.price.toLocaleString()}원</ProductPrice>
       </figure>
     </Container>
   );
@@ -81,7 +79,7 @@ function Product({ productData, setModalInfo, setSubModalData }) {
 
 export default Product;
 
-const Container = styled.section`
+const Container = styled.li`
   width: 140px;
   cursor: pointer;
 `;
@@ -101,5 +99,5 @@ const ProductName = styled.figcaption`
 const ProductPrice = styled.figcaption`
   font-size: 1.2rem;
   margin: 0 5px;
-  color: var(--accentColor);
+  color: var(--mainColor);
 `;
