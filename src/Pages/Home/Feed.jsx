@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_USERINFO } from "../../store/UserInfo";
 import Modal from "../../Components/Modal";
 import DeleteAlert from "../../Components/Button/DeleteAlert";
-import { SET_FOLLOWERS_POSTS, INCREASE_PAGE_NUMBER, INITIAL_PAGE_NUMBER } from "../../store/PostList";
+import {
+  SET_FOLLOWERS_POSTS,
+  INCREASE_PAGE_NUMBER,
+  INITIAL_PAGE_NUMBER,
+} from "../../store/PostList";
 
 function Feed() {
   const [subModalData, setSubModalData] = useState({});
@@ -35,7 +39,11 @@ function Feed() {
         clearTimeout(scrollTimer);
       }
       scrollTimer = setTimeout(function () {
-        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
+        if (
+          document.body.scrollHeight -
+            (window.pageYOffset + window.innerHeight) <
+          0
+        ) {
           dispatch(INCREASE_PAGE_NUMBER());
         }
       }, 100);
@@ -54,16 +62,23 @@ function Feed() {
 
   return (
     <>
+      <h1 className="ir-hidden">우주쉐어 피드</h1>
       <MainNav titleContent="우주쉐어 피드" />
       <MainContainer>
         {!!posts.length ? (
           posts.map((postItem) => (
             <PostContainer key={postItem.id}>
-              <HomePost key={postItem.id} postItem={postItem} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />
+              <HomePost
+                key={postItem.id}
+                postItem={postItem}
+                setSubModalData={setSubModalData}
+                setModalInfo={setModalInfo}
+              />
             </PostContainer>
           ))
         ) : (
           <FeedContainer>
+            <h3 className="ir-hidden">유저 검색하기</h3>
             <SymbolLogoGray />
             <Desc>유저를 검색해 팔로우 해보세요!</Desc>
             <Link to={`/search`}>
@@ -74,7 +89,13 @@ function Feed() {
       </MainContainer>
       <TabMenu />
       {isOpen && <Modal modalInfo={modalInfo} />}
-      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
+      {subModal.isOpen && (
+        <DeleteAlert
+          mainText={subModalData.text}
+          rightText={subModalData.rightText}
+          handleAccept={subModalData.handleFunc}
+        />
+      )}
     </>
   );
 }
@@ -86,7 +107,7 @@ const MainContainer = styled.main`
   padding: 8px;
 `;
 
-const FeedContainer = styled.div`
+const FeedContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
