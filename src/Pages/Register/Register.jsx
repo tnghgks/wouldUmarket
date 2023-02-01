@@ -11,7 +11,6 @@ import {
 } from "../../constant/regex";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { axeTester } from "../../util/axeTester";
 
 // 유효성 검사
 const registerValidation = yup.object().shape({
@@ -91,7 +90,6 @@ function Register() {
     };
     getEmailValidate(inputData);
   }
-  axeTester();
 
   return (
     <Container>
