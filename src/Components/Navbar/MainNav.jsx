@@ -3,6 +3,19 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import IconSearch from "../icon/IconSearch";
 
+function MainNav({ titleContent }) {
+  return (
+    <Container>
+      <Title>{titleContent}</Title>
+      <Search to="/search">
+        <SearchIcon />
+      </Search>
+    </Container>
+  );
+}
+
+export default MainNav;
+
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -41,15 +54,3 @@ const SearchIcon = styled(IconSearch)`
  * @param {{titleContent: string*}} param0
  * @returns
  */
-function MainNav({ titleContent }) {
-  return (
-    <Container>
-      <Title>{titleContent}</Title>
-      <Search to="/search">
-        <SearchIcon />
-      </Search>
-    </Container>
-  );
-}
-
-export default MainNav;
