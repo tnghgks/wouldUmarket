@@ -62,8 +62,10 @@ function Feed() {
 
   return (
     <>
-      <h1 className="ir-hidden">우주쉐어 피드</h1>
-      <MainNav titleContent="우주쉐어 피드" />
+      <header>
+        <h1 className="ir-hidden">우주쉐어 피드</h1>
+        <MainNav titleContent="우주쉐어 피드" />
+      </header>
       <MainContainer>
         {!!posts.length ? (
           posts.map((postItem) => (
