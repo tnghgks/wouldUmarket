@@ -52,7 +52,7 @@ function Search() {
     dispatch(asyncSearchFetch({ searchInput, signal: controller.signal }));
     setSignal(controller);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchInput]);
+  }, [searchInput, dispatch]);
 
   useEffect(() => {
     if (!searchInput) return;
@@ -62,31 +62,22 @@ function Search() {
   }, [pageNum]);
 
   function handleDeleteBtn(targetIndex) {
-    setRecentSearched(
-      recentSearched.filter((_, index) => !(index === targetIndex))
-    );
-    window.localStorage.setItem(
-      "recentSearched",
-      JSON.stringify(
-        recentSearched.filter((_, index) => !(index === targetIndex))
-      )
-    );
+    setRecentSearched(recentSearched.filter((_, index) => !(index === targetIndex)));
+    window.localStorage.setItem("recentSearched", JSON.stringify(recentSearched.filter((_, index) => !(index === targetIndex))));
   }
 
   return (
-    <>
+    <main>
+      <h1 className="ir-hidden">검색 페이지</h1>
       <SearchNav value={searchInput} setValue={setSearchInput} />
       <Container>
+        <h2 className="ir-hidden">검색 결과</h2>
         {!searchInput && searchData.status !== "pending" && (
           <RecentList>
             <Item>최근 검색 결과</Item>
             {recentSearched?.map((userData, index) => (
-              <Item>
-                <UserSearch
-                  key={index}
-                  userData={userData}
-                  searchInput={searchInput}
-                />
+              <Item key={index}>
+                <UserSearch userData={userData} searchInput={searchInput} />
                 <DeleteBtn onClick={() => handleDeleteBtn(index)}>
                   <img src={iconDelete} alt="삭제 버튼" />
                 </DeleteBtn>
@@ -95,33 +86,25 @@ function Search() {
           </RecentList>
         )}
         {searchData.status === "rejected" && <div>ERROR</div>}
-        {!searchData.data.length && searchData.status === "pending" && (
-          <Loader />
-        )}
+        {!searchData.data.length && searchData.status === "pending" && <Loader />}
         {!!searchData.data.length &&
           searchInput &&
           searchData.data.map((userData, index) => (
-            <Item key={crypto.randomUUID()}>
-              <UserSearch
-                key={crypto.randomUUID()}
-                userData={userData}
-                searchInput={searchInput}
-              />
+            <Item key={index}>
+              <UserSearch userData={userData} searchInput={searchInput} />
             </Item>
           ))}
-        {!searchData.data.length && searchData.status === "fulfilled" && (
-          <NotFoundResult />
-        )}
+        {!searchData.data.length && searchData.status === "fulfilled" && <NotFoundResult />}
         <div ref={setBottom} />
       </Container>
       <TabMenu />
-    </>
+    </main>
   );
 }
 
 export default Search;
 
-const Container = styled.main`
+const Container = styled.section`
   width: 100%;
   overflow-x: hidden;
   margin-top: 48px;

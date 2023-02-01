@@ -35,7 +35,7 @@ function UserSearch({ userData, searchInput }) {
   return (
     <Link to={`/profile/${userData.accountname}`} onClick={handleClick}>
       <UserSearchContainer>
-        <Img src={userData.image ? userData.image : profileImg} onError={(e) => (e.target.src = profileImg)} />
+        <Img src={userData.image ? userData.image : profileImg} onError={(e) => (e.target.src = profileImg)} alt="프로필 이미지" />
         <div>
           <MatchingData>{userData.username}</MatchingData>
           <UserFollowSmall>
