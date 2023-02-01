@@ -6,33 +6,6 @@ import IconEdit from "./icon/IconEdit";
 import IconUser from "./icon/IconUser";
 import { useSelector } from "react-redux";
 
-const MenuContainer = styled.footer`
-  width: 100%;
-  position: fixed;
-  border-top: 0.5px solid #dbdbdb;
-  bottom: 0%;
-  padding: 12px 0 10px;
-  background-color: #ffffff;
-`;
-
-const ListContainer = styled.ol`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-`;
-
-const ItemContainer = styled.li`
-  & > a {
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    font-size: 1rem;
-  }
-  cursor: pointer;
-`;
-
 function TabMenu() {
   const { pathname } = useLocation();
   const userInfo = useSelector((state) => state.userInfo);
@@ -71,3 +44,30 @@ function TabMenu() {
 }
 
 export default TabMenu;
+
+const MenuContainer = styled.footer`
+  width: 100%;
+  position: fixed;
+  border-top: 0.5px solid #dbdbdb;
+  bottom: 0%;
+  padding: 12px 0 10px;
+  background-color: #ffffff;
+`;
+
+const ListContainer = styled.ol`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const ItemContainer = styled.li`
+  & > a {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 1rem;
+  }
+  cursor: pointer;
+`;
