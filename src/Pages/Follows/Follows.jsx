@@ -41,33 +41,36 @@ function Followers() {
   }, [limit]);
 
   function getFollowData() {
-    if (location.pathname.split("/")[3] === "followers") {
+    let pageType = location.pathname.split("/")[3];
+    if (pageType === "followers") {
       dispatch(SET_FOLLOWER_LIST({ accountname, token, limit }));
-    } else if (location.pathname.split("/")[3] === "followings") {
+    } else if (pageType === "followings") {
       dispatch(SET_FOLLOWING_LIST({ accountname, token, limit }));
     }
   }
 
   return (
-    <>
-      <ChatNav sellerName="Follower" isMore={true} />
+    <main>
+      <h1 className="ir-hidden">{location.pathname.split("/")[3]} 페이지</h1>
+      <ChatNav sellerName={location.pathname.split("/")[3]} isMore={true} />
       <Container>
+        <h2 className="ir-hidden">유저 목록</h2>
         <FollowContainer>{!!users.length && users.map((user) => <UserFollow key={crypto.randomUUID()} {...user} />)}</FollowContainer>
       </Container>
       <TabMenu />
-    </>
+    </main>
   );
 }
 export default Followers;
 
-const Container = styled.main`
+const Container = styled.section`
   width: 100%;
   height: 100vh;
   margin-top: 48px;
   padding: 24px 16px;
   margin-bottom: 61px;
 `;
-const FollowContainer = styled.section`
+const FollowContainer = styled.ul`
   width: 100%;
   max-width: 358px;
   margin: 0 auto;
