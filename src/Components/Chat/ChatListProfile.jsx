@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import profileImg from "../../assets/Ellipse-1.png";
+import { Link } from "react-router-dom";
 
 /**
  *
@@ -8,17 +9,19 @@ import profileImg from "../../assets/Ellipse-1.png";
  */
 function ChatListProfile({ newChat, chilDren, chat, listChatDate }) {
   return (
-    <UserSearchContainer>
-      <ChatProfileImg>
-        <Img src={profileImg} />
-        <CheckOnline newChat={newChat} />
-      </ChatProfileImg>
-      <div>
-        <p>{chilDren}</p>
-        <UserFollowSmall>{chat}</UserFollowSmall>
-      </div>
-      <ChatDateSpan>{listChatDate}</ChatDateSpan>
-    </UserSearchContainer>
+    <li>
+      <UserSearchContainer to="/chat/:id">
+        <ChatProfileImg>
+          <Img src={profileImg} alt="" />
+          <CheckOnline newChat={newChat} />
+        </ChatProfileImg>
+        <div>
+          <p>{chilDren}</p>
+          <UserFollowSmall>{chat}</UserFollowSmall>
+        </div>
+        <ChatDateSpan>{listChatDate}</ChatDateSpan>
+      </UserSearchContainer>
+    </li>
   );
 }
 
@@ -40,7 +43,7 @@ const CheckOnline = styled.div`
   top: 0;
 `;
 
-const UserSearchContainer = styled.li`
+const UserSearchContainer = styled(Link)`
   padding: 2px 0 3px 0;
   background-color: #ffffff;
   width: 100%;
@@ -66,7 +69,7 @@ const UserFollowSmall = styled.small`
 const ChatDateSpan = styled.p`
   margin-top: 26px;
   margin-left: auto;
-  color: #dbdbdb;
+  color: #767676;
   font-family: "LINESeedKR-Bd", sans-serif;
   font-weight: 400;
   font-size: 10px;
