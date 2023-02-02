@@ -12,11 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../Components/Modal";
 import DeleteAlert from "../../Components/Button/DeleteAlert";
 import { SET_PRODUCT_LIST } from "../../store/ProductList";
-import {
-  INCREASE_PAGE_NUMBER,
-  INITIAL_PAGE_NUMBER,
-  SET_USER_POSTS,
-} from "../../store/PostList";
+import { INCREASE_PAGE_NUMBER, INITIAL_PAGE_NUMBER, SET_USER_POSTS } from "../../store/PostList";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -39,11 +35,7 @@ function Profile() {
         clearTimeout(scrollTimer);
       }
       scrollTimer = setTimeout(function () {
-        if (
-          document.body.scrollHeight -
-            (window.pageYOffset + window.innerHeight) <
-          0
-        ) {
+        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
           dispatch(INCREASE_PAGE_NUMBER());
         }
       }, 100);
@@ -55,50 +47,39 @@ function Profile() {
       dispatch(INITIAL_PAGE_NUMBER());
       window.removeEventListener("scroll", handleScrollEvent);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(SET_USER_POSTS({ accountname, token, pageNum }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNum]);
+  }, [pageNum, accountname, dispatch, token]);
 
   useEffect(() => {
     dispatch(SET_PROFILE(accountname));
     dispatch(SET_PRODUCT_LIST(accountname));
     dispatch(SET_USER_POSTS({ accountname, token }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountname]);
+  }, [accountname, dispatch, token]);
 
   return (
-    <>
+    <Container>
+      <h1 className="ir-hidden">유저 프로필 페이지</h1>
       <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
-      <Container>
+      <ProfileContainer>
+        <h2 className="ir-hidden">프로필 정보</h2>
         <UserInfo />
-        <UserProducts
-          setModalInfo={setModalInfo}
-          setSubModalData={setSubModalData}
-        />
-        <UserPost
-          setModalInfo={setModalInfo}
-          setSubModalData={setSubModalData}
-        />
-      </Container>
+        <UserProducts setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+        <UserPost setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+      </ProfileContainer>
       <TabMenu />
       {modalData.isOpen && <Modal modalInfo={modalInfo} />}
-      {modalData.subModal.isOpen && (
-        <DeleteAlert
-          mainText={subModalData.text}
-          rightText={subModalData.rightText}
-          handleAccept={subModalData.handleFunc}
-        />
-      )}
-    </>
+      {modalData.subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
+    </Container>
   );
 }
 export default Profile;
 
-const Container = styled.main`
+const Container = styled.main``;
+
+const ProfileContainer = styled.section`
   width: 100%;
   height: 100vh;
   margin-top: 48px;

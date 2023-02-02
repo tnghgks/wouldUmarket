@@ -54,14 +54,14 @@ const MenuContainer = styled.footer`
   background-color: #ffffff;
 `;
 
-const ListContainer = styled.ol`
+const ListContainer = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 `;
 
 const ItemContainer = styled.li`
-  & > a {
+  a {
     width: auto;
     display: flex;
     flex-direction: column;
@@ -69,5 +69,4 @@ const ItemContainer = styled.li`
     gap: 4px;
     font-size: 1rem;
   }
-  cursor: pointer;
 `;

@@ -30,9 +30,14 @@ function ImageSlider({ image, postId }) {
 
   return (
     <ImageContainer>
-      <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
-        {!!imageList.length && imageList.map((img) => <PostImg imageCount={imageCount} src={img} key={crypto.randomUUID()} />)}
-      </PostLink>
+      {!!imageList.length &&
+        imageList.map((img, index) => (
+          <ItemContainer imageCount={imageCount} key={index}>
+            <PostLink to={`/post/${postId}`}>
+              <PostImg src={img} alt="포스트 이미지" />
+            </PostLink>
+          </ItemContainer>
+        ))}
       {imageList.length > 1 && (
         <>
           <LeftBtn onClick={handleLeftBtn}>
@@ -51,17 +56,18 @@ export default ImageSlider;
 const ImageContainer = styled.ul`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: nowrap;
   position: relative;
-
   width: 100%;
   max-width: 304px;
 `;
-const PostLink = styled(Link)`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
+const ItemContainer = styled.li`
+  width: 304px;
+  flex-shrink: 0;
   overflow: hidden;
+  transform: translateX(${(props) => props.imageCount * 304 * -1 + "px"});
 `;
+const PostLink = styled(Link)``;
 
 const PostImg = styled.img`
   width: 100%;
@@ -70,7 +76,6 @@ const PostImg = styled.img`
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 10px;
-  transform: translateX(${(props) => props.imageCount * 304 * -1 + "px"});
 `;
 const Button = styled.button`
   position: absolute;
