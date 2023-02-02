@@ -73,7 +73,9 @@ function LoginEmail() {
       <Title>로그인</Title>
       <LoginForm onSubmit={handleSubmit(handleLogin)}>
         <InputContainer>
+          <legend className="ir-hidden">로그인 입력창</legend>
           <CommonInput
+            id="email"
             label="이메일"
             register={register("email", {
               required: "Email을 작성해주십시오.",
@@ -85,6 +87,7 @@ function LoginEmail() {
           />
           <Warning>{errors?.email?.message}</Warning>
           <CommonInput
+            id="password"
             label="비밀번호"
             type="password"
             register={register("password", {
@@ -95,7 +98,13 @@ function LoginEmail() {
         </InputContainer>
         <Warning>{errors?.form?.message}</Warning>
         <ButtonContainer>
-          <CommonButton size="lg" bgColor={disable ? "light" : "main"} children="다음" disabled={disable} onClick={() => clearErrors("form")} />
+          <CommonButton
+            size="lg"
+            bgColor={disable ? "light" : "main"}
+            children="다음"
+            disabled={disable}
+            onClick={() => clearErrors("form")}
+          />
         </ButtonContainer>
       </LoginForm>
       <SignUpLink to="/register">
@@ -137,7 +146,7 @@ const ButtonContainer = styled.section`
   margin-bottom: 20px;
 `;
 
-const InputContainer = styled.section`
+const InputContainer = styled.fieldset`
   display: flex;
   flex-direction: column;
   width: 100%;
