@@ -168,7 +168,7 @@ function PostUpload() {
 
 export default PostUpload;
 
-const Container = styled.div`
+const Container = styled.main`
   padding-top: 48px;
   min-height: 100vh;
   overflow-x: hidden;
