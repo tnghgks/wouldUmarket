@@ -110,6 +110,7 @@ function PostUpload() {
   };
   return (
     <Container>
+      <h1 className="ir-hidden">게시물 작성 페이지</h1>
       <UploadNav
         children="업로드"
         btnDisabled={!imageList.length}
@@ -117,6 +118,7 @@ function PostUpload() {
         onClickUpload={onClickUpload}
       />
       <UploadContainer>
+        <h2 className="ir-hidden">게시글 입력하기</h2>
         <BasicProfileImg src={profile.image} />
         <InputContainer>
           <Textarea
@@ -126,7 +128,6 @@ function PostUpload() {
             onChange={handleResizeHeight}
             placeholder="게시글 입력하기..."
           />
-
           <ImageList>
             {imageList.map((img) => (
               <li className="" key={img.id}>
@@ -180,7 +181,7 @@ const UploadContainer = styled.section`
   padding: 32px 16px 0 70px;
 `;
 
-const InputContainer = styled.section`
+const InputContainer = styled.div`
   width: 100%;
 `;
 
