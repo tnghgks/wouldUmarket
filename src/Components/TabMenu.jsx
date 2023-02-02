@@ -14,28 +14,28 @@ function TabMenu() {
       <nav>
         <ListContainer>
           <ItemContainer>
-            <ItemLink to={"/feed"}>
+            <Link to={"/feed"}>
               <IconHome pathname={pathname} />
               <p>홈</p>
-            </ItemLink>
+            </Link>
           </ItemContainer>
           <ItemContainer>
-            <ItemLink to={"/chat/chatList"}>
+            <Link to={"/chat/chatList"}>
               <IconMessageCircle pathname={pathname} />
               <p>채팅</p>
-            </ItemLink>
+            </Link>
           </ItemContainer>
           <ItemContainer>
-            <ItemLink to={"/post/postUpload"}>
+            <Link to={"/post/postUpload"}>
               <IconEdit />
               <p>게시물 작성</p>
-            </ItemLink>
+            </Link>
           </ItemContainer>
           <ItemContainer>
-            <ItemLink to={`/profile/${userInfo.accountname}`}>
+            <Link to={`/profile/${userInfo.accountname}`}>
               <IconUser pathname={pathname} />
               <p>프로필</p>
-            </ItemLink>
+            </Link>
           </ItemContainer>
         </ListContainer>
       </nav>
@@ -61,14 +61,12 @@ const ListContainer = styled.ul`
 `;
 
 const ItemContainer = styled.li`
-  width: auto;
-`;
-
-const ItemLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  font-size: 1rem;
+  a {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 1rem;
+  }
 `;

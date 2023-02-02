@@ -96,22 +96,21 @@ function Register() {
       <Title>이메일로 회원가입</Title>
       <form onSubmit={handleSubmit(handleRegister)}>
         <TextContainer>
-          <div>
-            <CommonInput
-              label="이메일"
-              type="text"
-              register={register("email")}
-            />
-            <Warning>{errors?.email?.message}</Warning>
-          </div>
-          <div>
-            <CommonInput
-              label="비밀번호"
-              type="password"
-              register={register("password")}
-            />
-            <Warning>{errors?.password?.message}</Warning>
-          </div>
+          <legend className="ir-hidden">개인정보</legend>
+          <CommonInput
+            id="email"
+            label="이메일"
+            type="text"
+            register={register("email")}
+          />
+          <Warning>{errors?.email?.message}</Warning>
+          <CommonInput
+            id="password"
+            label="비밀번호"
+            type="password"
+            register={register("password")}
+          />
+          <Warning>{errors?.password?.message}</Warning>
         </TextContainer>
         <CommonButton
           size="lg"
@@ -138,18 +137,14 @@ const Title = styled.h1`
   margin-bottom: 40px;
 `;
 
-const TextContainer = styled.div`
-  & > div {
-    :nth-child(2) {
-      margin: 16px 0;
-    }
-    :last-child {
-      margin-bottom: 30px;
-    }
-  }
+const TextContainer = styled.fieldset`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
 `;
 
-const Warning = styled.p`
+const Warning = styled.strong`
   font-size: 1.2rem;
   color: #eb5757;
 `;
