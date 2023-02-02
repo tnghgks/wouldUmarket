@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BasicNav from "../../Components/Navbar/UploadNav";
+import UploadNav from "../../Components/Navbar/UploadNav";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../Components/Input/CommonInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,8 +19,7 @@ function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showImg, setShowImg] = useState("");
-  const [disable, setDisable] = useState(true);
-  // console.log(disable);
+  // const [disable, setDisable] = useState(true);
   const {
     profile: { accountname },
     product,
@@ -32,17 +31,10 @@ function EditProduct() {
     reset,
     formState: { errors, isValid },
   } = useForm({
-    // defaultValues: {
-    //   imgFile: "",
-    //   productName: "",
-    //   productPrice: "",
-    //   Address: "",
-    // },
     mode: "onChange",
   });
   const productImg = watch("imgFile");
   const inputData = watch();
-  console.log(isValid);
 
   useEffect(() => {
     if (product) {
@@ -59,14 +51,6 @@ function EditProduct() {
     dispatch(DETAIL_PRODUCT(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const { itemImage, itemName, price, link } = inputData;
-    if (itemImage && itemName && price && link) {
-      return setDisable(false);
-    }
-    setDisable(true);
-  }, [inputData]);
 
   // 한개의 이미지 API
   async function productImgView(imgFile) {
@@ -101,17 +85,21 @@ function EditProduct() {
   }
 
   return (
-    <form onSubmit={handleSubmit(formSubmit)}>
-      <BasicNav
+    <main>
+      <h1 className="ir-hidden">상품 상세 수정 페이지</h1>
+      <UploadNav
         children="저장"
         bgColor={isValid ? "light" : "main"}
-        btnDisabled={disable ? true : false}
+        btnDisabled={isValid ? true : false}
       />
-      <EditProfileContainer>
+      <EditProfileContainer onSubmit={handleSubmit(formSubmit)}>
         <ProductContainer>
-          <p>이미지 등록</p>
+          <h2 className="ir-hidden">이미지 등록</h2>
           <EditProductImgContainer>
-            <ProductItemImg src={showImg ? showImg : productImg} alt="" />
+            <ProductItemImg
+              src={showImg ? showImg : productImg}
+              alt="상품 이미지"
+            />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
@@ -126,6 +114,7 @@ function EditProduct() {
           {errors.imgFile && <Warning>{errors.imgFile.message}</Warning>}
         </ProductContainer>
         <InputContainer>
+          <h2 className="ir-hidden">상품 상세 입력란</h2>
           <CommonInput
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
@@ -172,14 +161,14 @@ function EditProduct() {
           {errors.Address && <Warning>{errors.Address.message}</Warning>}
         </InputContainer>
       </EditProfileContainer>
-    </form>
+    </main>
   );
 }
 
 export default EditProduct;
 
 // 페이지 전체 컨테이너 컴퍼넌트
-const EditProfileContainer = styled.main`
+const EditProfileContainer = styled.form`
   width: 390px;
   height: 820px;
   padding: 78px 34px 0 34px;
@@ -195,7 +184,7 @@ const ProductContainer = styled.section`
   font-size: 12px;
 `;
 
-const EditProductImgContainer = styled.section`
+const EditProductImgContainer = styled.div`
   margin-top: 18px;
   height: 204px;
   background-color: #f2f2f2;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../Components/Input/CommonInput";
-import BasicNav from "../../Components/Navbar/UploadNav";
+import UploadNav from "../../Components/Navbar/UploadNav";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_PRODUCT } from "../../store/Product";
 import { useEffect, useState } from "react";
@@ -64,32 +64,29 @@ function AddProduct() {
   }
 
   return (
-    <form onSubmit={handleSubmit(formSubmit)}>
-      <BasicNav
+    <main>
+      <h1 className="ir-hidden">상품 등록 페이지</h1>
+      <UploadNav
         children="저장"
         btnDisabled={!isValid}
         bgColor={!isValid ? "light" : "main"}
       />
-      <EditProfileContainer>
+      <EditProfileContainer onSubmit={handleSubmit(formSubmit)}>
         <ProductContainer>
-          <p>이미지 등록</p>
+          <h2>이미지 등록</h2>
           <EditProductImgContainer>
-            <ProductItemImg src={productImg} alt="" />
+            <ProductItemImg src={productImg} alt="상품 이미지" />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
-            <UploadImgInput
-              type="file"
-              name="imgFile"
-              id="file"
-              {...register("imgFile")}
-            />
+            <UploadImgInput type="file" id="file" {...register("imgFile")} />
           </EditProductImgContainer>
           {errors.imgFile && <Warning>{errors.imgFile.message}</Warning>}
         </ProductContainer>
         <InputContainer>
+          <h2 className="ir-hidden">상품 상세 입력란</h2>
           <CommonInput
-            name="productName"
+            id="productName"
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
             label="상품명"
@@ -109,7 +106,7 @@ function AddProduct() {
             <Warning>{errors.productName.message}</Warning>
           )}
           <CommonInput
-            name="itemPrice"
+            id="itemPrice"
             type="text"
             placeholder={"숫자만 입력 가능 합니다."}
             label="가격"
@@ -120,7 +117,7 @@ function AddProduct() {
           />
           {errors.itemPrice && <Warning>{errors.itemPrice.message}</Warning>}
           <CommonInput
-            name="saleAddress"
+            id="saleAddress"
             type="text"
             placeholder={"URl을 입력해 주세요."}
             label="판매링크"
@@ -137,14 +134,14 @@ function AddProduct() {
           )}
         </InputContainer>
       </EditProfileContainer>
-    </form>
+    </main>
   );
 }
 
 export default AddProduct;
 
 // 페이지 전체 컨테이너 컴퍼넌트
-const EditProfileContainer = styled.main`
+const EditProfileContainer = styled.form`
   width: 390px;
   height: 820px;
   padding: 78px 34px 0 34px;
@@ -160,7 +157,7 @@ const ProductContainer = styled.section`
   font-weight: 400;
   font-size: 12px;
 `;
-const EditProductImgContainer = styled.section`
+const EditProductImgContainer = styled.div`
   margin-top: 18px;
   height: 204px;
   background-color: #f2f2f2;
