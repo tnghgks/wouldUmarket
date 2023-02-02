@@ -31,17 +31,50 @@ function PostDetail() {
 
   return (
     <>
-      <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+      <header>
+        <BasicNav
+          setModalInfo={setModalInfo}
+          setSubModalData={setSubModalData}
+        />
+      </header>
       <MainContainer>
-        <PostContainer>{Object.keys(post).length !== 0 && <HomePost postItem={post} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />}</PostContainer>
+        <h1 className="ir-hidden">게시물 상세</h1>
+        <PostContainer>
+          {Object.keys(post).length !== 0 && (
+            <HomePost
+              postItem={post}
+              setModalInfo={setModalInfo}
+              setSubModalData={setSubModalData}
+            />
+          )}
+        </PostContainer>
         <CommentContainer>
           <h2 className="ir-hidden">댓글창</h2>
-          {comments && comments.map((comment) => <CommentItem key={comment.id} comment={comment} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />)}
+          {comments &&
+            comments.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                setSubModalData={setSubModalData}
+                setModalInfo={setModalInfo}
+              />
+            ))}
         </CommentContainer>
       </MainContainer>
-      <Comment img={userInfo.image} placeholder="댓글 입력하기..." btn="게시" postId={post.id} />
+      <Comment
+        img={userInfo.image}
+        placeholder="댓글 입력하기..."
+        btn="게시"
+        postId={post.id}
+      />
       {isOpen && <Modal modalInfo={modalInfo} />}
-      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
+      {subModal.isOpen && (
+        <DeleteAlert
+          mainText={subModalData.text}
+          rightText={subModalData.rightText}
+          handleAccept={subModalData.handleFunc}
+        />
+      )}
     </>
   );
 }

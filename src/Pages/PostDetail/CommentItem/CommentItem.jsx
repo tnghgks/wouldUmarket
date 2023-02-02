@@ -111,7 +111,7 @@ function CommentItem({ comment, setModalInfo, setSubModalData }) {
     <Container>
       <InfoContainer>
         <Link to={`/profile/${comment.author.accountname}`}>
-          <ProfileImg src={comment.author.image} />
+          <ProfileImg src={comment.author.image} alt="프로필 이미지" />
         </Link>
         <CommentInfo>
           <UserName>{comment.author.username}</UserName>

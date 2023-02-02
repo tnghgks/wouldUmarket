@@ -30,24 +30,29 @@ function ImageSlider({ image, postId }) {
 
   return (
     <ImageContainer>
-      {!!imageList.length &&
-        imageList.map((img, index) => (
-          <ItemContainer imageCount={imageCount} key={index}>
-            <PostLink to={`/post/${postId}`}>
-              <PostImg src={img} alt="포스트 이미지" />
-            </PostLink>
-          </ItemContainer>
-        ))}
-      {imageList.length > 1 && (
-        <>
-          <LeftBtn onClick={handleLeftBtn}>
-            <img src={leftArrowIcon} alt="왼쪽 화살표 버튼" />
-          </LeftBtn>
-          <RightBtn onClick={handleRightBtn}>
-            <img src={rightArrowIcon} alt="오른쪽 화살표 버튼" />
-          </RightBtn>
-        </>
-      )}
+      <PostList>
+        <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
+          {!!imageList.length &&
+            imageList.map((img) => (
+              <PostImg
+                imageCount={imageCount}
+                src={img}
+                key={crypto.randomUUID()}
+                alt="게시물 이미지"
+              />
+            ))}
+        </PostLink>
+        {imageList.length > 1 && (
+          <>
+            <LeftBtn onClick={handleLeftBtn}>
+              <img src={leftArrowIcon} alt="왼쪽 화살표 버튼" />
+            </LeftBtn>
+            <RightBtn onClick={handleRightBtn}>
+              <img src={rightArrowIcon} alt="오른쪽 화살표 버튼" />
+            </RightBtn>
+          </>
+        )}
+      </PostList>
     </ImageContainer>
   );
 }
@@ -56,18 +61,21 @@ export default ImageSlider;
 const ImageContainer = styled.ul`
   display: flex;
   justify-content: flex-start;
-  flex-wrap: nowrap;
   position: relative;
+
   width: 100%;
   max-width: 304px;
 `;
-const ItemContainer = styled.li`
-  width: 304px;
-  flex-shrink: 0;
+const PostLink = styled(Link)`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
   overflow: hidden;
-  transform: translateX(${(props) => props.imageCount * 304 * -1 + "px"});
 `;
-const PostLink = styled(Link)``;
+
+const PostList = styled.li`
+  width: 100%;
+`;
 
 const PostImg = styled.img`
   width: 100%;
@@ -76,6 +84,7 @@ const PostImg = styled.img`
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 10px;
+  transform: translateX(${(props) => props.imageCount * 304 * -1 + "px"});
 `;
 const Button = styled.button`
   position: absolute;
