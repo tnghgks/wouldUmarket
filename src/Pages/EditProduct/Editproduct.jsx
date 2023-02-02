@@ -10,32 +10,50 @@ import {
 } from "../../store/Product";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-// 판매링크 유효성 정규표현식
-const addressRegex =
-  // eslint-disable-next-line no-useless-escape
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
+import { useForm } from "react-hook-form";
+import { PRODUCT_ADDRESS_PATTEN } from "../../constant/regex";
+import { PRICE_COMMA_SETTING } from "../../util/priceComma";
 
 function EditProduct() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showImg, setShowImg] = useState("");
+  const [disable, setDisable] = useState(true);
+  // console.log(disable);
   const {
     profile: { accountname },
-    product: { itemImage, itemName, price, link },
+    product,
   } = useSelector((state) => state);
-  const [imgData, setImgData] = useState("");
-  const [errorMassage, setErrorMassage] = useState("");
-  const [inputData, setInputData] = useState({
-    name: "",
-    price: "",
-    address: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    // defaultValues: {
+    //   imgFile: "",
+    //   productName: "",
+    //   productPrice: "",
+    //   Address: "",
+    // },
+    mode: "onChange",
   });
+  const productImg = watch("imgFile");
+  const inputData = watch();
+  console.log(isValid);
 
-  const validation =
-    errorMassage.name || errorMassage.price || errorMassage.address;
-  const disabled = inputData.name && inputData.price && inputData.address;
-  const productImg = imgData ? imgData : itemImage;
+  useEffect(() => {
+    if (product) {
+      reset({
+        imgFile: product.itemImage,
+        productName: product.itemName,
+        productPrice: product.price,
+        Address: product.link,
+      });
+    }
+  }, [product, reset]);
 
   useEffect(() => {
     dispatch(DETAIL_PRODUCT(id));
@@ -43,27 +61,14 @@ function EditProduct() {
   }, []);
 
   useEffect(() => {
-    setInputData({
-      name: itemName,
-      price: priceInputValueComma(price),
-      address: link,
-    });
-  }, [itemName, price, link]);
+    const { itemImage, itemName, price, link } = inputData;
+    if (itemImage && itemName && price && link) {
+      return setDisable(false);
+    }
+    setDisable(true);
+  }, [inputData]);
 
-  // price 콤마 찍기
-  function priceInputValueComma(price) {
-    const comMa = (priceValue) => {
-      priceValue = String(priceValue);
-      return priceValue.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
-    };
-    const unComMa = (priceValue) => {
-      priceValue = String(priceValue);
-      return priceValue.replace(/[^\d]+/g, "");
-    };
-    return comMa(unComMa(price));
-  }
-
-  // 한개의 이미지 API 로직
+  // 한개의 이미지 API
   async function productImgView(imgFile) {
     const formData = new FormData();
     formData.append("image", imgFile);
@@ -72,99 +77,22 @@ function EditProduct() {
   }
 
   // 이미지 미리보기
-  function handleProductImg(imgFile) {
-    const reader = new FileReader();
-    reader.readAsDataURL(imgFile);
-    reader.onloadend = () => {
-      setImgData(reader.result);
-    };
-  }
-
-  // name 유효성 검사
-  function handleName(e) {
-    const nameValue = e.target.value;
-    setInputData((prev) => ({ ...prev, name: nameValue }));
-
-    if (!nameValue) {
-      setErrorMassage((prev) => ({ ...prev, name: "상품명을 입력해주세요." }));
-    } else if (nameValue.length < 2 || nameValue.length > 15) {
-      setErrorMassage((prev) => ({
-        ...prev,
-        name: "2~15자 이내로 작성해 주세요",
-      }));
-    } else {
-      setErrorMassage((prev) => ({ ...prev, name: "" }));
+  useEffect(() => {
+    if (productImg instanceof FileList) {
+      setShowImg(URL.createObjectURL(productImg[0]));
+      return () => URL.revokeObjectURL(productImg[0]);
     }
-  }
-
-  // price 유효성 검사
-  function handlePrice(e) {
-    const priceValue = e.target.value;
-    setInputData((prev) => ({
-      ...prev,
-      price: priceInputValueComma(priceValue),
-    }));
-
-    if (!priceValue) {
-      setErrorMassage((prev) => ({ ...prev, price: "가격을 입력해주세요." }));
-    } else {
-      setErrorMassage((prev) => ({ ...prev, price: "" }));
-    }
-  }
-
-  // address 유효성 검사
-  function handleAddress(e) {
-    const addressValue = e.target.value;
-    setInputData((prev) => ({ ...prev, address: addressValue }));
-
-    if (!addressValue) {
-      setErrorMassage((prev) => ({
-        ...prev,
-        address: "판매링크를 입력해주세요.",
-      }));
-    } else if (!addressRegex.test(addressValue)) {
-      setErrorMassage((prev) => ({
-        ...prev,
-        address: "잘못된 판매링크 입니다.",
-      }));
-    } else {
-      setErrorMassage((prev) => ({ ...prev, address: "" }));
-    }
-  }
+  }, [productImg]);
 
   // 저장 버튼 핸들러
-  async function handleFormSubmit(event) {
-    event.preventDefault();
-
-    const {
-      productName: { value: nameValue },
-      productPrice: { value: priceValue },
-      Address: { value: addressValue },
-      imgFile,
-    } = event.target;
-
-    const imgData = imgFile.files[0]
-      ? await productImgView(imgFile.files[0])
-      : itemImage;
-
-    if (!!validation) {
-      if (!!errorMassage.name) {
-        setErrorMassage((prev) => ({ ...prev, name: "잘못된 상품명입니다." }));
-      }
-      if (!!errorMassage.address) {
-        setErrorMassage((prev) => ({
-          ...prev,
-          address: "잘못된 판매링크입니다.",
-        }));
-      }
-      return false;
-    }
+  async function formSubmit({ productName, productPrice, Address, imgFile }) {
+    const imgData = imgFile[0] ? await productImgView(imgFile[0]) : productImg;
 
     const productData = {
       product: {
-        itemName: nameValue,
-        price: Number(priceValue.replaceAll(",", "")),
-        link: addressValue,
+        itemName: productName,
+        price: Number(productPrice.replaceAll(",", "")),
+        link: Address,
         itemImage: imgData,
       },
     };
@@ -173,58 +101,75 @@ function EditProduct() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleSubmit(formSubmit)}>
       <BasicNav
         children="저장"
-        bgColor={!disabled ? "light" : "main"}
-        btnDisabled={!disabled ? true : false}
+        bgColor={isValid ? "light" : "main"}
+        btnDisabled={disable ? true : false}
       />
       <EditProfileContainer>
         <ProductContainer>
           <p>이미지 등록</p>
           <EditProductImgContainer>
-            <ProductItemImg src={productImg} alt="" />
+            <ProductItemImg src={showImg ? showImg : productImg} alt="" />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
             <UploadImgInput
               type="file"
-              name="imgFile"
               id="file"
-              onChange={(e) => {
-                handleProductImg(e.currentTarget.files[0]);
-              }}
+              {...register("imgFile", {
+                required: "상품 이미지를 넣어주세요.",
+              })}
             />
           </EditProductImgContainer>
+          {errors.imgFile && <Warning>{errors.imgFile.message}</Warning>}
         </ProductContainer>
         <InputContainer>
           <CommonInput
-            name="productName"
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
             label="상품명"
-            value={inputData.name}
-            onChange={handleName}
+            register={register("productName", {
+              required: "상품명을 입력해주세요.",
+              minLength: {
+                value: 2,
+                message: "2자 이상 입력해주세요.",
+              },
+              maxLength: {
+                value: 15,
+                message: "15자 이내로 입력해주세요.",
+              },
+            })}
           />
-          <Warning>{errorMassage.name}</Warning>
+          {errors.productName && (
+            <Warning>{errors.productName.message}</Warning>
+          )}
           <CommonInput
-            name="productPrice"
             type="text"
             placeholder={"숫자만 입력 가능 합니다."}
             label="가격"
-            value={inputData.price}
-            onChange={handlePrice}
+            value={PRICE_COMMA_SETTING(inputData.productPrice)}
+            register={register("productPrice", {
+              required: "가격을 입력해주세요.",
+            })}
           />
-          <Warning>{errorMassage.price}</Warning>
+          {errors.productPrice && (
+            <Warning>{errors.productPrice.message}</Warning>
+          )}
           <CommonInput
-            name="Address"
             type="text"
             placeholder={"URl을 입력해 주세요."}
             label="판매링크"
-            value={inputData.address}
-            onChange={handleAddress}
+            register={register("Address", {
+              required: "판매링크를 입력해주세요.",
+              pattern: {
+                value: PRODUCT_ADDRESS_PATTEN,
+                message: "잘못된 판매링크입니다.",
+              },
+            })}
           />
-          <Warning>{errorMassage.address}</Warning>
+          {errors.Address && <Warning>{errors.Address.message}</Warning>}
         </InputContainer>
       </EditProfileContainer>
     </form>
