@@ -119,7 +119,7 @@ function PostUpload() {
       />
       <UploadContainer>
         <h2 className="ir-hidden">게시글 입력하기</h2>
-        <BasicProfileImg src={profile.image} />
+        <BasicProfileImg src={profile.image} alt="프로필 이미지" />
         <InputContainer>
           <Textarea
             value={textContent}
