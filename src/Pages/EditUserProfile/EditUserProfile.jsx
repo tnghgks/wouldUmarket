@@ -2,7 +2,7 @@ import styled from "styled-components";
 import BasicProfileImg from "../../Components/ImageComponents/BasicProfileImg";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../Components/Input/CommonInput";
-import BasicNav from "../../Components/Navbar/UploadNav";
+import UploadNav from "../../Components/Navbar/UploadNav";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -67,9 +67,12 @@ function EditUserProfile() {
   // 유저입력 데이터 핸들러
   async function isValid({ userName, userID, aboutMe, imgFile }) {
     if (!(profile.accountname === userID)) {
-      const message = await accountnameValidate({ user: { accountname: userID } });
+      const message = await accountnameValidate({
+        user: { accountname: userID },
+      });
 
-      if (!(message === "사용 가능한 계정ID 입니다.")) return setError("userID", { message });
+      if (!(message === "사용 가능한 계정ID 입니다."))
+        return setError("userID", { message });
     }
 
     const imgData = imgFile[0] ? await productImg(imgFile[0]) : profile.image;
@@ -93,75 +96,83 @@ function EditUserProfile() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(isValid)}>
-        <BasicNav children="저장" btnDisabled={disabled} bgColor={disabled ? "light" : "main"} />
-        <EditProfileContainer>
-          <ProfileContainer>
-            <EditImgContainer>
-              <BasicProfileImg src={myProfileImg ? myProfileImg : profile.image} />
-              <label htmlFor="file">
-                <UploadImgDiv />
-              </label>
-              <UploadImgInput type="file" id="file" {...register("imgFile")} />
-            </EditImgContainer>
-          </ProfileContainer>
-          <InputContainer>
-            <CommonInput
-              label="사용자 이름"
-              placeholder="2~10자 이내여야 합니다."
-              register={register("userName", {
-                required: "사용자 이름을 입력해주세요.",
-                pattern: {
-                  value: USER_NAME_PATTERN,
-                  message: "한글,영문만 가능합니다.",
-                },
-                minLength: {
-                  value: 2,
-                  message: "2자 이상이어야 합니다.",
-                },
-                maxLength: {
-                  value: 10,
-                  message: "10자 이내여야 합니다.",
-                },
-              })}
+    <main>
+      <h1 className="ir-hidden">프로필 수정 페이지</h1>
+      <UploadNav
+        children="저장"
+        btnDisabled={disabled}
+        bgColor={disabled ? "light" : "main"}
+      />
+      <EditProfileContainer onSubmit={handleSubmit(isValid)}>
+        <ProfileContainer>
+          <h2 className="ir-hidden">프로필 이미지 등록</h2>
+          <EditImgContainer>
+            <BasicProfileImg
+              src={myProfileImg ? myProfileImg : profile.image}
+              alt="프로필 이미지"
             />
-            <Warning>{errors?.userName?.message}</Warning>
-            <CommonInput
-              label="계정 ID"
-              placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
-              register={register("userID", {
-                required: "계정 ID를 입력해주세요.",
-                pattern: {
-                  value: USER_ID_PATTERN,
-                  message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
-                },
-                maxLength: {
-                  value: 30,
-                  message: "30자 이내여야 합니다.",
-                },
-              })}
-            />
-            <Warning>{errors?.userID?.message}</Warning>
-            <CommonInput
-              label="소개"
-              placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
-              register={register("aboutMe", {
-                required: "소개를 입력해주세요.",
-              })}
-            />
-            <Warning>{errors?.aboutMe?.message}</Warning>
-          </InputContainer>
-        </EditProfileContainer>
-      </form>
-    </>
+            <label htmlFor="file">
+              <UploadImgDiv />
+            </label>
+            <UploadImgInput type="file" id="file" {...register("imgFile")} />
+          </EditImgContainer>
+        </ProfileContainer>
+        <InputContainer>
+          <h2 className="ir-hidden">프로필 상세 수정</h2>
+          <CommonInput
+            label="사용자 이름"
+            placeholder="2~10자 이내여야 합니다."
+            register={register("userName", {
+              required: "사용자 이름을 입력해주세요.",
+              pattern: {
+                value: USER_NAME_PATTERN,
+                message: "한글,영문만 가능합니다.",
+              },
+              minLength: {
+                value: 2,
+                message: "2자 이상이어야 합니다.",
+              },
+              maxLength: {
+                value: 10,
+                message: "10자 이내여야 합니다.",
+              },
+            })}
+          />
+          <Warning>{errors?.userName?.message}</Warning>
+          <CommonInput
+            label="계정 ID"
+            placeholder="영문,숫자,특수문자(.),(_))만 사용 가능합니다."
+            register={register("userID", {
+              required: "계정 ID를 입력해주세요.",
+              pattern: {
+                value: USER_ID_PATTERN,
+                message: "영문, 숫자, 특수문자(.),(_)만 사용 가능합니다.",
+              },
+              maxLength: {
+                value: 30,
+                message: "30자 이내여야 합니다.",
+              },
+            })}
+          />
+          <Warning>{errors?.userID?.message}</Warning>
+          <CommonInput
+            label="소개"
+            placeholder="자신과 판매할 상품에 대해 소개해 주세요!"
+            register={register("aboutMe", {
+              required: "소개를 입력해주세요.",
+            })}
+          />
+          <Warning>{errors?.aboutMe?.message}</Warning>
+        </InputContainer>
+      </EditProfileContainer>
+    </main>
   );
 }
 
 export default EditUserProfile;
 
 // 페이지 전체 컨테이너 컴퍼넌트
-const EditProfileContainer = styled.section`
+const EditProfileContainer = styled.form`
   padding: 78px 34px 0 34px;
   width: 390px;
   height: 820px;
@@ -175,7 +186,7 @@ const ProfileContainer = styled.section`
   justify-content: center;
 `;
 
-const EditImgContainer = styled.section`
+const EditImgContainer = styled.div`
   width: 110px;
   height: 110px;
   border: none;
