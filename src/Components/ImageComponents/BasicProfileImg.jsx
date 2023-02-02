@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import basicProfile from "../../assets/basic-profile-img.png";
 
-function BasicProfileImg({ className, src = basicProfile }) {
-  return <Img className={className} src={src} onError={(e) => (e.target.src = basicProfile)} alt="프로필 이미지" />;
+function BasicProfileImg({ className, src = basicProfile, alt = "기본 프로필 이미지" }) {
+  return <Img className={className} src={src} onError={(e) => (e.target.src = basicProfile)} alt={alt} />;
 }
 export default BasicProfileImg;
 
