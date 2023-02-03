@@ -7,9 +7,15 @@ function Page404() {
   const navigate = useNavigate();
   return (
     <NotFoundContainer>
+      <h1 className="ir-hidden">404 페이지</h1>
       <Img src={NotFoundImg} alt="404 NOT FOUND 잘못된 경로 입니다." />
       <NotFoundText>페이지를 찾을 수 없습니다. :(</NotFoundText>
-      <CommonButton size="md" fontColor="white" bgColor="main" onClick={() => navigate(-1)}>
+      <CommonButton
+        size="md"
+        fontColor="white"
+        bgColor="main"
+        onClick={() => navigate(-1)}
+      >
         이전 페이지
       </CommonButton>
     </NotFoundContainer>
@@ -18,7 +24,7 @@ function Page404() {
 
 export default Page404;
 
-const NotFoundContainer = styled.div`
+const NotFoundContainer = styled.main`
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
