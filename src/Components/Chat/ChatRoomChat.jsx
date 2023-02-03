@@ -12,7 +12,8 @@ const Img = styled.img`
 const UserChatItem = styled.li`
   width: auto;
   display: flex;
-  justify-content: ${(props) => (props.user === "friend" ? "flex-start" : "flex-end")};
+  justify-content: ${(props) =>
+    props.user === "friend" ? "flex-start" : "flex-end"};
   margin-bottom: 10px;
 `;
 
@@ -20,8 +21,10 @@ const ChatContainer = styled.div`
   padding: 14px 12px 12px 12px;
   word-break: break-all;
   border: 1px solid #c4c4c4;
-  border-radius: ${(props) => (props.user === "friend" ? " 0 8px 8px 8px" : " 8px 0 8px 8px")};
-  background-color: ${(props) => (props.user === "my" ? "var(--accentColor)" : "#ffffff")};
+  border-radius: ${(props) =>
+    props.user === "friend" ? " 0 8px 8px 8px" : " 8px 0 8px 8px"};
+  background-color: ${(props) =>
+    props.user === "my" ? "var(--subColor)" : "#ffffff"};
   letter-spacing: 0.1px;
   display: inline;
   align-self: end;
@@ -34,7 +37,7 @@ const ChatTimerightText = styled.span`
   margin-top: auto;
   font-weight: 400;
   font-size: 1rem;
-  color: #767676;
+  color: black;
 `;
 const ChatTimeleftText = styled.span`
   display: ${(user) => (user.user === "my" ? "block" : "none")};
@@ -42,7 +45,7 @@ const ChatTimeleftText = styled.span`
   margin-top: auto;
   font-weight: 400;
   font-size: 1rem;
-  color: #767676;
+  color: black;
 `;
 
 const ChattingText = styled.p`
@@ -64,11 +67,11 @@ const ChatImg = styled.img`
 function ChatRoomChat({ chattext, chattime, user, imges }) {
   return (
     <UserChatItem user={user}>
-      <Img src={profileImg} user={user} />
+      <Img src={profileImg} user={user} alt="" />
       <ChatTimeleftText user={user}>{chattime}</ChatTimeleftText>
 
       {imges ? (
-        <ChatImg src={imges} />
+        <ChatImg src={imges} alt="" />
       ) : (
         <ChatContainer user={user}>
           <ChattingText>{chattext}</ChattingText>
