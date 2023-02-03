@@ -25,11 +25,11 @@ function UserFollow({ username, accountname, isfollow, image }) {
   return (
     <UserFollowContainer>
       <Link to={`/profile/${accountname}`}>
-        <ProfileImg src={image} />
+        <ProfileImg src={image} alt={`${username}님의 프로필 이미지`} />
       </Link>
       <UserInfoContainer>
-        <p>{username}</p>
-        <UserFollowSmall>@ {accountname}</UserFollowSmall>
+        <p tabIndex={0}>{username}</p>
+        <UserFollowSmall tabIndex={0}>@ {accountname}</UserFollowSmall>
       </UserInfoContainer>
       {toggle ? (
         <FollowButton size="sm" fontColor="#767676" bgColor="white" children="취소" onClick={handleUnFollowing} />
@@ -42,15 +42,6 @@ function UserFollow({ username, accountname, isfollow, image }) {
 
 export default UserFollow;
 
-const ProfileImg = styled(BasicProfileImg)`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  flex-shrink: 0;
-`;
-const UserInfoContainer = styled.div`
-  width: 100%;
-`;
 const UserFollowContainer = styled.li`
   width: 100%;
   display: flex;
@@ -60,6 +51,15 @@ const UserFollowContainer = styled.li`
   font-size: 1.4rem;
   font-family: "Godo";
   background-color: #ffffff;
+`;
+const ProfileImg = styled(BasicProfileImg)`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  flex-shrink: 0;
+`;
+const UserInfoContainer = styled.div`
+  width: 100%;
 `;
 
 const UserFollowSmall = styled.small`
