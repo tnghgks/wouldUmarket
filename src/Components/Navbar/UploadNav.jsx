@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CommonButton from "../Button/CommonButton";
 import IconArrowLeft from "../icon/IconArrowLeft";
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,6 @@ const Container = styled.div`
   padding: 0 16px;
   border-bottom: 0.5px solid #dbdbdb;
   background-color: #ffffff;
-  z-index: 10;
 `;
 
 const Back = styled(Link)`
@@ -36,6 +35,7 @@ function UploadNav({ children, btnDisabled, onClickUpload, bgColor }) {
   const navigate = useNavigate();
   return (
     <Container>
+      <h1 className="ir-hidden">upload nav bar</h1>
       <Back
         onClick={() => {
           navigate(-1);
@@ -43,7 +43,13 @@ function UploadNav({ children, btnDisabled, onClickUpload, bgColor }) {
       >
         <BackBtnIcon />
       </Back>
-      <CommonButton size="ms" bgColor={bgColor} children={children} disabled={btnDisabled} onClick={onClickUpload} />
+      <CommonButton
+        size="ms"
+        bgColor={bgColor}
+        children={children}
+        disabled={btnDisabled}
+        onClick={onClickUpload}
+      />
     </Container>
   );
 }

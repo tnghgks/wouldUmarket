@@ -106,9 +106,10 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
   return (
     <>
       <PostContainer>
+        <h2 className="ir-hidden">메인 게시물</h2>
         <TitleContainer>
           <Link to={`/profile/${postData.author.accountname}`}>
-            <ProfileImg src={postData.author.image} />
+            <ProfileImg src={postData.author.image} alt="프로필 이미지" />
           </Link>
           <Link to={`/profile/${postData.author.accountname}`}>
             <UserName>{postData.author.username}</UserName>

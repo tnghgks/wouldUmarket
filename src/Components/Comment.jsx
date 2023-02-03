@@ -17,7 +17,9 @@ function Comment({ img, placeholder, btn, postId, size }) {
   async function onSubmitComments(e) {
     e.preventDefault();
 
-    const { data: {comment} } = await AddComment({ postId, value }).then(setValue(""));
+    const {
+      data: { comment },
+    } = await AddComment({ postId, value }).then(setValue(""));
     dispatch(ADD_COMMENT(comment));
   }
   function onChange(e) {
@@ -82,6 +84,6 @@ const CommentBtn = styled.button`
   padding: 0;
   font-size: 1.4rem;
   font-weight: 500;
-  color: ${(props) => (props.value ? "var(--mainColor)" : "#c4c4c4")};
+  color: ${(props) => (props.value ? "var(--mainColor)" : "black")};
   cursor: pointer;
 `;

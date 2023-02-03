@@ -1,96 +1,44 @@
 import styled from "styled-components";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../Components/Input/CommonInput";
-import BasicNav from "../../Components/Navbar/UploadNav";
+import UploadNav from "../../Components/Navbar/UploadNav";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_PRODUCT } from "../../store/Product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UploadImage from "../../assets/UploadImage.png";
 import { uploadImage } from "../../api/util";
+import { useForm } from "react-hook-form";
+import { PRODUCT_ADDRESS_PATTEN } from "../../constant/regex";
+import { PRICE_COMMA_SETTING } from "../../util/priceComma";
 
 function AddProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profile } = useSelector((state) => state);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      imgFile: UploadImage,
+    },
+    mode: "onChange",
+  });
 
-  const [productName, setProductName] = useState("");
-  const [itemPrice, setItemPrice] = useState("");
-  const [address, setAddress] = useState("");
+  const inputData = watch();
+  const productImage = watch("imgFile");
+
   const [productImg, setProductImg] = useState(UploadImage);
 
-  const [productNameError, setProductNameError] = useState(true);
-  const [itemPriceError, setItemPriceError] = useState(true);
-  const [addressError, setAddressError] = useState(true);
-  const [productImgError, setProductImgError] = useState("");
-
-  const Enabled =
-    !productNameError &&
-    !itemPriceError &&
-    !addressError &&
-    !!productImg &&
-    productImg !== UploadImage;
-
-  function nameValidation(e) {
-    const nameValue = e.target.value;
-    setProductName(nameValue);
-
-    if (!nameValue) {
-      setProductNameError("상품명을 입력해주세요.");
-    } else if (nameValue.length < 2 || nameValue.length > 15) {
-      setProductNameError("2~15자 이내로 작성해 주세요");
-    } else {
-      setProductNameError("");
+  useEffect(() => {
+    if (productImage instanceof FileList) {
+      setProductImg(URL.createObjectURL(productImage[0]));
     }
-  }
-
-  function priceValidation(e) {
-    const priceValue = e.target.value;
-
-    setItemPrice(() => {
-      const comma = (priceValue) => {
-        priceValue = String(priceValue);
-        return priceValue.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
-      };
-      const unComma = (priceValue) => {
-        priceValue = String(priceValue);
-        return priceValue.replace(/[^\d]+/g, "");
-      };
-      return comma(unComma(priceValue));
-    });
-
-    if (!priceValue) {
-      setItemPriceError("가격을 입력해주세요.");
-    } else {
-      setItemPriceError("");
-    }
-  }
-
-  function addressValidation(e) {
-    const addressValue = e.target.value;
-    setAddress(addressValue);
-
-    const addressRegex =
-      // eslint-disable-next-line no-useless-escape
-      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/;
-
-    if (!addressValue) {
-      setAddressError("판매링크를 입력해주세요.");
-    } else if (!addressRegex.test(addressValue)) {
-      setAddressError("잘못된 판매링크 입니다.");
-    } else {
-      setAddressError("");
-    }
-  }
-
-  function handleProductImg(imgFile) {
-    setProductImgError("");
-    const reader = new FileReader();
-    reader.readAsDataURL(imgFile);
-    reader.onloadend = () => {
-      setProductImg(reader.result);
-    };
-  }
+    return () => URL.revokeObjectURL(productImage[0]);
+  }, [productImage]);
 
   async function formatProductImg(formData) {
     const { isSuccess, imgData } = await uploadImage(formData);
@@ -100,33 +48,14 @@ function AddProduct() {
     }
   }
 
-  async function handleFormSubmit(event) {
-    event.preventDefault();
-
-    if (!Enabled) {
-      if (!!productNameError) {
-        setProductNameError("잘못된 상품명입니다.");
-      }
-      if (!!itemPriceError) {
-        setItemPriceError("잘못된 가격입니다.");
-      }
-      if (!!addressError) {
-        setAddressError("잘못된 팬매링크입니다.");
-      }
-      if (!productImg) {
-        setProductImgError("잘못된 이미지입니다.");
-      }
-      return false;
-    }
-    const { imgFile } = event.target;
-
+  async function formSubmit({ productName, itemPrice, saleAddress, imgFile }) {
     const formData = new FormData();
-    formData.append("image", imgFile.files[0]);
+    formData.append("image", imgFile[0]);
     const productData = {
       product: {
         itemName: productName,
         price: Number(itemPrice.replaceAll(",", "")),
-        link: address,
+        link: saleAddress,
         itemImage: await formatProductImg(formData),
       },
     };
@@ -135,63 +64,84 @@ function AddProduct() {
   }
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <BasicNav children="저장" bgColor={!Enabled ? "light" : "main"} />
-      <EditProfileContainer>
+    <main>
+      <h1 className="ir-hidden">상품 등록 페이지</h1>
+      <UploadNav
+        children="저장"
+        btnDisabled={!isValid}
+        bgColor={!isValid ? "light" : "main"}
+      />
+      <EditProfileContainer onSubmit={handleSubmit(formSubmit)}>
         <ProductContainer>
-          <p>이미지 등록</p>
+          <h2>이미지 등록</h2>
           <EditProductImgContainer>
-            <ProductItemImg src={productImg} alt="" />
+            <ProductItemImg src={productImg} alt="상품 이미지" />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
-            <UploadImgInput
-              type="file"
-              name="imgFile"
-              id="file"
-              onChange={(e) => {
-                handleProductImg(e.currentTarget.files[0]);
-              }}
-            />
+            <UploadImgInput type="file" id="file" {...register("imgFile")} />
           </EditProductImgContainer>
-          <Warning>{productImgError}</Warning>
+          {errors.imgFile && <Warning>{errors.imgFile.message}</Warning>}
         </ProductContainer>
         <InputContainer>
+          <h2 className="ir-hidden">상품 상세 입력란</h2>
           <CommonInput
-            name="productName"
+            id="productName"
             type="text"
             placeholder={"2~15자 이내여야 합니다."}
             label="상품명"
-            onChange={nameValidation}
+            register={register("productName", {
+              required: "상품명을 입력해주세요.",
+              minLength: {
+                value: 2,
+                message: "2자 이상이어야 합니다.",
+              },
+              maxLength: {
+                value: 15,
+                message: "15자 이내여야 합니다.",
+              },
+            })}
           />
-          <Warning>{productNameError}</Warning>
+          {errors.productName && (
+            <Warning>{errors.productName.message}</Warning>
+          )}
           <CommonInput
-            name="itemPrice"
+            id="itemPrice"
             type="text"
             placeholder={"숫자만 입력 가능 합니다."}
             label="가격"
-            value={itemPrice}
-            onChange={priceValidation}
+            value={PRICE_COMMA_SETTING(inputData.itemPrice)}
+            register={register("itemPrice", {
+              required: "가격을 입력해주세요.",
+            })}
           />
-          <Warning>{itemPriceError}</Warning>
+          {errors.itemPrice && <Warning>{errors.itemPrice.message}</Warning>}
           <CommonInput
-            name="saleAddress"
+            id="saleAddress"
             type="text"
             placeholder={"URl을 입력해 주세요."}
             label="판매링크"
-            onChange={addressValidation}
+            register={register("saleAddress", {
+              required: "판매링크를 입력해주세요.",
+              pattern: {
+                value: PRODUCT_ADDRESS_PATTEN,
+                message: "잘못된 판매링크 입니다.",
+              },
+            })}
           />
-          <Warning>{addressError}</Warning>
+          {errors.saleAddress && (
+            <Warning>{errors.saleAddress.message}</Warning>
+          )}
         </InputContainer>
       </EditProfileContainer>
-    </form>
+    </main>
   );
 }
 
 export default AddProduct;
 
 // 페이지 전체 컨테이너 컴퍼넌트
-const EditProfileContainer = styled.main`
+const EditProfileContainer = styled.form`
   width: 390px;
   height: 820px;
   padding: 78px 34px 0 34px;
@@ -207,7 +157,7 @@ const ProductContainer = styled.section`
   font-weight: 400;
   font-size: 12px;
 `;
-const EditProductImgContainer = styled.section`
+const EditProductImgContainer = styled.div`
   margin-top: 18px;
   height: 204px;
   background-color: #f2f2f2;
