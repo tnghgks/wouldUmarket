@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { authInstance } from "../api/api";
 
 const initialState = {
@@ -6,23 +7,18 @@ const initialState = {
   status: "",
 };
 
-export const asyncSearchFetch = createAsyncThunk(
-  "searchDataSlice/asyncSearchFetch",
-  async ({ searchInput, pageNum = 1, signal = null }) => {
-    try {
-      const { data } = await authInstance.get(
-        `/user/searchuser/?keyword=${searchInput}`,
-        signal
-      );
-      return data.slice(0, pageNum * 100);
-    } catch (error) {
-      if (error.name === "AbortError") {
-        return [];
-      }
-      console.log(error);
+export const asyncSearchFetch = createAsyncThunk("searchDataSlice/asyncSearchFetch", async ({ searchInput }) => {
+  try {
+    const { data } = await authInstance.get(`/user/searchuser/?keyword=${searchInput}`);
+    return data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log("Request canceled", error.message);
+      return [];
     }
+    console.log(error);
   }
-);
+});
 
 const searchDataSlice = createSlice({
   name: "searchData",

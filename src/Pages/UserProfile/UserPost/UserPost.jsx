@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomePost from "../../../Components/HomePost";
 import IconPostList from "../../../Components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../Components/icon/IconPostAlbum.jsx";
@@ -7,6 +7,7 @@ import { getCookie } from "../../../cookie";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_USER_POSTS } from "../../../store/PostList";
+import useInfinityScroll from "../../../Hooks/useInfinityScroll";
 
 function UserPost({ setModalInfo, setSubModalData }) {
   const {
@@ -16,6 +17,15 @@ function UserPost({ setModalInfo, setSubModalData }) {
   const dispatch = useDispatch();
   const token = getCookie("accessToken");
   const { accountname } = useParams();
+  const [setBottom, pageNum, resetPageNum] = useInfinityScroll();
+
+  useEffect(() => {
+    resetPageNum();
+  }, [resetPageNum]);
+
+  useEffect(() => {
+    dispatch(SET_USER_POSTS({ accountname, token, pageNum }));
+  }, [pageNum, accountname, dispatch, token]);
 
   const handleClick = (toggle) => {
     if (toggle) return;
@@ -32,15 +42,18 @@ function UserPost({ setModalInfo, setSubModalData }) {
         </ViewModeContainer>
         <PostContainer>
           {posts.length && toggle ? (
-            posts.map((postItem, index) => (
-              <HomePost
-                key={index}
-                postItem={postItem}
-                setModalInfo={setModalInfo}
-                setSubModalData={setSubModalData}
-                getPostList={() => dispatch(SET_USER_POSTS({ accountname, token }))}
-              />
-            ))
+            <>
+              {posts.map((postItem, index) => (
+                <HomePost
+                  key={index}
+                  postItem={postItem}
+                  setModalInfo={setModalInfo}
+                  setSubModalData={setSubModalData}
+                  getPostList={() => dispatch(SET_USER_POSTS({ accountname, token }))}
+                />
+              ))}
+              <div ref={setBottom}></div>
+            </>
           ) : (
             <AlbumContainer>
               {posts.map((postItem, index) =>
