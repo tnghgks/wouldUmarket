@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 export default function useDebouncing(callbackFn, delay) {
   const timerId = useRef();
 
-  const dispatchDebounce = () => {
+  const dispatchDebounce = useCallback(() => {
     if (timerId.current) {
       clearTimeout(timerId.current);
     }
@@ -11,7 +11,7 @@ export default function useDebouncing(callbackFn, delay) {
     timerId.current = setTimeout(() => {
       callbackFn();
     }, delay);
-  };
+  }, [callbackFn, delay]);
 
   return dispatchDebounce;
 }
