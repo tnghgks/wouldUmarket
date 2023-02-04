@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../Components/Modal";
 import DeleteAlert from "../../Components/Button/DeleteAlert";
 import { SET_PRODUCT_LIST } from "../../store/ProductList";
-import { INCREASE_PAGE_NUMBER, INITIAL_PAGE_NUMBER, SET_USER_POSTS } from "../../store/PostList";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -20,43 +19,11 @@ function Profile() {
   const [subModalData, setSubModalData] = useState({});
   const { accountname } = useParams();
   const token = getCookie("accessToken");
-  const {
-    modalData,
-    postList: { pageNum },
-  } = useSelector((state) => state);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(INITIAL_PAGE_NUMBER());
-    let scrollTimer;
-
-    function handleScrollEvent() {
-      if (scrollTimer) {
-        clearTimeout(scrollTimer);
-      }
-      scrollTimer = setTimeout(function () {
-        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
-          dispatch(INCREASE_PAGE_NUMBER());
-        }
-      }, 100);
-    }
-
-    window.addEventListener("scroll", handleScrollEvent);
-
-    return () => {
-      dispatch(INITIAL_PAGE_NUMBER());
-      window.removeEventListener("scroll", handleScrollEvent);
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(SET_USER_POSTS({ accountname, token, pageNum }));
-  }, [pageNum, accountname, dispatch, token]);
+  const { modalData } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(SET_PROFILE(accountname));
     dispatch(SET_PRODUCT_LIST(accountname));
-    dispatch(SET_USER_POSTS({ accountname, token }));
   }, [accountname, dispatch, token]);
 
   return (
