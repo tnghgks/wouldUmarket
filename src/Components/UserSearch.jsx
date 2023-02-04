@@ -1,34 +1,37 @@
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import profileImg from "../assets/Ellipse-1.png";
 
 function UserSearch({ userData, searchInput }) {
-  function MatchingData({ children }) {
-    let targetString = children;
-    if (typeof children === "object") {
-      targetString = children.join("");
-    }
+  const MatchingData = useCallback(
+    ({ children }) => {
+      let targetString = children;
+      if (typeof children === "object") {
+        targetString = children.join("");
+      }
 
-    if (targetString.includes(searchInput)) {
-      const splitData = targetString.split(searchInput);
+      if (targetString.includes(searchInput)) {
+        const splitData = targetString.split(searchInput);
 
-      return (
-        <div>
-          <span>{splitData.shift()}</span>
-          <ColorKeyword>{searchInput}</ColorKeyword>
-          <span>{splitData.join("")}</span>
-        </div>
-      );
-    }
-    return <div>{children}</div>;
-  }
+        return (
+          <div>
+            <span>{splitData.shift()}</span>
+            <ColorKeyword>{searchInput}</ColorKeyword>
+            <span>{splitData.join("")}</span>
+          </div>
+        );
+      }
+      return <div>{children}</div>;
+    },
+
+    [userData] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   function handleClick() {
     const prevCookie = JSON.parse(localStorage.getItem("recentSearched"));
     if (prevCookie) {
       localStorage.setItem("recentSearched", JSON.stringify([userData, ...prevCookie]));
-    } else {
-      localStorage.setItem("recentSearched", JSON.stringify([userData]));
     }
   }
 
