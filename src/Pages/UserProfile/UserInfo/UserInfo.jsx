@@ -9,7 +9,10 @@ import EditBtns from "../EditBtns/EditBtns";
 function UserInfo() {
   const dispatch = useDispatch();
   const { accountname } = useParams();
-  const { userInfo, profile } = useSelector((state) => state);
+  const {
+    userInfo,
+    profile: { profile },
+  } = useSelector((state) => state);
 
   const ownUser = userInfo.userId === profile.userId;
 

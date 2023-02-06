@@ -58,8 +58,8 @@ function UserPost({ setModalInfo, setSubModalData }) {
             <AlbumContainer>
               {posts.map((postItem, index) =>
                 postItem.image.split(",").map((img) => (
-                  <Link to={`/post/${postItem.id}`}>
-                    <img key={index} src={img} alt="POST 이미지" />
+                  <Link to={`/post/${postItem.id}`} key={index}>
+                    <img src={img} alt="POST 이미지" />
                   </Link>
                 ))
               )}

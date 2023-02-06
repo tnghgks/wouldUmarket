@@ -12,6 +12,7 @@ import Modal from "../../Components/Modal";
 import DeleteAlert from "../../Components/Button/DeleteAlert";
 import { SET_FOLLOWERS_POSTS } from "../../store/PostList";
 import useInfinityScroll from "../../Hooks/useInfinityScroll";
+import Loader from "../../Components/Loader";
 
 function Feed() {
   const [subModalData, setSubModalData] = useState({});
@@ -21,7 +22,7 @@ function Feed() {
   const token = getCookie("accessToken");
   const {
     modalData: { isOpen, subModal },
-    postList: { posts },
+    postList: { posts, status },
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -42,27 +43,31 @@ function Feed() {
         <h1 className="ir-hidden">우주쉐어 피드</h1>
         <MainNav titleContent="우주쉐어 피드" />
       </header>
-      <MainContainer>
-        {!!posts.length ? (
-          <>
-            {posts.map((postItem) => (
-              <PostContainer key={postItem.id}>
-                <HomePost key={postItem.id} postItem={postItem} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />
-              </PostContainer>
-            ))}
-            <div ref={setBottom}></div>
-          </>
-        ) : (
-          <FeedContainer>
-            <h3 className="ir-hidden">유저 검색하기</h3>
-            <SymbolLogoGray />
-            <Desc>유저를 검색해 팔로우 해보세요!</Desc>
-            <Link to={`/search`}>
-              <CommonButton size="md" bgColor="main" children="검색하기" />
-            </Link>
-          </FeedContainer>
-        )}
-      </MainContainer>
+      {status === "pending" ? (
+        <Loader />
+      ) : (
+        <MainContainer>
+          {!!posts.length ? (
+            <>
+              {posts.map((postItem) => (
+                <PostContainer key={postItem.id}>
+                  <HomePost key={postItem.id} postItem={postItem} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />
+                </PostContainer>
+              ))}
+              <div ref={setBottom}></div>
+            </>
+          ) : (
+            <FeedContainer>
+              <h3 className="ir-hidden">유저 검색하기</h3>
+              <SymbolLogoGray />
+              <Desc>유저를 검색해 팔로우 해보세요!</Desc>
+              <Link to={`/search`}>
+                <CommonButton size="md" bgColor="main" children="검색하기" />
+              </Link>
+            </FeedContainer>
+          )}
+        </MainContainer>
+      )}
       <TabMenu />
       {isOpen && <Modal modalInfo={modalInfo} />}
       {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
