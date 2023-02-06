@@ -5,10 +5,12 @@ import bg from "../assets/loader_bg.png";
 
 function Loader() {
   return (
-    <LoaderContainer>
-      <Title>LOADING...</Title>
-      <Planet />
-    </LoaderContainer>
+    <Container>
+      <LoaderContainer>
+        <Title>LOADING...</Title>
+        <Planet />
+      </LoaderContainer>
+    </Container>
   );
 }
 export default Loader;
@@ -28,6 +30,14 @@ const blink = keyframes`
       opacity: 0;
     }
   
+`;
+
+const Container = styled.section`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoaderContainer = styled.div`
