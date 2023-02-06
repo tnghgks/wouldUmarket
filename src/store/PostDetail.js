@@ -9,6 +9,7 @@ const initialState = {
   post: {},
   comments: [],
   modal: {},
+  status: "",
 };
 
 const postDetailSlice = createSlice({
@@ -20,8 +21,12 @@ const postDetailSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(FETCH_POST_DATA.pending, (state, action) => {
+      state.status = "pending";
+    });
     builder.addCase(FETCH_POST_DATA.fulfilled, (state, action) => {
       state.post = action.payload;
+      state.status = "fulfilled";
     });
     builder.addCase(FETCH_COMMENT_DATA.fulfilled, (state, action) => {
       state.comments = action.payload;

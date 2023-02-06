@@ -7,17 +7,26 @@ const SET_USER_POSTS = createAsyncThunk("postList/SET_USER_POSTS", getPostsByAcc
 
 const initialState = {
   posts: [],
+  status: "",
 };
 
 const postListSlice = createSlice({
   name: "postList",
   initialState,
   extraReducers: (builder) => {
+    builder.addCase(SET_FOLLOWERS_POSTS.pending, (state, action) => {
+      state.status = "pending";
+    });
     builder.addCase(SET_FOLLOWERS_POSTS.fulfilled, (state, action) => {
       state.posts = action.payload;
+      state.status = "fulfilled";
+    });
+    builder.addCase(SET_USER_POSTS.pending, (state, action) => {
+      state.status = "pending";
     });
     builder.addCase(SET_USER_POSTS.fulfilled, (state, action) => {
       state.posts = action.payload;
+      state.status = "fulfilled";
     });
   },
 });
