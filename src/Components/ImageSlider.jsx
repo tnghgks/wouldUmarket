@@ -90,12 +90,12 @@ const Button = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
   border: none;
   background-color: transparent;
   cursor: pointer;
   img {
-    width: 30px;
+    width: 80%;
+    opacity: 75%;
   }
   img:hover {
     transition: 0.5s;
@@ -103,8 +103,8 @@ const Button = styled.button`
   }
 `;
 const LeftBtn = styled(Button)`
-  left: 0;
+  left: 2px;
 `;
 const RightBtn = styled(Button)`
-  right: 0;
+  right: 2px;
 `;
