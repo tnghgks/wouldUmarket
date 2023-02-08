@@ -43,7 +43,7 @@ function Feed() {
         <h1 className="ir-hidden">우주쉐어 피드</h1>
         <MainNav titleContent="우주쉐어 피드" />
       </header>
-      {status === "pending" ? (
+      {status === "pending" && pageNum === 1 ? (
         <Loader />
       ) : (
         <MainContainer>
