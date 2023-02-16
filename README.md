@@ -356,7 +356,9 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
 
     let controller = new AbortController(); // AbortController 객체를 만든다.
     //Redux-Toolkit을 사용해서 비동기 통신을 보낼때 signal이라는 정보를 fetch에 옵션으로 준다.
-    dispatch(asyncSearchFetch({ searchInput, token, signal: controller.signal }));
+    dispatch(
+      asyncSearchFetch({ searchInput, token, signal: controller.signal })
+    );
     setSignal(controller); //signal state에 현재 AbortController 인스턴스를 저장한다.
   }, [searchInput]);
   ```
@@ -410,8 +412,7 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
 
 # 🗂 폴더구조
 
-````
-```plain Text
+```
 📦src
  ┣ 📂Components
  ┃ ┣ 📂Auth
@@ -420,16 +421,16 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
  ┃ ┣ 📂ImageComponents
  ┃ ┣ 📂Input
  ┃ ┣ 📂Logo
+ ┃ ┣ 📂Modal
  ┃ ┣ 📂Navbar
  ┃ ┣ 📂icon
+ ┣ 📂Hooks
  ┣ 📂Pages
  ┃ ┣ 📂AddProduct
  ┃ ┣ 📂Chat
  ┃ ┃ ┣ 📂ChatList
  ┃ ┃ ┗ 📂ChatRoom
  ┃ ┣ 📂EditProduct
- ┃ ┃ ┣ 📂EditProductInput
- ┃ ┃ ┣ 📂ProductImg
  ┃ ┣ 📂EditUserProfile
  ┃ ┣ 📂Follows
  ┃ ┣ 📂Home
@@ -441,6 +442,8 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
  ┃ ┣ 📂PostUpload
  ┃ ┣ 📂Register
  ┃ ┣ 📂Search
+ ┃ ┃ ┣ 📂RecentList
+ ┃ ┃ ┣ 📂SearchResult
  ┃ ┣ 📂SetProfile
  ┃ ┣ 📂SplashScreen
  ┃ ┃ ┣ 📂SplashLoader
@@ -451,10 +454,13 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
  ┃ ┃ ┣ 📂UserPost
  ┃ ┃ ┣ 📂UserProducts
  ┣ 📂Router
+ ┣ 📂api
  ┣ 📂assets
  ┃ ┣ 📂icon
+ ┣ 📂constant
  ┣ 📂cookie
  ┣ 📂store
+ ┣ 📂util
  ┣ 📜App.js
  ┗ 📜index.js
-````
+```
