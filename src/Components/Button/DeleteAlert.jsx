@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { CLOSE_MODAL } from "../../store/Modal";
+import { CLOSE_SUB_MODAL } from "../../store/Modal";
 
 function DeleteAlert({ mainText, rightText, handleAccept }) {
   const dispatch = useDispatch();
@@ -9,7 +9,7 @@ function DeleteAlert({ mainText, rightText, handleAccept }) {
     <DeleteAlertContainer>
       <DeleteAlertHead>{mainText}</DeleteAlertHead>
       <DeleteAlertDiv>
-        <DeleteAlertBtn props={true} onClick={() => dispatch(CLOSE_MODAL())}>
+        <DeleteAlertBtn props={true} onClick={() => dispatch(CLOSE_SUB_MODAL())}>
           취소
         </DeleteAlertBtn>
         <DeleteAlertBtn props={false} onClick={handleAccept}>

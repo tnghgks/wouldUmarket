@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_USER_POSTS } from "../../../store/PostList";
 import useInfinityScroll from "../../../Hooks/useInfinityScroll";
 
-function UserPost({ setModalInfo, setSubModalData }) {
+function UserPost() {
   const {
     postList: { posts },
   } = useSelector((state) => state);
@@ -44,13 +44,7 @@ function UserPost({ setModalInfo, setSubModalData }) {
           {posts.length && toggle ? (
             <>
               {posts.map((postItem, index) => (
-                <HomePost
-                  key={index}
-                  postItem={postItem}
-                  setModalInfo={setModalInfo}
-                  setSubModalData={setSubModalData}
-                  getPostList={() => dispatch(SET_USER_POSTS({ accountname, token }))}
-                />
+                <HomePost key={index} postItem={postItem} />
               ))}
               <div ref={setBottom}></div>
             </>

@@ -3,24 +3,19 @@ import BasicNav from "../../Components/Navbar/BasicNav";
 import Comment from "../../Components/Comment";
 import HomePost from "../../Components/HomePost";
 import CommentItem from "./CommentItem/CommentItem";
-import Modal from "../../Components/Modal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getCookie } from "../../cookie";
 import { FETCH_COMMENT_DATA, FETCH_POST_DATA } from "../../store/PostDetail";
 import { useDispatch, useSelector } from "react-redux";
-import DeleteAlert from "../../Components/Button/DeleteAlert";
 import Loader from "../../Components/Loader";
 
 function PostDetail() {
-  const [subModalData, setSubModalData] = useState({});
-  const [modalInfo, setModalInfo] = useState([]);
   const dispatch = useDispatch();
   const { id } = useParams();
   const token = getCookie("accessToken");
   const {
     postDetail: { post, comments, status },
-    modalData: { isOpen, subModal },
     userInfo,
   } = useSelector((state) => state);
 
@@ -33,24 +28,24 @@ function PostDetail() {
   return (
     <>
       <header>
-        <BasicNav setModalInfo={setModalInfo} setSubModalData={setSubModalData} />
+        <BasicNav />
       </header>
       {status === "pending" ? (
         <Loader />
       ) : (
         <MainContainer>
           <h1 className="ir-hidden">게시물 상세</h1>
-          <PostContainer>{Object.keys(post).length !== 0 && <HomePost postItem={post} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />}</PostContainer>
+          <PostContainer>
+            {Object.keys(post).length !== 0 && <HomePost postItem={post} />}
+          </PostContainer>
           <CommentContainer>
             <h2 className="ir-hidden">댓글창</h2>
-            {comments && comments.map((comment) => <CommentItem key={comment.id} comment={comment} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />)}
+            {comments &&
+              comments.map((comment) => <CommentItem key={comment.id} comment={comment} />)}
           </CommentContainer>
         </MainContainer>
       )}
-
       <Comment img={userInfo.image} placeholder="댓글 입력하기..." btn="게시" postId={post.id} />
-      {isOpen && <Modal modalInfo={modalInfo} />}
-      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
     </>
   );
 }
