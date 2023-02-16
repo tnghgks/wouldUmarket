@@ -1,41 +1,33 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { getCookie } from "../../cookie";
+import { useEffect } from "react";
 import SymbolLogoGray from "../../Components/Logo/SymbolLogoGray";
 import CommonButton from "../../Components/Button/CommonButton";
 import HomePost from "../../Components/HomePost";
 import MainNav from "../../Components/Navbar/MainNav";
 import TabMenu from "../../Components/TabMenu";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../../Components/Modal";
-import DeleteAlert from "../../Components/Button/DeleteAlert";
 import { SET_FOLLOWERS_POSTS } from "../../store/PostList";
 import useInfinityScroll from "../../Hooks/useInfinityScroll";
 import Loader from "../../Components/Loader";
 
 function Feed() {
-  const [subModalData, setSubModalData] = useState({});
-  const [modalInfo, setModalInfo] = useState([]);
   const [setBottom, pageNum, resetPageNum] = useInfinityScroll();
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
   const {
-    modalData: { isOpen, subModal },
     postList: { posts, status },
   } = useSelector((state) => state);
 
   useEffect(() => {
     resetPageNum();
-    dispatch(SET_FOLLOWERS_POSTS({ token }));
+    dispatch(SET_FOLLOWERS_POSTS());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    dispatch(SET_FOLLOWERS_POSTS({ token, pageNum }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNum]);
+    dispatch(SET_FOLLOWERS_POSTS({ pageNum }));
+  }, [dispatch, pageNum]);
 
   return (
     <>
@@ -51,7 +43,7 @@ function Feed() {
             <>
               {posts.map((postItem) => (
                 <PostContainer key={postItem.id}>
-                  <HomePost key={postItem.id} postItem={postItem} setSubModalData={setSubModalData} setModalInfo={setModalInfo} />
+                  <HomePost key={postItem.id} postItem={postItem} />
                 </PostContainer>
               ))}
               <div ref={setBottom}></div>
@@ -69,8 +61,6 @@ function Feed() {
         </MainContainer>
       )}
       <TabMenu />
-      {isOpen && <Modal modalInfo={modalInfo} />}
-      {subModal.isOpen && <DeleteAlert mainText={subModalData.text} rightText={subModalData.rightText} handleAccept={subModalData.handleFunc} />}
     </>
   );
 }

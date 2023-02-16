@@ -1,23 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../Components/icon/IconMoreVerticalSmall";
-import { getCookie } from "../../../cookie";
-import {
-  CLOSE_MODAL,
-  MODAL_TARGET,
-  SET_MAIN_MODAL,
-  SET_SUB_MODAL,
-} from "../../../store/Modal";
-import { FETCH_COMMENT_DATA } from "../../../store/PostDetail";
-import { deleteComment, reportComment } from "../../../api/post";
+import { OPEN_MAIN_MODAL } from "../../../store/Modal";
 
 function elapsedTime(date) {
   const start = new Date(date);
   const end = new Date();
-
   const diff = (end - start) / 1000;
-
   const formatter = new Intl.RelativeTimeFormat("ko", {
     numeric: "auto",
   });
@@ -40,71 +30,12 @@ function elapsedTime(date) {
   return "방금 전";
 }
 
-function CommentItem({ comment, setModalInfo, setSubModalData }) {
+function CommentItem({ comment }) {
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
-  const {
-    postDetail: {
-      post: { id },
-    },
-    userInfo: { userId },
-  } = useSelector((state) => state);
-
-  async function handleDeleteComment() {
-    const isSuccess = await deleteComment({ id, comment });
-    if (isSuccess) {
-      dispatch(CLOSE_MODAL());
-      dispatch(FETCH_COMMENT_DATA({ id, token }));
-    }
-  }
-
-  async function handleReportComment() {
-    try {
-      const report = await reportComment({ id, comment });
-      if (report) {
-        alert("댓글이 신고 되었습니다.");
-      } else {
-        alert("신고가 정상적으로 되지 않았습니다.");
-      }
-      dispatch(CLOSE_MODAL());
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const { id } = useParams();
 
   function handleModalOpen() {
-    dispatch(SET_MAIN_MODAL());
-    if (userId === comment.author._id) {
-      setModalInfo([
-        {
-          text: "삭제",
-          handleFunc: () => {
-            dispatch(SET_SUB_MODAL());
-            setSubModalData({
-              text: "삭제하시겠습니까?",
-              rightText: "삭제",
-              handleFunc: handleDeleteComment,
-            });
-            dispatch(MODAL_TARGET(comment.id));
-          },
-        },
-      ]);
-    } else {
-      setModalInfo([
-        {
-          text: "신고",
-          handleFunc: () => {
-            dispatch(SET_SUB_MODAL());
-            setSubModalData({
-              text: "신고하시겠습니까?",
-              rightText: "신고",
-              handleFunc: handleReportComment,
-            });
-            dispatch(MODAL_TARGET(comment.id));
-          },
-        },
-      ]);
-    }
+    dispatch(OPEN_MAIN_MODAL({ modalType: "COMMENT_MODAL", target: { postId: id, comment } }));
   }
 
   return (

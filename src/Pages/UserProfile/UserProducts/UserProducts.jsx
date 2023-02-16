@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Product from "../../../Components/Product";
 
-function UserProducts({ setModalInfo, setSubModalData }) {
+function UserProducts() {
   const {
     productList: { products },
   } = useSelector((state) => state);
@@ -15,7 +15,9 @@ function UserProducts({ setModalInfo, setSubModalData }) {
           <Title tabIndex={0}>대여 중인 상품</Title>
           <ProductsList>
             {!!products.length &&
-              products.map((productData, index) => <Product key={index} productData={productData} setModalInfo={setModalInfo} setSubModalData={setSubModalData} />)}
+              products.map((productData, index) => (
+                <Product key={index} productData={productData} />
+              ))}
           </ProductsList>
         </ProductContainer>
       </Container>

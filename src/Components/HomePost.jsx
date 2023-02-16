@@ -5,23 +5,15 @@ import BasicProfileImg from "./ImageComponents/BasicProfileImg";
 import IconMoreVerticalSmall from "../Components/icon/IconMoreVerticalSmall";
 import IconHeart from "./icon/IconHeart";
 import IconComment from "./icon/IconMessageCircleSmall";
-import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_MODAL, SET_MAIN_MODAL, SET_SUB_MODAL } from "../store/Modal";
+import { useDispatch } from "react-redux";
 import { FETCH_POST_DATA } from "../store/PostDetail";
 import ImageSlider from "./ImageSlider";
-import {
-  PostDelete,
-  PostReport,
-  ClickHeart,
-  ClickUnHeart,
-} from "../api/homepost";
+import { ClickHeart, ClickUnHeart } from "../api/homepost";
+import { OPEN_MAIN_MODAL } from "../store/Modal";
 
-function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
+function HomePost({ postItem }) {
   const [postData, setPostData] = useState(postItem);
   const dispatch = useDispatch();
-  const {
-    userInfo: { userId },
-  } = useSelector((state) => state);
 
   const createdAt = postItem.createdAt
     .slice(0, 11)
@@ -33,54 +25,8 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
     setPostData(postItem);
   }, [postItem]);
 
-  async function handleDeletePost() {
-    const data = await PostDelete(postItem.id);
-    alert(data.message);
-    getPostList();
-    dispatch(CLOSE_MODAL());
-  }
-
-  async function handleReportPost() {
-    const report = await PostReport(postItem.id);
-    if (report) {
-      alert("게시물이 신고 되었습니다.");
-    } else {
-      alert("신고가 정상적으로 되지 않았습니다.");
-    }
-    dispatch(CLOSE_MODAL());
-  }
-
   function handleModalOpen() {
-    if (userId === postData.author._id) {
-      setModalInfo([
-        {
-          text: "삭제",
-          handleFunc: () => {
-            setSubModalData({
-              text: "삭제하시겠습니까?",
-              rightText: "삭제",
-              handleFunc: handleDeletePost,
-            });
-            dispatch(SET_SUB_MODAL());
-          },
-        },
-      ]);
-    } else {
-      setModalInfo([
-        {
-          text: "신고",
-          handleFunc: () => {
-            setSubModalData({
-              text: "신고하시겠습니까?",
-              rightText: "신고",
-              handleFunc: handleReportPost,
-            });
-            dispatch(SET_SUB_MODAL());
-          },
-        },
-      ]);
-    }
-    dispatch(SET_MAIN_MODAL());
+    dispatch(OPEN_MAIN_MODAL({ modalType: "POST_MODAL", target: postItem }));
   }
 
   async function handleHeartClick() {
@@ -119,16 +65,12 @@ function HomePost({ postItem, setModalInfo, setSubModalData, getPostList }) {
         </TitleContainer>
         <ContContainer>
           <Cont>{postData.content}</Cont>
-          {!!postData.image && (
-            <ImageSlider image={postData.image} postId={postData.id} />
-          )}
+          {!!postData.image && <ImageSlider image={postData.image} postId={postData.id} />}
           <ReactContainer>
             <IconContainer>
               <HeartIcon
                 toggle={postData.hearted}
-                onClick={
-                  postData.hearted ? handleUnHeartClick : handleHeartClick
-                }
+                onClick={postData.hearted ? handleUnHeartClick : handleHeartClick}
               />
               {postData.heartCount}
             </IconContainer>

@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { CLOSE_SUB_MODAL } from "../../store/Modal";
 
-function DeleteAlert({ mainText, rightText, handleAccept }) {
+function SubModal({ mainText, rightText, handleAccept }) {
   const dispatch = useDispatch();
 
   return (
@@ -20,7 +20,7 @@ function DeleteAlert({ mainText, rightText, handleAccept }) {
   );
 }
 
-export default DeleteAlert;
+export default SubModal;
 
 const DeleteAlertContainer = styled.article`
   width: 252px;
@@ -35,6 +35,7 @@ const DeleteAlertContainer = styled.article`
   overflow: hidden;
   background-color: #ffffff;
   transform: translate(-50%, -50%);
+  z-index: 10;
 `;
 
 const DeleteAlertHead = styled.h1`
