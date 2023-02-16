@@ -1,31 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  targetId: "",
-  subModal: { isOpen: false },
-  isOpen: false,
+  target: "",
+  main: {
+    modalType: "",
+    isOpen: false,
+  },
+  sub: {
+    isOpen: false,
+  },
 };
 
-const modalSlice = createSlice({
+export const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    MODAL_TARGET: (state, action) => {
-      state.targetId = action.payload;
+    OPEN_MAIN_MODAL: (state, actions) => {
+      const { modalType, target } = actions.payload;
+      state.target = target;
+      state.main.modalType = modalType;
+      state.main.isOpen = true;
     },
-    SET_MAIN_MODAL: (state, action) => {
-      state.isOpen = true;
+    CLOSE_MAIN_MODAL: (state) => {
+      state.main.isOpen = false;
     },
-    SET_SUB_MODAL: (state, action) => {
-      state.subModal.isOpen = true;
+    OPEN_SUB_MODAL: (state, actions) => {
+      const { modalType } = actions.payload;
+      state.sub.modalType = modalType;
+      state.sub.isOpen = true;
     },
-    CLOSE_MODAL: (state, action) => {
-      state.subModal.isOpen = false;
-      state.isOpen = false;
+    CLOSE_SUB_MODAL: (state) => {
+      state.sub.isOpen = false;
+    },
+    CLOSE_ALL_MODAL: (state) => {
+      state.main.isOpen = false;
+      state.sub.isOpen = false;
     },
   },
 });
 
-export const { MODAL_TARGET, SET_MAIN_MODAL, SET_SUB_MODAL, CLOSE_MODAL } = modalSlice.actions;
+export const {
+  OPEN_MAIN_MODAL,
+  CLOSE_MAIN_MODAL,
+  OPEN_SUB_MODAL,
+  CLOSE_SUB_MODAL,
+  CLOSE_ALL_MODAL,
+} = modalSlice.actions;
 
 export default modalSlice.reducer;
