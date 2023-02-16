@@ -16,10 +16,12 @@ import Feed from "../Pages/Home/Feed";
 import EditUserProfile from "../Pages/EditUserProfile/EditUserProfile";
 import EditProduct from "../Pages/EditProduct/Editproduct";
 import AddProduct from "../Pages/AddProduct/AddProduct";
+import GlobalModal from "../Components/Modal/GlobalModal";
 
 function Router() {
   return (
     <BrowserRouter>
+      <GlobalModal />
       <Routes>
         <Route path="/" element={<SplashScreen />} />
         <Route path="/login" element={<Login />} />
