@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import Authentication from "./Components/Auth/Authentication";
-import Router from "./Router/Router";
+import Authentication from "./components/auth/Authentication";
+import Router from "./router/Router";
 
 const GlobalStyled = createGlobalStyle`
 ${reset} // 초기화css
