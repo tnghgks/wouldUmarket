@@ -1,4 +1,4 @@
-import { PRICE_COMMA, PRICE_UNCOMMA } from "../constant/regex";
+import { PRICE_COMMA, PRICE_UNCOMMA } from "../../constant/regex";
 
 export function PRICE_COMMA_SETTING(priceValue) {
   const comma = (priceValue) => {
