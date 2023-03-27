@@ -8,7 +8,7 @@ import MainNav from "../../components/navbar/MainNav";
 import TabMenu from "../../components/TabMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_FOLLOWERS_POSTS } from "../../store/PostList";
-import useInfinityScroll from "../../hooks/useInfinityScroll";
+import useInfinityScroll from "../../lib/hooks/useInfinityScroll";
 import Loader from "../../components/Loader";
 
 function Feed() {

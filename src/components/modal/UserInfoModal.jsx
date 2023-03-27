@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { removeCookie } from "../../cookie";
+import { removeCookie } from "../../lib/util/cookie";
 import { CLOSE_MAIN_MODAL, CLOSE_ALL_MODAL, OPEN_SUB_MODAL } from "../../store/Modal";
 import { SET_PROFILE } from "../../store/Profile";
 import { INIT_USERINFO } from "../../store/UserInfo";

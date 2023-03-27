@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { PRODUCT_ADDRESS_PATTEN } from "../../constant/regex";
-import { PRICE_COMMA_SETTING } from "../../util/priceComma";
+import { PRICE_COMMA_SETTING } from "../../lib/util/priceComma";
 
 function EditProduct() {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie } from "../cookie";
+import { getCookie } from "../lib/util/cookie";
 
 const BASE_URL = "https://mandarin.api.weniv.co.kr";
 

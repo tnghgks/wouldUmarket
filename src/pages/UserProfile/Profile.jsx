@@ -5,7 +5,7 @@ import UserPost from "./UserPost/UserPost";
 import BasicNav from "../../components/navbar/BasicNav";
 import TabMenu from "../../components/TabMenu";
 import { useEffect } from "react";
-import { getCookie } from "../../cookie";
+import { getCookie } from "../../lib/util/cookie";
 import { SET_PROFILE } from "../../store/Profile";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

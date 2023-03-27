@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ChatNav from "../../components/navbar/ChatNav";
 import TabMenu from "../../components/TabMenu";
 import UserFollow from "../../components/UserFollow";
-import { getCookie } from "../../cookie";
+import { getCookie } from "../../lib/util/cookie";
 import { SET_FOLLOWER_LIST, SET_FOLLOWING_LIST } from "../../store/Follow";
 
 function Followers() {

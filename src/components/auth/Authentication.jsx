@@ -1,4 +1,4 @@
-import { getCookie } from "../../cookie";
+import { getCookie } from "../../lib/util/cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { SET_USERINFO } from "../../store/UserInfo";

@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import FullLogoBig from "../../assets/symbol-logo-W-big.png";
 import TextLogo from "../../components/logo/TextLogo";
 import SplashLoader from "./SplashLoader/SplashLoader";
-import { getCookie } from "../../cookie/index";
+import { getCookie } from "../../lib/util/cookie";
 import { getCheckToken } from "../../api/splashscreen";
 
 function SplashScreen() {

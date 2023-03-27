@@ -4,7 +4,7 @@ import BasicProfileImg from "../../components/imageComponents/BasicProfileImg";
 import CommonInput from "../../components/input/CommonInput";
 import CommonButton from "../../components/button/CommonButton";
 import { useNavigate, useLocation } from "react-router";
-import { setCookie } from "../../cookie";
+import { setCookie } from "../../lib/util/cookie";
 import ImgButton from "../../assets/upload-file.png";
 import { SetProfileImg, IdValidation, GetLogin, RegisteredData } from "../../api/setprofile";
 import { useForm } from "react-hook-form";

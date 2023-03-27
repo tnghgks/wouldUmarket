@@ -10,7 +10,7 @@ import UploadImage from "../../assets/UploadImage.png";
 import { uploadImage } from "../../api/util";
 import { useForm } from "react-hook-form";
 import { PRODUCT_ADDRESS_PATTEN } from "../../constant/regex";
-import { PRICE_COMMA_SETTING } from "../../util/priceComma";
+import { PRICE_COMMA_SETTING } from "../../lib/util/priceComma";
 
 function AddProduct() {
   const dispatch = useDispatch();

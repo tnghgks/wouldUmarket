@@ -5,8 +5,8 @@ import SearchNav from "../../components/navbar/SearchNav";
 import NotFoundResult from "../../components/NotFoundResult";
 import TabMenu from "../../components/TabMenu";
 import { asyncSearchFetch } from "../../store/SearchData";
-import useInfinityScroll from "../../hooks/useInfinityScroll";
-import useDebouncing from "../../hooks/useDebounce";
+import useInfinityScroll from "../../lib/hooks/useInfinityScroll";
+import useDebouncing from "../../lib/hooks/useDebounce";
 import RecentList from "./RecentList/RecentList";
 import SearchResult from "./SearchResult/SearchResult";
 

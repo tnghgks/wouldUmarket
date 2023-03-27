@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { MODIFY_PROFILE } from "../../store/Profile";
 import { MODIFY_PRODUCT_IMAGE } from "../../store/Product";
-import { getCookie } from "../../cookie";
+import { getCookie } from "../../lib/util/cookie";
 import { SET_USERINFO } from "../../store/UserInfo";
 import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
 import { useForm } from "react-hook-form";

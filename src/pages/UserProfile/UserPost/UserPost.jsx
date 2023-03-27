@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import HomePost from "../../../components/HomePost";
 import IconPostList from "../../../components/icon/IconPostList.jsx";
 import IconPostAlbum from "../../../components/icon/IconPostAlbum.jsx";
-import { getCookie } from "../../../cookie";
+import { getCookie } from "../../../lib/util/cookie";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_USER_POSTS } from "../../../store/PostList";
-import useInfinityScroll from "../../../hooks/useInfinityScroll";
+import useInfinityScroll from "../../../lib/hooks/useInfinityScroll";
 
 function UserPost() {
   const {

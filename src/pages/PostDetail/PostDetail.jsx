@@ -5,7 +5,7 @@ import HomePost from "../../components/HomePost";
 import CommentItem from "./CommentItem/CommentItem";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getCookie } from "../../cookie";
+import { getCookie } from "../../lib/util/cookie";
 import { FETCH_COMMENT_DATA, FETCH_POST_DATA } from "../../store/PostDetail";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";

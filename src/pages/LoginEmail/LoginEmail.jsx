@@ -5,7 +5,7 @@ import CommonButton from "../../components/button/CommonButton";
 import CommonInput from "../../components/input/CommonInput";
 import { useDispatch } from "react-redux";
 import { SET_USERINFO } from "../../store/UserInfo";
-import { setCookie } from "../../cookie";
+import { setCookie } from "../../lib/util/cookie";
 import { login } from "../../api/auth";
 import { LOGIN_EMAIL_PATTERN } from "../../constant/regex";
 import { useForm } from "react-hook-form";
