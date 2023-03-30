@@ -5,7 +5,6 @@ import UserPost from "./UserPost/UserPost";
 import BasicNav from "../../components/navbar/BasicNav";
 import TabMenu from "../../components/TabMenu";
 import { useEffect } from "react";
-import { getCookie } from "../../lib/util/cookie";
 import { SET_PROFILE } from "../../store/Profile";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +14,6 @@ import Loader from "../../components/Loader";
 function Profile() {
   const dispatch = useDispatch();
   const { accountname } = useParams();
-  const token = getCookie("accessToken");
   const {
     profile: { status },
   } = useSelector((state) => state);
@@ -23,7 +21,7 @@ function Profile() {
   useEffect(() => {
     dispatch(SET_PROFILE(accountname));
     dispatch(SET_PRODUCT_LIST(accountname));
-  }, [accountname, dispatch, token]);
+  }, [accountname, dispatch]);
 
   return (
     <Container>
