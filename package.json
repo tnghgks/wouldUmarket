@@ -1,6 +1,6 @@
 {
-  "name": "gamgyul_market",
-  "version": "0.1.0",
+  "name": "would_you_market",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
