@@ -12,17 +12,21 @@ export async function getUserProfile(accountname) {
   }
 }
 
-export async function getFollowers({ accountname, limit }) {
+export async function getFollowers({ accountname, pageNum }) {
   try {
-    const { data: followerData } = await authInstance.get(`/profile/${accountname}/follower?limit=${limit}`);
+    const { data: followerData } = await authInstance.get(
+      `/profile/${accountname}/follower?limit=${pageNum * 20}`
+    );
     return followerData;
   } catch (error) {
     console.log(error);
   }
 }
-export async function getFollowings({ accountname, limit }) {
+export async function getFollowings({ accountname, pageNum }) {
   try {
-    const { data: followingData } = await authInstance.get(`/profile/${accountname}/following?limit=${limit}`);
+    const { data: followingData } = await authInstance.get(
+      `/profile/${accountname}/following?limit=${pageNum * 20}`
+    );
     return followingData;
   } catch (error) {
     console.log(error);

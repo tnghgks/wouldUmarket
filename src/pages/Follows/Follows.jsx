@@ -1,53 +1,41 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ChatNav from "../../components/navbar/ChatNav";
 import TabMenu from "../../components/TabMenu";
 import UserFollow from "../../components/UserFollow";
-import { getCookie } from "../../lib/util/cookie";
+import useInfinityScroll from "../../lib/hooks/useInfinityScroll";
 import { SET_FOLLOWER_LIST, SET_FOLLOWING_LIST } from "../../store/Follow";
 
 function Followers() {
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
+  const [setBottom, pageNum, resetPageNum] = useInfinityScroll();
   const {
     followList: { users },
   } = useSelector((state) => state);
   const { accountname } = useParams();
   const location = useLocation();
-  const [limit, setLimit] = useState(20);
+
+  const getFollowData = useCallback(() => {
+    let pageType = location.pathname.split("/")[3];
+    if (pageType === "followers") {
+      dispatch(SET_FOLLOWER_LIST({ accountname, pageNum }));
+    } else if (pageType === "followings") {
+      dispatch(SET_FOLLOWING_LIST({ accountname, pageNum }));
+    }
+  }, [accountname, dispatch, location, pageNum]);
 
   useEffect(() => {
+    resetPageNum();
     getFollowData();
 
-    let scrollTimer;
-    window.addEventListener("scroll", () => {
-      if (scrollTimer) {
-        clearTimeout(scrollTimer);
-      }
-      scrollTimer = setTimeout(function () {
-        if (document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 0) {
-          setLimit((prev) => prev + 20);
-        }
-      }, 100);
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getFollowData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit]);
-
-  function getFollowData() {
-    let pageType = location.pathname.split("/")[3];
-    if (pageType === "followers") {
-      dispatch(SET_FOLLOWER_LIST({ accountname, token, limit }));
-    } else if (pageType === "followings") {
-      dispatch(SET_FOLLOWING_LIST({ accountname, token, limit }));
-    }
-  }
+  }, [getFollowData]);
 
   return (
     <main>
@@ -56,9 +44,9 @@ function Followers() {
       <Container>
         <h2 className="ir-hidden">유저 목록</h2>
         <FollowContainer>
-          {!!users.length &&
-            users.map((user) => <UserFollow key={crypto.randomUUID()} {...user} />)}
+          {!!users.length && users.map((user) => <UserFollow key={user._id} {...user} />)}
         </FollowContainer>
+        <div ref={setBottom}></div>
       </Container>
       <TabMenu />
     </main>

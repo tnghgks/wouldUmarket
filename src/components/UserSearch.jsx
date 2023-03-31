@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import profileImg from "../assets/Ellipse-1.png";
+import { LocalStorage } from "../lib/util/localStorage";
+import { uniqueById } from "../lib/util/utils";
 
 function UserSearch({ userData, searchInput }) {
   const MatchingData = useCallback(
@@ -29,16 +31,30 @@ function UserSearch({ userData, searchInput }) {
   );
 
   function handleClick() {
-    const prevCookie = JSON.parse(localStorage.getItem("recentSearched"));
-    if (prevCookie) {
-      localStorage.setItem("recentSearched", JSON.stringify([userData, ...prevCookie]));
-    }
+    const recentSearched = LocalStorage.getStorage("recentSearched");
+
+    const uniqueUsers = uniqueById([
+      ...recentSearched,
+      {
+        accountname: userData.accountname,
+        image: userData.image,
+        intro: userData.intro,
+        username: userData.username,
+        _id: userData._id,
+      },
+    ]);
+
+    LocalStorage.setStorage("recentSearched", uniqueUsers);
   }
 
   return (
     <Link to={`/profile/${userData.accountname}`} onClick={handleClick}>
       <UserSearchContainer>
-        <Img src={userData.image ? userData.image : profileImg} onError={(e) => (e.target.src = profileImg)} alt="프로필 이미지" />
+        <Img
+          src={userData.image ? userData.image : profileImg}
+          onError={(e) => (e.target.src = profileImg)}
+          alt="프로필 이미지"
+        />
         <div>
           <MatchingData>{userData.username}</MatchingData>
           <UserFollowSmall>
