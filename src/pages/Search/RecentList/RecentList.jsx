@@ -2,21 +2,23 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserSearch from "../../../components/UserSearch";
 import iconDelete from "../../../assets/icon/icon-delete.svg";
+import { LocalStorage } from "../../../lib/util/localStorage";
 
 export default function RecentList() {
   const [recentSearched, setRecentSearched] = useState(null);
 
   useEffect(() => {
-    const prevCookie = JSON.parse(localStorage.getItem("recentSearched"));
+    const prevCookie = LocalStorage.getStorage("recentSearched");
+
     setRecentSearched(prevCookie);
   }, []);
 
   function handleDeleteBtn(targetIndex) {
-    setRecentSearched(recentSearched.filter((_, index) => !(index === targetIndex)));
-    window.localStorage.setItem(
-      "recentSearched",
-      JSON.stringify(recentSearched.filter((_, index) => !(index === targetIndex)))
-    );
+    const removedItem = recentSearched.filter((_, index) => index !== targetIndex);
+
+    setRecentSearched(removedItem);
+
+    LocalStorage.setStorage("recentSearched", removedItem);
   }
 
   return (
