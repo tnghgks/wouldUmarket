@@ -31,13 +31,13 @@ function ImageSlider({ image, postId }) {
   return (
     <ImageContainer>
       <PostList>
-        <PostLink to={`/post/${postId}`} key={crypto.randomUUID()}>
+        <PostLink to={`/post/${postId}`}>
           {!!imageList.length &&
-            imageList.map((img) => (
+            imageList.map((img, index) => (
               <PostImg
                 imageCount={imageCount}
                 src={img}
-                key={crypto.randomUUID()}
+                key={`${img}/${index}`}
                 alt="게시물 이미지"
               />
             ))}

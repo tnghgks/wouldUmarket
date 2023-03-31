@@ -44,8 +44,7 @@ function Followers() {
       <Container>
         <h2 className="ir-hidden">유저 목록</h2>
         <FollowContainer>
-          {!!users.length &&
-            users.map((user) => <UserFollow key={crypto.randomUUID()} {...user} />)}
+          {!!users.length && users.map((user) => <UserFollow key={user._id} {...user} />)}
         </FollowContainer>
         <div ref={setBottom}></div>
       </Container>
