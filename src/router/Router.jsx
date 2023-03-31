@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const ChatList = lazy(() => import("../pages/Chat/ChatList/ChatList"));
 const ChatRoom = lazy(() => import("../pages/Chat/ChatRoom/ChatRoom"));
@@ -24,7 +25,7 @@ function Router() {
   return (
     <BrowserRouter>
       <GlobalModal />
-      <Suspense fallback={"Loading..."}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<SplashScreen />} />
           <Route path="/login" element={<Login />} />
