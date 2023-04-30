@@ -32,7 +32,10 @@ function PostUpload() {
   const [imageList, setImageList] = useState([]);
   const [textContent, setTextContent] = useState("");
   const navigate = useNavigate();
-  const { userInfo, profile } = useSelector((state) => state);
+  const {
+    userInfo,
+    profile: { profile },
+  } = useSelector((state) => state);
 
   //자동 포커스
   useEffect(() => {
