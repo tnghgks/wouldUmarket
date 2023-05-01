@@ -1,6 +1,8 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loader from "../components/Loader";
+import GlobalModal from "../components/modal/GlobalModal";
+import SplashScreen from "../pages/SplashScreen/SplashScreen";
 
 const ChatList = lazy(() => import("../pages/Chat/ChatList/ChatList"));
 const ChatRoom = lazy(() => import("../pages/Chat/ChatRoom/ChatRoom"));
@@ -14,12 +16,10 @@ const Page404 = lazy(() => import("../pages/Page404/Page404"));
 const Follows = lazy(() => import("../pages/Follows/Follows"));
 const Login = lazy(() => import("../pages/Login/Login"));
 const LoginEmail = lazy(() => import("../pages/LoginEmail/LoginEmail"));
-const SplashScreen = lazy(() => import("../pages/SplashScreen/SplashScreen"));
 const Feed = lazy(() => import("../pages/Home/Feed"));
 const EditUserProfile = lazy(() => import("../pages/EditUserProfile/EditUserProfile"));
 const EditProduct = lazy(() => import("../pages/EditProduct/Editproduct"));
 const AddProduct = lazy(() => import("../pages/AddProduct/AddProduct"));
-const GlobalModal = lazy(() => import("../components/modal/GlobalModal"));
 
 function Router() {
   return (
