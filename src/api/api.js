@@ -1,7 +1,6 @@
 import axios from "axios";
+import { BASE_URL } from "../constant/Backend_URL";
 import { getCookie } from "../lib/util/cookie";
-
-const BASE_URL = "https://mandarin.api.weniv.co.kr";
 
 export const defaultInstance = axios.create({
   baseURL: BASE_URL,

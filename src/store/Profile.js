@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getUserProfile, follow, unFollow, modifyProfile } from "../api/profile";
+import { BASE_URL } from "../constant/Backend_URL";
 
 export const SET_PROFILE = createAsyncThunk("profile/SET_PROFILE", getUserProfile);
 
@@ -21,7 +22,7 @@ const initialState = {
     userId: "",
     username: "",
     accountname: "",
-    image: "https://mandarin.api.weniv.co.kr/Ellipse.png",
+    image: `${BASE_URL}/Ellipse.png`,
     isfollow: false,
     following: [],
     follower: [],

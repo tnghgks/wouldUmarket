@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { defaultInstance } from "../api/api";
+import { BASE_URL } from "../constant/Backend_URL";
 
 export const SET_USERINFO = createAsyncThunk("userInfo/SET_USERINFO", async (token) => {
   const { data } = await defaultInstance.get("/user/myinfo", {
@@ -14,7 +15,7 @@ const initialState = {
   userId: "",
   username: "",
   accountname: "",
-  image: "https://mandarin.api.weniv.co.kr/Ellipse.png",
+  image: `${BASE_URL}/Ellipse.png`,
 };
 
 const userInfoSlice = createSlice({
@@ -25,7 +26,7 @@ const userInfoSlice = createSlice({
       state.userId = "";
       state.username = "";
       state.accountname = "";
-      state.image = "https://mandarin.api.weniv.co.kr/Ellipse.png";
+      state.image = `${BASE_URL}/Ellipse.png`;
     },
   },
   extraReducers: (builder) => {

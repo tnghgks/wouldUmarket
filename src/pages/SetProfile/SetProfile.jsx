@@ -9,11 +9,11 @@ import ImgButton from "../../assets/upload-file.png";
 import { SetProfileImg, IdValidation, GetLogin, RegisteredData } from "../../api/setprofile";
 import { useForm } from "react-hook-form";
 import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
+import { BASE_URL } from "../../constant/Backend_URL";
 
 function SetProfile() {
   const navigate = useNavigate();
   const [image, setImage] = useState("");
-  const url = "https://mandarin.api.weniv.co.kr/";
   const [disable, setDisable] = useState(true);
   const {
     register,
@@ -42,9 +42,9 @@ function SetProfile() {
     let file;
     if (profileImg instanceof FileList && profileImg.length > 0) {
       file = profileImg[0];
-      setImage(URL.createObjectURL(file));
+      setImage(BASE_URL.createObjectURL(file));
     }
-    return () => URL.revokeObjectURL(file);
+    return () => BASE_URL.revokeObjectURL(file);
   }, [profileImg]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function SetProfile() {
 
     const imgData = await SetProfileImg(formData);
     if (!imgData) return;
-    return url + imgData;
+    return BASE_URL + imgData;
   }
 
   // 계정ID 유효성 검사

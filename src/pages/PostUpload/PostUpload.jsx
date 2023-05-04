@@ -6,9 +6,9 @@ import FileUploadBtn from "../../components/button/FileUploadBtn";
 import IconDelete from "../../components/icon/IconDelete";
 import { useSelector } from "react-redux";
 import { uploadPostImage, uploadPost } from "../../api/post";
+import { BASE_URL } from "../../constant/Backend_URL";
 
 // 상수로 빼서 관리
-const baseURL = "https://mandarin.api.weniv.co.kr";
 
 // base64 -> 이미지 File로 전환
 const dataURLtoFile = (dataUrl, filename) => {
@@ -88,7 +88,7 @@ function PostUpload() {
     const isArray = Array.isArray(imgData);
     if (!isArray) throw new Error(imgData.message);
 
-    const imgURLtoString = imgData.map((d) => `${baseURL}/${d.filename}`).join(",");
+    const imgURLtoString = imgData.map((d) => `${BASE_URL}/${d.filename}`).join(",");
 
     return imgURLtoString;
   };

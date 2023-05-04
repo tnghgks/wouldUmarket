@@ -11,6 +11,7 @@ import { uploadImage } from "../../api/util";
 import { useForm } from "react-hook-form";
 import { PRODUCT_ADDRESS_PATTEN } from "../../constant/regex";
 import { PRICE_COMMA_SETTING } from "../../lib/util/priceComma";
+import { BASE_URL } from "../../constant/Backend_URL";
 
 function AddProduct() {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ function AddProduct() {
     const { isSuccess, imgData } = await uploadImage(formData);
 
     if (isSuccess) {
-      return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
+      return `${BASE_URL}/${imgData.filename}`;
     }
   }
 

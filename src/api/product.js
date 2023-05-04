@@ -1,3 +1,4 @@
+import { BASE_URL } from "../constant/Backend_URL";
 import { authInstance, formDataInstance } from "./api";
 
 export async function deleteProduct(productId) {
@@ -37,12 +38,9 @@ export async function modifyProduct({ productData, id }) {
 
 export async function modifyProductImage({ formData }) {
   try {
-    const { data: imgData } = await formDataInstance.post(
-      "/image/uploadfile",
-      formData
-    );
+    const { data: imgData } = await formDataInstance.post("/image/uploadfile", formData);
     if (!imgData) return;
-    return `https://mandarin.api.weniv.co.kr/${imgData.filename}`;
+    return `${BASE_URL}/${imgData.filename}`;
   } catch (error) {
     console.log(error);
   }
