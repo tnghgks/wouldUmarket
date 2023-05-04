@@ -23,9 +23,9 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     INIT_USERINFO: (state) => {
-      state.userId = "";
-      state.username = "";
-      state.accountname = "";
+      state.userId = null;
+      state.username = null;
+      state.accountname = null;
       state.image = `${BASE_URL}/Ellipse.png`;
     },
   },
