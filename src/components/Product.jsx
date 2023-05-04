@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import productImg from "../assets/product-img-example.png";
 import { OPEN_MAIN_MODAL } from "../store/Modal";
+import onImageError from "../assets/onImageError.png";
 
 function Product({ productData }) {
   const dispatch = useDispatch();
@@ -13,7 +14,11 @@ function Product({ productData }) {
   return (
     <Container onClick={handleModalOpen} tabIndex={0}>
       <figure>
-        <ProductImg src={productData.itemImage || productImg} alt="" />
+        <ProductImg
+          src={productData.itemImage || productImg}
+          alt=""
+          onError={(e) => (e.target.src = onImageError)}
+        />
         <ProductName>{productData.itemName}</ProductName>
         <ProductPrice>시간당 {productData.price.toLocaleString()}원</ProductPrice>
       </figure>

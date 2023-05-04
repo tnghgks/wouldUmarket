@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import IconMoreVerticalSmall from "../../../components/icon/IconMoreVerticalSmall";
 import { OPEN_MAIN_MODAL } from "../../../store/Modal";
+import onErrorImage from "../../../assets/Ellipse-1.png";
 
 function elapsedTime(date) {
   const start = new Date(date);
@@ -42,7 +43,11 @@ function CommentItem({ comment }) {
     <Container>
       <InfoContainer>
         <Link to={`/profile/${comment.author.accountname}`}>
-          <ProfileImg src={comment.author.image} alt="프로필 이미지" />
+          <ProfileImg
+            src={comment.author.image}
+            alt="프로필 이미지"
+            onError={(e) => (e.target.src = onErrorImage)}
+          />
         </Link>
         <CommentInfo>
           <UserName>{comment.author.username}</UserName>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import leftArrowIcon from "../assets/icon/left-arrow-icon.png";
 import rightArrowIcon from "../assets/icon/right-arrow-icon.png";
+import onImageError from "../assets/onImageError.png";
 
 function ImageSlider({ image, postId }) {
   const [imageCount, setImageCount] = useState(0);
@@ -39,6 +40,8 @@ function ImageSlider({ image, postId }) {
                 src={img}
                 key={`${img}/${index}`}
                 alt="게시물 이미지"
+                onError={(e) => (e.target.src = onImageError)}
+                loading="lazy"
               />
             ))}
         </PostLink>
