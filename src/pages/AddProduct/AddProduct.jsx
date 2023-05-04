@@ -115,12 +115,12 @@ function AddProduct() {
             id="saleAddress"
             type="text"
             placeholder={"URl을 입력해 주세요."}
-            label="판매링크"
+            label="상품링크"
             register={register("saleAddress", {
-              required: "판매링크를 입력해주세요.",
+              required: "상품링크를 입력해주세요.",
               pattern: {
                 value: PRODUCT_ADDRESS_PATTEN,
-                message: "잘못된 판매링크 입니다.",
+                message: "잘못된 상품링크 입니다.",
               },
             })}
           />
