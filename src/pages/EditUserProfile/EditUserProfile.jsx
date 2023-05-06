@@ -21,7 +21,10 @@ function EditUserProfile() {
   const token = getCookie("accessToken");
   const [disabled, setDisable] = useState(true);
   const [myProfileImg, setMyProfileImg] = useState("");
-  const { profile } = useSelector((state) => state);
+  const {
+    profile: { profile },
+  } = useSelector((state) => state);
+
   const {
     register,
     handleSubmit,
@@ -73,7 +76,6 @@ function EditUserProfile() {
 
       if (!(message === "사용 가능한 계정ID 입니다.")) return setError("userID", { message });
     }
-
     const imgData = imgFile[0] ? await productImg(imgFile[0]) : profile.image;
 
     const editUserData = {
@@ -86,10 +88,10 @@ function EditUserProfile() {
     };
 
     // 프로필 수정
-    await dispatch(MODIFY_PROFILE({ editUserData }));
+    dispatch(MODIFY_PROFILE({ editUserData }));
 
     // 변경된 UserInfo 다시 불러오기
-    await dispatch(SET_USERINFO(token));
+    dispatch(SET_USERINFO(token));
 
     navigate(`/profile/${userID}`);
   }
@@ -97,8 +99,10 @@ function EditUserProfile() {
   return (
     <main>
       <h1 className="ir-hidden">프로필 수정 페이지</h1>
-      <UploadNav children="저장" btnDisabled={disabled} bgColor={disabled ? "light" : "main"} />
-      <EditProfileContainer onSubmit={handleSubmit(isValid)}>
+      <UploadNav btnDisabled={disabled} bgColor={disabled ? "light" : "main"} form="editForm">
+        저장
+      </UploadNav>
+      <EditProfileContainer onSubmit={handleSubmit(isValid)} id="editForm">
         <ProfileContainer>
           <h2 className="ir-hidden">프로필 이미지 등록</h2>
           <EditImgContainer>

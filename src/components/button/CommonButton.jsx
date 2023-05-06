@@ -5,14 +5,7 @@ import styled from "styled-components";
  * @param {{size: "lg"|"md"|"ms"|"sm" ; fontColor: "selectColor" ; bgColor: "main"|"accent"|"light"|"white";  onClick: "eventprops" ; disabled: "false"|"true" ; children: "buttonText"}} param0
  * @returns
  */
-function CommonButton({
-  size,
-  fontColor,
-  bgColor,
-  onClick,
-  disabled,
-  children,
-}) {
+function CommonButton({ size, fontColor, bgColor, onClick, disabled, children, ...rest }) {
   return (
     <ButtonContainer
       size={size}
@@ -20,6 +13,7 @@ function CommonButton({
       bgColor={bgColor}
       onClick={onClick}
       disabled={disabled}
+      {...rest}
     >
       {children}
     </ButtonContainer>
@@ -85,8 +79,7 @@ const ButtonContainer = styled.button`
         return "30px";
     }
   }};
-  border: ${(props) =>
-    props.bgColor === "white" ? "1px solid #dbdbdb" : "none"};
+  border: ${(props) => (props.bgColor === "white" ? "1px solid #dbdbdb" : "none")};
   font-family: inherit;
   font-weight: ${(props) => (props.size === "sm" ? "400" : "500")};
 

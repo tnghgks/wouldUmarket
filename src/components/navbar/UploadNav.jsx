@@ -31,7 +31,7 @@ const BackBtnIcon = styled(IconArrowLeft)`
  * @param {{children: '저장' | '업로드' , btnDisabled: boolean; onClickUpload: ()=> Promise<void>}} param0
  * @returns
  */
-function UploadNav({ children, btnDisabled, onClickUpload, bgColor }) {
+function UploadNav({ children, btnDisabled, onClickUpload, bgColor, ...rest }) {
   const navigate = useNavigate();
   return (
     <Container>
@@ -49,6 +49,7 @@ function UploadNav({ children, btnDisabled, onClickUpload, bgColor }) {
         children={children}
         disabled={btnDisabled}
         onClick={onClickUpload}
+        {...rest}
       />
     </Container>
   );
