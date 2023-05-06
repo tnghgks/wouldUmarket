@@ -42,9 +42,9 @@ function SetProfile() {
     let file;
     if (profileImg instanceof FileList && profileImg.length > 0) {
       file = profileImg[0];
-      setImage(BASE_URL.createObjectURL(file));
+      setImage(URL.createObjectURL(file));
     }
-    return () => BASE_URL.revokeObjectURL(file);
+    return () => URL.revokeObjectURL(file);
   }, [profileImg]);
 
   useEffect(() => {
