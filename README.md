@@ -4,6 +4,7 @@
 **배포 링크 : https://main--wouldumarket.netlify.app/**  
 **테스트 계정 : share123@naver.com**  
 **비밀번호 : Lion1234!**
+<br>⁕ 백엔드 주소가 바뀌면서 DB에서 변경되지 않은 이미지 주소는 출력되지 않을 수 있습니다.
 
 # Would you share?
 
@@ -356,9 +357,7 @@ fetch를 사용하면서 반복되었던 로직을 분리하고 axios의 Instanc
 
     let controller = new AbortController(); // AbortController 객체를 만든다.
     //Redux-Toolkit을 사용해서 비동기 통신을 보낼때 signal이라는 정보를 fetch에 옵션으로 준다.
-    dispatch(
-      asyncSearchFetch({ searchInput, token, signal: controller.signal })
-    );
+    dispatch(asyncSearchFetch({ searchInput, token, signal: controller.signal }));
     setSignal(controller); //signal state에 현재 AbortController 인스턴스를 저장한다.
   }, [searchInput]);
   ```
