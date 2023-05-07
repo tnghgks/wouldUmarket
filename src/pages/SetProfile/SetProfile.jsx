@@ -10,6 +10,7 @@ import { SetProfileImg, IdValidation, GetLogin, RegisteredData } from "../../api
 import { useForm } from "react-hook-form";
 import { USER_ID_PATTERN, USER_NAME_PATTERN } from "../../constant/regex";
 import { BASE_URL } from "../../constant/Backend_URL";
+import Ellipse from "../../assets/Ellipse-1.png";
 
 function SetProfile() {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ function SetProfile() {
     const result = await getAccountnameValidation(userID);
     //false면 함수 종료
     if (!result) return;
-    const imgFile = userImg[0] ? await profileImgFile(userImg[0]) : "";
+    const imgFile = userImg[0] ? await profileImgFile(userImg[0]) : Ellipse;
     const inputUserData = {
       user: {
         username: userName,
