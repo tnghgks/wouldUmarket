@@ -16,7 +16,9 @@ import { BASE_URL } from "../../constant/Backend_URL";
 function AddProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { profile } = useSelector((state) => state);
+  const {
+    profile: { profile },
+  } = useSelector((state) => state);
   const {
     register,
     handleSubmit,
@@ -67,8 +69,16 @@ function AddProduct() {
   return (
     <main>
       <h1 className="ir-hidden">상품 등록 페이지</h1>
-      <UploadNav children="저장" btnDisabled={!isValid} bgColor={!isValid ? "light" : "main"} />
-      <EditProfileContainer onSubmit={handleSubmit(formSubmit)}>
+      <UploadNav
+        children="저장"
+        btnDisabled={!isValid}
+        bgColor={!isValid ? "light" : "main"}
+        form="addProductForm"
+      />
+      <EditProfileContainer
+        onSubmit={handleSubmit(formSubmit)}
+        id="addProductForm"
+      >
         <ProductContainer>
           <h2>이미지 등록</h2>
           <EditProductImgContainer>
@@ -99,7 +109,9 @@ function AddProduct() {
               },
             })}
           />
-          {errors.productName && <Warning>{errors.productName.message}</Warning>}
+          {errors.productName && (
+            <Warning>{errors.productName.message}</Warning>
+          )}
           <CommonInput
             id="itemPrice"
             type="text"
@@ -124,7 +136,9 @@ function AddProduct() {
               },
             })}
           />
-          {errors.saleAddress && <Warning>{errors.saleAddress.message}</Warning>}
+          {errors.saleAddress && (
+            <Warning>{errors.saleAddress.message}</Warning>
+          )}
         </InputContainer>
       </EditProfileContainer>
     </main>

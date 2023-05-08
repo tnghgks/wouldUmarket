@@ -3,7 +3,11 @@ import UploadNav from "../../components/navbar/UploadNav";
 import ImgButton from "../../assets/upload-file.png";
 import CommonInput from "../../components/input/CommonInput";
 import { useDispatch, useSelector } from "react-redux";
-import { MODIFY_PRODUCT, DETAIL_PRODUCT, MODIFY_PRODUCT_IMAGE } from "../../store/Product";
+import {
+  MODIFY_PRODUCT,
+  DETAIL_PRODUCT,
+  MODIFY_PRODUCT_IMAGE,
+} from "../../store/Product";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -15,9 +19,10 @@ function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showImg, setShowImg] = useState("");
-  // const [disable, setDisable] = useState(true);
   const {
-    profile: { accountname },
+    profile: {
+      profile: { accountname },
+    },
     product,
   } = useSelector((state) => state);
   const {
@@ -45,33 +50,34 @@ function EditProduct() {
 
   useEffect(() => {
     dispatch(DETAIL_PRODUCT(id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, id]);
 
   // 한개의 이미지 API
-  async function productImgView(imgFile) {
+  function productImgView(imgFile) {
     const formData = new FormData();
     formData.append("image", imgFile);
-    const productSeverImg = await dispatch(MODIFY_PRODUCT_IMAGE({ formData }));
+    const productSeverImg = dispatch(MODIFY_PRODUCT_IMAGE({ formData }));
     return productSeverImg.payload;
   }
 
   // 이미지 미리보기
   useEffect(() => {
-    if (productImg instanceof FileList) {
+    if (productImg && productImg instanceof FileList) {
       setShowImg(URL.createObjectURL(productImg[0]));
       return () => URL.revokeObjectURL(productImg[0]);
     }
   }, [productImg]);
 
   // 저장 버튼 핸들러
-  async function formSubmit({ productName, productPrice, Address, imgFile }) {
-    const imgData = imgFile[0] ? await productImgView(imgFile[0]) : productImg;
-
+  function formSubmit({ productName, productPrice, Address, imgFile }) {
+    const imgData = imgFile[0] ? productImgView(imgFile[0]) : productImg;
     const productData = {
       product: {
         itemName: productName,
-        price: Number(productPrice.replaceAll(",", "")),
+        price:
+          typeof productPrice === "number"
+            ? productPrice
+            : Number(productPrice.replaceAll(",", "")),
         link: Address,
         itemImage: imgData,
       },
@@ -85,24 +91,25 @@ function EditProduct() {
       <h1 className="ir-hidden">상품 상세 수정 페이지</h1>
       <UploadNav
         children="저장"
-        bgColor={isValid ? "light" : "main"}
-        btnDisabled={isValid ? true : false}
+        bgColor={!isValid ? "light" : "main"}
+        btnDisabled={!isValid}
+        form="editProductForm"
       />
-      <EditProfileContainer onSubmit={handleSubmit(formSubmit)}>
+      <EditProfileContainer
+        onSubmit={handleSubmit(formSubmit)}
+        id="editProductForm"
+      >
         <ProductContainer>
           <h2 className="ir-hidden">이미지 등록</h2>
           <EditProductImgContainer>
-            <ProductItemImg src={showImg ? showImg : productImg} alt="상품 이미지" />
+            <ProductItemImg
+              src={showImg ? showImg : productImg}
+              alt="상품 이미지"
+            />
             <label htmlFor="file">
               <UploadImgDiv></UploadImgDiv>
             </label>
-            <UploadImgInput
-              type="file"
-              id="file"
-              {...register("imgFile", {
-                required: "상품 이미지를 넣어주세요.",
-              })}
-            />
+            <UploadImgInput type="file" id="file" {...register("imgFile")} />
           </EditProductImgContainer>
           {errors.imgFile && <Warning>{errors.imgFile.message}</Warning>}
         </ProductContainer>
@@ -124,7 +131,9 @@ function EditProduct() {
               },
             })}
           />
-          {errors.productName && <Warning>{errors.productName.message}</Warning>}
+          {errors.productName && (
+            <Warning>{errors.productName.message}</Warning>
+          )}
           <CommonInput
             type="text"
             placeholder={"숫자만 입력 가능 합니다."}
@@ -134,7 +143,9 @@ function EditProduct() {
               required: "가격을 입력해주세요.",
             })}
           />
-          {errors.productPrice && <Warning>{errors.productPrice.message}</Warning>}
+          {errors.productPrice && (
+            <Warning>{errors.productPrice.message}</Warning>
+          )}
           <CommonInput
             type="text"
             placeholder={"URl을 입력해 주세요."}
