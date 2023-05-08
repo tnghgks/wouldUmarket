@@ -1,8 +1,29 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
+
+/**
+ *
+ * @param {{sellerName: string}} param0
+ * @returns
+ */
+function ChatNav({ sellerName, isMore = false }) {
+  return (
+    <Container>
+      <Back to={"/feed"}>
+        <BackBtnIcon />
+      </Back>
+      <SellerName>{sellerName}</SellerName>
+      {!isMore && (
+        <More type="button">
+          <MoreIcon />
+        </More>
+      )}
+    </Container>
+  );
+}
 
 const Container = styled.div`
   display: flex;
@@ -51,30 +72,5 @@ const MoreIcon = styled(IconMoreVertical)`
   width: 24px;
   height: 24px;
 `;
-/**
- *
- * @param {{sellerName: string}} param0
- * @returns
- */
-function ChatNav({ sellerName, isMore = false }) {
-  const navigate = useNavigate();
-  return (
-    <Container>
-      <Back
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <BackBtnIcon />
-      </Back>
-      <SellerName>{sellerName}</SellerName>
-      {!isMore && (
-        <More type="button">
-          <MoreIcon />
-        </More>
-      )}
-    </Container>
-  );
-}
 
 export default ChatNav;

@@ -1,13 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { OPEN_MAIN_MODAL } from "../../store/Modal";
 import IconArrowLeft from "../icon/IconArrowLeft";
 import IconMoreVertical from "../icon/IconMoreVertical";
 
 function BasicNav() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function handleModalClick() {
@@ -16,11 +15,7 @@ function BasicNav() {
 
   return (
     <Container>
-      <Back
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
+      <Back to="/feed">
         <BackBtnIcon />
       </Back>
       <More type="button">

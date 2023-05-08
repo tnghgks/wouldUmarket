@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import IconArrowLeft from "../icon/IconArrowLeft";
 
@@ -7,14 +7,9 @@ function SearchNav({ value, setValue }) {
     setValue(e.target.value);
   }
 
-  const navigate = useNavigate();
   return (
     <Container>
-      <Back
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
+      <Back to={"/feed"}>
         <BackBtnIcon />
       </Back>
       <Input placeholder="계정 검색" value={value} onChange={handleChange} />
