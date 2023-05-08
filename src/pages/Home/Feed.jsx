@@ -39,7 +39,7 @@ function Feed() {
         <Loader />
       ) : (
         <MainContainer>
-          {!!posts.length ? (
+          {!!posts?.length ? (
             <>
               {posts.map((postItem) => (
                 <PostContainer key={postItem.id}>
