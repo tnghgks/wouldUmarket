@@ -33,7 +33,7 @@ function UserPost() {
   };
 
   return (
-    !!posts.length && (
+    !!posts?.length && (
       <Container>
         <h3 className="ir-hidden">유저가 올린 포스트</h3>
         <ViewModeContainer>

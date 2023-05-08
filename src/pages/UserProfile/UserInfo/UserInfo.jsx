@@ -24,7 +24,7 @@ function UserInfo() {
   }
 
   return (
-    !!profile && (
+    !!profile.userId && (
       <Container>
         <h3 className="ir-hidden">유저 정보</h3>
         <RowContainer>

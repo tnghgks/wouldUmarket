@@ -8,7 +8,7 @@ function UserProducts() {
   } = useSelector((state) => state);
 
   return (
-    !!products.length && (
+    !!products?.length && (
       <Container>
         <h3 className="ir-hidden">유저가 대여중인 상품</h3>
         <ProductContainer>
